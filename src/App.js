@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, Login, SignUp, Checkout, ImageUpload } from "./pages";
+import { Home, Login, SignUp, Checkout, ImageUpload, Products, AboutUs, Profile } from "./pages";
 import { PrivateRoute, Navigation, Footer } from "./components";
 import { FirebaseProvider } from "./FirebaseContext";
 const App = () => {
@@ -9,9 +9,12 @@ const App = () => {
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/upload" element={<ImageUpload />} />
+          <Route path="/profile" element={<Profile />} />
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<Checkout />} />
           </Route>
