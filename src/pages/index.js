@@ -9,5 +9,6 @@ import Profile from "./Profile";
 import Setting from "./Setting";
 import Keranjang from "./Keranjang";
 import Transaksi from "./Transaksi";
+import Tutorial from "./Tutorial";
 
-export { Home, Login, SignUp, Checkout, ImageUpload, Products, AboutUs, Profile, Setting, Keranjang, Transaksi }
+export { Home, Login, SignUp, Checkout, ImageUpload, Products, AboutUs, Profile, Setting, Keranjang, Transaksi, Tutorial }

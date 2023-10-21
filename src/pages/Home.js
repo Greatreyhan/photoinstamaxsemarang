@@ -21,6 +21,7 @@ import {
   HeroProduct3,
 } from "../assets";
 import { Tutorial } from "../components";
+import axios from "axios";
 
 const Home = () => {
   const { user, signOut } = useFirebase();
