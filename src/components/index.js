@@ -8,4 +8,6 @@ import Cart from "./Cart";
 import CartItem from "./CartItem";
 import PopupGood from "./PopupGood";
 import PopupBuy from "./PopupBuy";
-export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy}
+import Loading from "./Loading"
+import Confirmation from "./Confirmation";
+export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation}

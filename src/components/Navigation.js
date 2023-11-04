@@ -1,16 +1,23 @@
 import React,{useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Logo } from "../assets";
 import { useLocation } from "react-router-dom";
 import { useFirebase } from "../FirebaseContext";
 import {AiOutlineCaretDown} from "react-icons/ai"
 import {BsPersonFill, BsFillCartFill} from "react-icons/bs"
+import {MdOutlineLogout}  from "react-icons/md"
 import Cart from "./Cart";
 const Navigation = () => {
-  const { user } = useFirebase();
+  const { user, signOut } = useFirebase();
   const location = useLocation();
   const [openMenu, setOpenMenu] = useState(false);
   const [cart, setCart] = useState(false)
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    <Navigate to="/login" />
+    await signOut();
+  };
   return (
     <nav className="w-full fixed bg-white bg-opacity-70 z-50">
       {cart ? <Cart isOpen={setCart} /> : null}
@@ -31,6 +38,8 @@ const Navigation = () => {
               <Link className="flex justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" to="/profile"><span>Profile</span><BsPersonFill /></Link>
               <hr />
               <a onClick={()=>setCart(!cart)} className="flex cursor-pointer justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" ><span>Keranjang</span><BsFillCartFill /></a>
+              <hr />
+              <a onClick={handleLogout} className="flex cursor-pointer justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" ><span>Log Out</span><MdOutlineLogout /></a>
               <hr />
             </div>
             : null

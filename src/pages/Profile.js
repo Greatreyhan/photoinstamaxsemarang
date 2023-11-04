@@ -5,10 +5,18 @@ import {BiUser, BiTransferAlt, BiCart, BiLogOutCircle} from "react-icons/bi"
 import Setting from './Setting';
 import Transaksi from './Transaksi';
 import Keranjang from './Keranjang';
+import { Navigate } from 'react-router-dom';
 
 const Profile = () => {
     const [page, setPage] = useState("setting")
-    const { user } = useFirebase();
+    const { signOut, user } = useFirebase();
+
+    const handleLogout = async (e) => {
+        e.preventDefault();
+        <Navigate to="/login" />
+        await signOut();
+    };
+
   return (
     <div className='flex w-full mx-auto pt-14'>
         {/* Nav Menu */}
@@ -23,7 +31,7 @@ const Profile = () => {
                 <div onClick={()=>setPage("setting")} className='font-normal cursor-pointer w-full text-amber-50 hover:font-semibold justify-start pl-5 flex items-center text-lg py-2'><BiUser className='w-10' /><span className='ml-1'>Profile</span></div>
                 <div onClick={()=>setPage("transaksi")} className='font-normal cursor-pointer w-full text-amber-50 hover:font-semibold justify-start pl-5 flex items-center text-lg py-2'><BiTransferAlt className='w-10' /><span className='ml-1'>Transaksi</span></div>
                 <div onClick={()=>setPage("keranjang")} className='font-normal cursor-pointer w-full text-amber-50 hover:font-semibold justify-start pl-5 flex items-center text-lg py-2'><BiCart className='w-10' /><span className='ml-1'>Keranjang</span></div>
-                <a className='font-normal cursor-pointer w-full text-amber-50 border-t-2 pt-3 border-white border-opacity-10 mt-20 hover:font-semibold justify-start pl-5 flex items-center text-lg py-2'><BiLogOutCircle className='w-10' /><span className='ml-1'>Log Out</span></a>
+                <a onClick={handleLogout} className='font-normal cursor-pointer w-full text-amber-50 border-t-2 pt-3 border-white border-opacity-10 mt-20 hover:font-semibold justify-start pl-5 flex items-center text-lg py-2'><BiLogOutCircle className='w-10' /><span className='ml-1'>Log Out</span></a>
             </div>
         </div>
         : null}

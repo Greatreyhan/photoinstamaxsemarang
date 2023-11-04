@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useFirebase } from "../FirebaseContext";
 import { Link } from "react-router-dom";
 import {
-  HeroProduct,
-  HeroProduct2,
   Polaroid1,
   Polaroid2,
   Polaroid3,
@@ -11,7 +9,6 @@ import {
   Polaroid5,
   Polaroid6,
   BoxWrap,
-  FilmWrap,
   FrameWrap,
   MapWrap,
   StandWrap,

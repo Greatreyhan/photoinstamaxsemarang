@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useFirebase } from "../FirebaseContext";
 import { HeroLogin, Logo } from "../assets";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -85,10 +85,10 @@ const Login = () => {
             </form>
             <div className="pt-12 pb-12 text-center">
               <p>
-                Don&#x27;t have an account?
-                <a href="#" className="font-semibold underline">
-                  Register here.
-                </a>
+                Tidak Punya Akun?
+                <Link to="/signUp" className="font-semibold underline">
+                  Daftar di sini
+                </Link>
               </p>
             </div>
           </div>

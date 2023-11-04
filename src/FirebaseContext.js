@@ -1,5 +1,6 @@
 import {createContext, useContext, useState, useEffect} from 'react';
-import {FIREBASE_AUTH} from './config/firebaseinit';
+import {FIREBASE_AUTH, FIREBASE_DB} from './config/firebaseinit';
+import {set,ref} from "firebase/database"
 import { onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut} from 'firebase/auth';
 import 'firebase/auth';
 
@@ -39,7 +40,26 @@ export const FirebaseProvider = ({children}) => {
         },
         signUp: async (email, password) => {
             try {
-                await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+                await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
+                .then((data) => {
+                    const dataDump = {
+                        username : email.match(/([^@]*)@/)[1],
+                        phone : "0",
+                        address : "",
+                        pict : "https://plus.unsplash.com/premium_photo-1688747278757-3e90d8b2e9b4?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dGhpbmt8ZW58MHx8MHx8fDA%3D",
+                        email : email
+                      }
+                      set(ref(FIREBASE_DB, "user/" + data.user.uid), dataDump)
+                          .then(() => {
+                            console.log('created')
+                          })
+                          .catch((error) => {
+                            console.log(error)
+                          });
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                  });
             } catch (error) {
               console.error('Error signing up:', error);
             }

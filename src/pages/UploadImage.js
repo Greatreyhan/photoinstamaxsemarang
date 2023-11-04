@@ -1,48 +1,44 @@
 import React, { useState } from 'react';
 import { FIREBASE_STORE } from '../config/firebaseinit';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
-function ImageUpload() {
-  const [image, setImage] = useState(null);
+function ImageUpload({setUrl}) {
   const [progress, setProgress] = useState(0);
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-  };
-
-  const handleUpload = () => {
-    if (image) {
-      const storageRef = ref(FIREBASE_STORE,`images/${image.name}`);
-      const uploadTask = uploadBytesResumable(storageRef,image);
-
-      uploadTask.on(
-        'state_changed',
-        (snapshot) => {
-          const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(snapshot)
-          setProgress(progress);
-        },
-        (error) => {
-          console.error(error);
-        },
-        () => {
-          // Upload completed, get the download URL
-          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            console.log('File available at', downloadURL);
-            // Now you can save the downloadURL to Firestore or use it as needed
-          });
-        }
-      );
+        const storageRef = ref(FIREBASE_STORE,`images/${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}/${Math.floor(Date.now() / 1000)}`);
+        const uploadTask = uploadBytesResumable(storageRef,e.target.files[0]);
+  
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log(snapshot)
+            setProgress(progress);
+          },
+          (error) => {
+            console.error(error);
+          },
+          () => {
+            // Upload completed, get the download URL
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              console.log('File available at', downloadURL);
+            setUrl(downloadURL)
+            });
+          }
+        );
     }
   };
 
   return (
-    <div>
-      <input type="file" onChange={handleImageChange} />
-      <button onClick={handleUpload}>Upload</button>
-      {progress > 0 && <progress value={progress} max="100" />}
+    <div className='w-full flex-col items-center'>
+      <div>
+      <input className='text-white text-sm' type="file" onChange={handleImageChange} />
+      </div>
+      <div className='flex justify-between items-center'>
+        <span className='bg-amber-400 h-5 mt-2 flex justify-center text-xs items-center px-3' style={{width:progress+'%'}}>{progress}%</span>
+      </div>
     </div>
   );
 }
