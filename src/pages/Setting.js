@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFirebase } from "../FirebaseContext";
 import { ProfilePict } from "../assets";
 import { BiEditAlt } from "react-icons/bi";
-import { onValue, ref, push } from 'firebase/database'
+import { onValue, ref, set } from 'firebase/database'
 import { FIREBASE_DB } from '../config/firebaseinit'
 
 const Setting = () => {
@@ -28,14 +28,14 @@ const Setting = () => {
     });
   }, [])
   const changeData = () =>{
-    const data = {
+    const Newdata = {
       username : username,
       phone : phone,
       address : address,
       pict : pictPerson,
       email : user.email
     }
-    push(ref(FIREBASE_DB, "user/" + user.uid), data)
+    set(ref(FIREBASE_DB, "user/" + user.uid), Newdata)
         .then(() => {
           console.log('changed')
         })

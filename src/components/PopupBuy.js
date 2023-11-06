@@ -4,7 +4,7 @@ import Loading from './Loading'
 import { ImageUpload } from '../pages'
 import { useFirebase } from "../FirebaseContext";
 import {FIREBASE_DB} from '../config/firebaseinit';
-import {set,ref} from "firebase/database"
+import {set,ref, onValue, update} from "firebase/database"
 import Confirmation from './Confirmation';
 const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +28,7 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   const [isConfirmed, setIsConfirmed] = useState(false)
   const { user } = useFirebase();
   const [codeID, setCodeID] = useState(0)
+  const [transactionData, setTransactionData] = useState([])
 
   const handleBuy = async () => {
     const cr = selectedOption.split("|");
@@ -43,11 +44,18 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
       packaging: packaging,
       bubble_wrap: bubbleWrap,
       price: parseInt(price) * parseInt(qty) + parseInt(cr[1], 10),
-      buyStatus : 0
+      buyStatus : 0,
     }
     const timeStamp = Math.floor(new Date().getTime() / 1000)
     setCodeID(timeStamp)
-    await set(ref(FIREBASE_DB, "user/" + user.uid + "/transaction/" + timeStamp), data)
+    await set(ref(FIREBASE_DB, "transactions/" + user.uid.slice(0,5)+"A"+timeStamp), data)
+      .then(() => {
+        setIsConfirmed(true)
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+    await set(ref(FIREBASE_DB, "user/" + user.uid + "/transaction/"), [...transactionData,(user.uid.slice(0,5)+"A"+timeStamp)] )
       .then(() => {
         setIsConfirmed(true)
       })
@@ -57,7 +65,6 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   }
 
   useEffect(() => {
-    console.log(price)
     if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && urlImg != "") {
       setIsComplete(true)
     }
@@ -96,6 +103,14 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
       .catch((error) => {
         console.error('Error fetching data:', error);
         setIsLoading(false)
+      })
+      onValue(ref(FIREBASE_DB, "user/" + user.uid + "/transaction"), (snapshot) => {
+        const data = snapshot.val();
+        if(data){
+          const key = Object.keys(data);
+          setTransactionData(data)
+        }
+          
       });
   }, []);
 
@@ -184,7 +199,7 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0,5)+'A'+codeID} /> : 
+      {isConfirmed ? <Confirmation setPopBuy={setPopBuy} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0,5)+'A'+codeID} /> : 
       <div className='flex bg-amber-800 flex-col w-3/5 h-96 px-3 py-1 relative'>
         <div className='w-full flex justify-end items-center'>
           <AiOutlineClose className='text-xl text-white bg-red-500 mt-2' onClick={handleClose} />

@@ -1,10 +1,23 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { FilmWrap } from '../assets'
 import {AiOutlinePlus, AiOutlineMinus} from "react-icons/ai"
+import { useFirebase } from "../FirebaseContext";
+import { FIREBASE_DB } from '../config/firebaseinit';
+import { set, ref, onValue, update } from "firebase/database"
 
-const CartItem = () => {
+const CartItem = ({list}) => {
   const [qty, setQty] = useState(0)
   const [price, setPrice] = useState(5000)
+  const [dataItem, setDataItem] = useState([])
+  useEffect(() => {
+    onValue(ref(FIREBASE_DB, "carts/" + list ), (snapshot) => {
+        const data = snapshot.val();
+        if(data){
+          setDataItem(data)
+        }
+    });
+}, []);
+  if(dataItem){
   return (
     <div className="mx-5 flex flex-col my-2 bg-amber-800 px-3 py-2 rounded-lg border-2 border-white border-opacity-20">
       <div className="flex items-center">
@@ -29,7 +42,7 @@ const CartItem = () => {
       <div className="flex justify-end ">
       </div>
     </div>
-  );
+  )}
 };
 
 export default CartItem;

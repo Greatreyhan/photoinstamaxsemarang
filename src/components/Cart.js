@@ -1,8 +1,21 @@
-import React from 'react'
+import React,{useEffect, useState} from 'react'
 import {IoMdClose} from "react-icons/io"
 import {BsFillCartFill} from "react-icons/bs"
 import CartItem from './CartItem'
+import { useFirebase } from "../FirebaseContext";
+import { FIREBASE_DB } from '../config/firebaseinit';
+import { set, ref, onValue, update } from "firebase/database"
 const Cart = ({isOpen}) => {
+  const [dataCart, setDataCart] = useState([])
+  const { user } = useFirebase();
+  useEffect(() => {
+    onValue(ref(FIREBASE_DB, "user/" + user.uid + "/cart"), (snapshot) => {
+        const data = snapshot.val();
+        if(data){
+          setDataCart(data)
+        }
+    });
+}, []);
   return (
     <div className='w-full flex justify-center items-center h-screen bg-black bg-opacity-40'>
         <div className='w-5/12 h-96 pb-4 bg-amber-200 shadow-lg'>
@@ -12,11 +25,9 @@ const Cart = ({isOpen}) => {
             </div>
             {/* Cart Item */}
             <div className='h-80 overflow-y-auto'>
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
-                <CartItem />
+              {dataCart ? dataCart.map(list=>{
+                return (<CartItem list={list} />)
+              }):null}
             </div>
         </div>
     </div>
