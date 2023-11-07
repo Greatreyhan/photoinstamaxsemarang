@@ -37,7 +37,7 @@ const TransactionCard = ({ list, id }) => {
             {dataItem[list.produkID] ?
                 <div className='flex mt-3 items-center'>
                     <div className='bg-white px-1 pb-8 pt-1 shadow-xl'>
-                    <img className='w-32 h-32 object-cover object-center rounded-lg' src={list.img} />
+                    <img className='w-32 h-32 object-cover object-center' src={list.img} />
                     </div>
                     <div className='w-4/12 mx-5 text-amber-50'>
                         <p className='font-semibold text-lg'>{dataItem[list.produkID].title}</p>
@@ -51,7 +51,7 @@ const TransactionCard = ({ list, id }) => {
                 :
                 null}
             <div className='flex justify-end '>
-                <button className='mx-8 px-5 text-white font-semibold hover:font-bold'>Hapus</button>
+                <button className='mx-8 px-5 text-white font-semibold hover:font-bold'>Batalkan</button>
                 <button className="px-8 py-1.5 hover:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-amber-100 text-lg font-semibold text-amber-950">Lihat Invoice</button>
             </div>
         </div>

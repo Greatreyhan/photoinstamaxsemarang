@@ -6,6 +6,7 @@ import { useFirebase } from "../FirebaseContext";
 import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue, update } from "firebase/database"
 import Confirmation from './Confirmation';
+import Alert from './Alert';
 const PopupGood = ({ Name, price, setPopUp, ProdukID }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [weight, setWeight] = useState(1000)
@@ -69,7 +70,7 @@ const PopupGood = ({ Name, price, setPopUp, ProdukID }) => {
     return (
         <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
             {isLoading ? <Loading /> : null}
-            {isConfirmed ? <Confirmation setPopBuy={setPopUp} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
+            {isConfirmed ? <Alert setPopBuy={setPopUp} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
                 <div className='flex bg-amber-800 flex-col w-3/5 h-96 px-3 py-1 relative'>
                     <div className='w-full flex justify-end items-center'>
                         <AiOutlineClose className='text-xl text-white bg-red-500 mt-2' onClick={handleClose} />

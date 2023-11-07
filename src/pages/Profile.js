@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useFirebase } from "../FirebaseContext";
 import { ProfilePict } from '../assets';
 import {BiUser, BiTransferAlt, BiCart, BiLogOutCircle} from "react-icons/bi"
@@ -6,10 +6,22 @@ import Setting from './Setting';
 import Transaksi from './Transaksi';
 import Keranjang from './Keranjang';
 import { Navigate } from 'react-router-dom';
+import { onValue, ref, set } from 'firebase/database'
+import { FIREBASE_DB } from '../config/firebaseinit'
 
 const Profile = () => {
     const [page, setPage] = useState("setting")
     const { signOut, user } = useFirebase();
+    const [pictPerson, setPictPerson] = useState("")
+    useEffect(() => {
+        onValue(ref(FIREBASE_DB, "user/" + user.uid), (snapshot) => {
+          const data = snapshot.val();
+          const key = Object.keys(data)
+          if(data){
+          setPictPerson(data.pict)
+          }
+        });
+      }, [])
 
     const handleLogout = async (e) => {
         e.preventDefault();
@@ -24,7 +36,7 @@ const Profile = () => {
         <div className='w-3/12 m-5 shadow-md shadow-slate-500'>
             {/* Profile with picture */}
             <div className='flex justify-center flex-col items-center bg-amber-900 px-8 py-8'>
-                <img className='rounded-full w-36 h-36 object-cover object-center' src={ProfilePict} />
+                <img className='rounded-full w-36 h-36 object-cover object-center' src={pictPerson} />
                 <p className='text-amber-50 font-semibold capitalize mt-2'>Hello, {user.email.match(/([^@]*)@/)[1]}!</p>
             </div>
             <div className='flex justify-center flex-col items-center bg-amber-950 py-8'>
