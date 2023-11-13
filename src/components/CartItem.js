@@ -26,10 +26,8 @@ const CartItem = ({ list }) => {
     });
   }, []);
   const handleAdd = () =>{
-    console.log("wait")
     set(ref(FIREBASE_DB, "carts/" + list + "/qty"), dataItem.qty+1)
       .then(() => {
-        console.log("added")
       })
       .catch((error) => {
         console.log(error)
@@ -38,7 +36,6 @@ const CartItem = ({ list }) => {
   const handleMin = () =>{
     set(ref(FIREBASE_DB, "carts/" + list + "/qty"), dataItem.qty-1)
       .then(() => {
-        console.log("substracted")
       })
       .catch((error) => {
         console.log(error)

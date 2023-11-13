@@ -13,17 +13,10 @@ const Products = () => {
       setDataItems(data)
     });
   },[])
-  const goodList = [
-    ["Polaroid Photo", "Cetak Polaroid ukuran 54 x 88 mm dengan kualitas terbaik IP500 menggunakan fuji photo instax",5000, StandWrap, "Polaroid"],
-    ["Box Frame", "Cetak Polaroid ukuran 54 x 88 mm dengan kualitas terbaik IP500 menggunakan fuji photo instax",5000, BoxWrap, "Polaroid"],
-    ["Frame Wrap", "Cetak Polaroid ukuran 54 x 88 mm dengan kualitas terbaik IP500 menggunakan fuji photo instax",5000, FrameWrap, "Polaroid"],
-    ["Map Wrap", "Cetak Polaroid ukuran 54 x 88 mm dengan kualitas terbaik IP500 menggunakan fuji photo instax",5000, MapWrap, "Polaroid"],
-    ["Film Wrap", "Cetak Polaroid ukuran 54 x 88 mm dengan kualitas terbaik IP500 menggunakan fuji photo instax",5000, FilmWrap, "Polaroid"],
-  ]
   return (
     <div className='w-10/12 mx-auto py-32 flex flex-wrap gap-y-10'>
       {dataItems.map((list,id)=>{
-        return(<Goods key={id} Title={list.title} Desc={list.desc} Price={list.price} ImageSource={list.img} Category={list.type} ProdukID={id} />)
+        return(<Goods key={id} Title={list.title} Desc={list.desc} Price={list.price} ImageSource={list.img} Category={list.type} Weight={list.weight} ProdukID={id} />)
       })}
     </div>
   )

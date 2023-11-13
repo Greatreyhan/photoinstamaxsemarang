@@ -25,7 +25,7 @@ const Cart = ({isOpen}) => {
             </div>
             {/* Cart Item */}
             <div className='h-80 overflow-y-auto'>
-              {dataCart ? dataCart.map(list=>{
+              {dataCart[0] ? dataCart.map(list=>{
                 return (<CartItem list={list} />)
               }):null}
             </div>

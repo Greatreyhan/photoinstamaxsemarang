@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { AiOutlineClose } from "react-icons/ai"
 import Loading from './Loading'
-import { ImageUpload } from '../pages'
 import { useFirebase } from "../FirebaseContext";
 import {FIREBASE_DB} from '../config/firebaseinit';
 import {set,ref, onValue, update} from "firebase/database"
 import Confirmation from './Confirmation';
-const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
+const PopUpChekcout = ({ list, price, weightTotal, setPopUp }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataProv, setDataProv] = useState([])
   const [dataCity, setDataCity] = useState([])
@@ -31,19 +30,30 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   const [transactionData, setTransactionData] = useState([])
 
   const handleBuy = async () => {
+    let goodsId = []
+    list.map(i=>{
+      onValue(ref(FIREBASE_DB, "carts/" + i), (snapshot) => {
+        const data = snapshot.val();
+        if(data){
+          const key = Object.keys(data);
+          goodsId.push(data)
+        }
+      });
+    })
+    console.log(goodsId)
     const cr = selectedOption.split("|");
     const data = {
-      produkID : ProdukID,
+      produkID : goodsId,
       provinsi: selectedProv,
       city: selectedCity,
       alamat: fullAddress,
-      img: urlImg,
+      img: goodsId[0].img,
       kurir: selectedCourier,
       pengiriman: cr[0],
-      qty: qty,
+      qty: list.length,
       packaging: packaging,
       bubble_wrap: bubbleWrap,
-      price: parseInt(price) * parseInt(qty) + parseInt(cr[1], 10),
+      price: parseInt(price) + parseInt(cr[1], 10),
       buyStatus : 0,
     }
     const timeStamp = Math.floor(new Date().getTime() / 1000)
@@ -65,10 +75,10 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   }
 
   useEffect(() => {
-    if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && urlImg != "") {
+    if (selectedProv != 0 && selectedCourier != '' && selectedOption != "") {
       setIsComplete(true)
     }
-  }, [selectedProv, selectedCity, selectedCourier, selectedOption, fullAddress, urlImg])
+  }, [selectedProv, selectedCity, selectedCourier, selectedOption, fullAddress])
 
   useEffect(() => {
     setIsLoading(true)
@@ -110,12 +120,11 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
           const key = Object.keys(data);
           setTransactionData(data)
         }
-          
       });
   }, []);
 
   const handleClose = (e) => {
-    setPopBuy(false)
+    setPopUp(false)
   }
 
   const handleProv = (e) => {
@@ -197,7 +206,7 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setPopBuy={setPopBuy} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0,5)+'A'+codeID} /> : 
+      {isConfirmed ? <Confirmation setPopUp={setPopUp} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0,5)+'A'+codeID} /> : 
       <div className='flex bg-amber-800 flex-col w-3/5 h-96 px-3 py-1 relative'>
         <div className='w-full flex justify-end items-center'>
           <AiOutlineClose className='text-xl text-white bg-red-500 mt-2' onClick={handleClose} />
@@ -222,9 +231,6 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
               <label className='text-amber-50 mt-4 text-xs'>Alamat Lengkap</label>
               <input className='px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={fullAddress} onChange={(e) => setFullAddress(e.currentTarget.value)} required />
             </div>
-            <div className='mt-6'>
-              <ImageUpload setUrl={setUrlImg} />
-            </div>
           </div>
           <div className='flex-1 flex flex-col px-4'>
             <label className='text-amber-50 mt-4 text-xs'>Pilih Kurir</label>
@@ -241,35 +247,6 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
                 return (<option className='' value={option.service + '|' + parseInt(option.cost[0].value)} key={i}><span className='text-xs'>{option.service}</span> | <span>{parseInt(option.cost[0].value) == 0 ? "CHAT ADMIN" : new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(option.cost[0].value))}</span> | <span>{option.cost[0].etd} Hari</span></option>)
               }) : null}
             </select>
-            <div className='flex flex-col mt-4'>
-              <div className='flex justify-between items-center'>
-                <div className='flex-1 flex flex-col'>
-                  <label className='text-amber-50 text-xs'>Jumlah</label>
-                  <input className='px-1 py-1.5 text-md mt-1 w-2/3 text-amber-950' min={1} value={qty} onChange={(e) => setQty(e.currentTarget.value)} type="number" required />
-                </div>
-                <div className='flex-1'>
-                  <p className='text-xs text-amber-50'>Pilihan Packaging</p>
-                  <div className='flex gap-5  mt-2'>
-                    <div className='flex items-center' required>
-                      <input type="radio" value="map" checked={packaging == "map"} onChange={e => setPackaging(e.currentTarget.value)} name="packaging" />
-                      <label htmlFor="packaging" className='ml-1 text-xs text-amber-50'>Map</label>
-                    </div>
-                    <div className='flex items-center'>
-                      <input type="radio" value="box" checked={packaging == "box"} onChange={e => setPackaging(e.currentTarget.value)} name="packaging" />
-                      <label htmlFor="packaging" className='ml-1 text-xs text-amber-50'>Box</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='flex items-center mt-4'>
-                {inBound ?
-                  <input type="checkbox" onChange={e => setBubbleWrap(e.currentTarget.value)} value={bubbleWrap} />
-                  :
-                  <input type="checkbox" value={() => setBubbleWrap(true)} checked />
-                }
-                <label className='ml-1 text-xs text-amber-50'>Bubble Wrap</label>
-              </div>
-            </div>
             <hr className='mt-3 opacity-60' />
             <p className='text-white mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
             <div className='w-full text-center mt-5'>
@@ -293,4 +270,4 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   )
 }
 
-export default PopupBuy
+export default PopUpChekcout

@@ -27,10 +27,10 @@ const Transaksi = () => {
       const key = Object.keys(data)
       setDataTransaction(data)
       if(data){
-        data.map((list,i)=>{
+        data.map((list)=>{
           
           onValue(ref(FIREBASE_DB, "transactions/" + list), (ss) => { 
-            
+          if(ss){
             if(ss.val().buyStatus == 0){
               setKeyBelum((keyBelum)=>[...keyBelum, list])
               setDataBelum((dataBelum)=>[...dataBelum, ss.val()])
@@ -47,6 +47,7 @@ const Transaksi = () => {
               setKeySelesai((keySelesai)=>[...keySelesai, list])
               setDataSalah((dataSalah)=>[...dataSalah, ss.val()])
             }
+          }
           }, [])
         })
       }
@@ -58,7 +59,7 @@ const Transaksi = () => {
       {/* Menunggu Pembayaran */}
       <div>
         <h2 className='text-md items-center text-amber-50 mt-8 px-5 py-1 border-b-2 border-white border-opacity-30 flex'><AiOutlineFieldTime /><span className='ml-2'>Menunggu Pembayaran</span></h2>
-        {dataBelum ?
+        {dataBelum != [] ?
         dataBelum.map((list,i)=>{
           return(
             <TransactionCard list={list} id={keyBelum[i]} />
@@ -72,7 +73,7 @@ const Transaksi = () => {
       {/* Diproses */}
       <div>
       <h2 className='text-md items-center flex text-amber-50 mt-8 px-5 py-1 border-b-2 border-white border-opacity-30'><FaTruck /><span className='ml-2'>Sedang Diproses</span></h2>
-      {dataProses ?
+      {dataProses != [] ?
         dataProses.map((list,i)=>{
           return(
             <TransactionCard list={list} id={keyProses[i]} />
@@ -85,7 +86,7 @@ const Transaksi = () => {
       {/* Selesai */}
       <div>
       <h2 className='text-md items-center flex text-amber-50 mt-8 px-5 py-1 border-b-2 border-white border-opacity-30'><MdDone /><span className='ml-2'>Selesai Diproses</span></h2>
-      {dataSelesai ?
+      {dataSelesai != [] ?
         dataSelesai.map((list,i)=>{
           return(
             <TransactionCard list={list} id={keySelesai[i]} />
@@ -98,7 +99,7 @@ const Transaksi = () => {
       {/* Salah */}
       <div>
       <h2 className='text-md items-center flex text-amber-50 mt-8 px-5 py-1 border-b-2 border-white border-opacity-30'><MdDone /><span className='ml-2'>Terjadi Kendala</span></h2>
-      {dataSalah ?
+      {dataSalah != [] ?
         dataSalah.map((list,i)=>{
           return(
             <TransactionCard list={list} id={keySalah[i]} />

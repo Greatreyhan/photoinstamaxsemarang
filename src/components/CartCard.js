@@ -7,9 +7,7 @@ import { set, ref, onValue, remove } from "firebase/database"
 import {BsTrash3Fill} from "react-icons/bs"
 import {AiOutlineCheck} from "react-icons/ai"
 
-const CartCard = ({list, checked, setChecked, id}) => {
-  const [qty, setQty] = useState(0)
-  const [price, setPrice] = useState(5000)
+const CartCard = ({list, checked, setChecked, id, handleClick}) => {
   const [dataItem, setDataItem] = useState([])
   const [dataGoods, setDataGoods] = useState([])
   const [isCheck, setIsCheck] = useState(false)
@@ -18,23 +16,19 @@ const CartCard = ({list, checked, setChecked, id}) => {
     onValue(ref(FIREBASE_DB, "carts/" + list), (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        console.log(data)
         setDataItem(data)
       }
     });
     onValue(ref(FIREBASE_DB, "goods/"), (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        console.log(data)
         setDataGoods(data)
       }
     });
   }, []);
   const handleAdd = () =>{
-    console.log("wait")
     set(ref(FIREBASE_DB, "carts/" + list + "/qty"), dataItem.qty+1)
       .then(() => {
-        console.log("added")
       })
       .catch((error) => {
         console.log(error)
@@ -43,7 +37,6 @@ const CartCard = ({list, checked, setChecked, id}) => {
   const handleMin = () =>{
     set(ref(FIREBASE_DB, "carts/" + list + "/qty"), dataItem.qty-1)
       .then(() => {
-        console.log("substracted")
       })
       .catch((error) => {
         console.log(error)
@@ -53,29 +46,27 @@ const CartCard = ({list, checked, setChecked, id}) => {
   const handleCheck = () =>{
     const newArr = checked
     newArr.push(list)
-    console.log(newArr)
     setChecked(newArr)
     setIsCheck(true)
+    handleClick()
   }
 
   const handleUncheck = () =>{
     const index = checked.indexOf(list)
     checked.splice(index,1)
     setIsCheck(false)
+    handleClick()
   }
 
   const handleDelete = () =>{
-    console.log(id)
     remove(ref(FIREBASE_DB, "user/"+user.uid+"/cart/" + id))
       .then(() => {
-        console.log("deleted")
       })
       .catch((error) => {
         console.log(error)
       });
     remove(ref(FIREBASE_DB, "carts/" + list))
       .then(() => {
-        console.log("deleted")
       })
       .catch((error) => {
         console.log(error)
@@ -113,7 +104,7 @@ const CartCard = ({list, checked, setChecked, id}) => {
             <p className="text-lg font-bold">{new Intl.NumberFormat('id-ID', {
               style: 'currency',
               currency: 'IDR'
-            }).format(dataItem.price)}</p>
+            }).format(dataItem.price*dataItem.qty)}</p>
           </div>
           <div className="w-1/12 text-amber-50 pl-2 ">
             <a onClick={handleDelete} className="text-sm cursor-pointer"><BsTrash3Fill /></a>

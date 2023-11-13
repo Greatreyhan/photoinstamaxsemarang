@@ -7,9 +7,8 @@ import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue, update } from "firebase/database"
 import Confirmation from './Confirmation';
 import Alert from './Alert';
-const PopupGood = ({ Name, price, setPopUp, ProdukID }) => {
+const PopupGood = ({ Name, price, setPopUp, weight, ProdukID }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [weight, setWeight] = useState(1000)
     const [qty, setQty] = useState(1)
     const [packaging, setPackaging] = useState("map")
     const [urlImg, setUrlImg] = useState("")
@@ -24,6 +23,7 @@ const PopupGood = ({ Name, price, setPopUp, ProdukID }) => {
             produkID: ProdukID,
             img: urlImg,
             qty: qty,
+            weight : parseInt(weight),
             packaging: packaging,
             price: parseInt(price) * parseInt(qty),
         }
@@ -36,16 +36,28 @@ const PopupGood = ({ Name, price, setPopUp, ProdukID }) => {
             .catch((error) => {
                 console.log(error)
             });
-        await set(ref(FIREBASE_DB, "user/" + user.uid + "/cart/"), [...cartData, (user.uid.slice(0, 5) + "B" + timeStamp)])
+            if(cartData[0]){
+            await set(ref(FIREBASE_DB, "user/" + user.uid + "/cart/"), [...cartData, (user.uid.slice(0, 5) + "B" + timeStamp)])
             .then(() => {
                 setIsConfirmed(true)
             })
             .catch((error) => {
                 console.log(error)
             });
+            }
+            else{
+            await set(ref(FIREBASE_DB, "user/" + user.uid + "/cart/"), [(user.uid.slice(0, 5) + "B" + timeStamp)])
+            .then(() => {
+                setIsConfirmed(true)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+            }
     }
 
     useEffect(() => {
+        console.log(weight)
         if (urlImg != "") {
             setIsComplete(true)
         }

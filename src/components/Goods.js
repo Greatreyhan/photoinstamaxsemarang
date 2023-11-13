@@ -1,13 +1,13 @@
 import React,{useState} from "react";
 import PopupGood from "./PopupGood";
 import PopupBuy from "./PopupBuy";
-const Goods = ({Title, Desc, Price, Category, ImageSource, ProdukID }) => {
+const Goods = ({Title, Desc, Price, Category, Weight, ImageSource, ProdukID }) => {
   const [popUp, setPopUp] = useState(false)
   const [popBuy, setPopBuy] = useState(false)
   return (
     <div className="m-auto overflow-hidden shadow-lg cursor-pointer h-90 w-60 md:w-80 rounded-md border-2 border-amber-900 border-opacity-30">
-      {popUp ? <PopupGood name={Title} price={Price} setPopUp={setPopUp} ProdukID={ProdukID} /> : null}
-      {popBuy ? <PopupBuy name={Title} price={Price} setPopBuy={setPopBuy} ProdukID={ProdukID} /> : null}
+      {popUp ? <PopupGood name={Title} price={Price} setPopUp={setPopUp} weight={Weight} ProdukID={ProdukID} /> : null}
+      {popBuy ? <PopupBuy name={Title} price={Price} setPopBuy={setPopBuy} weight={Weight} ProdukID={ProdukID} /> : null}
       <a href="#" className="block w-full h-full">
         <img
           alt="blog photo"

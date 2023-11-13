@@ -11,4 +11,5 @@ import PopupBuy from "./PopupBuy";
 import Loading from "./Loading"
 import Confirmation from "./Confirmation";
 import Alert from "./Alert"
-export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert}
+import PopUpChekcout from "./PopUpChekcout";
+export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout}

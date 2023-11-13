@@ -37,7 +37,6 @@ const Setting = () => {
     }
     set(ref(FIREBASE_DB, "user/" + user.uid), Newdata)
         .then(() => {
-          console.log('changed')
         })
         .catch((error) => {
           console.log(error)

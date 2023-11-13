@@ -14,7 +14,6 @@ function ImageUpload({setUrl}) {
           'state_changed',
           (snapshot) => {
             const progress = Math.round(snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log(snapshot)
             setProgress(progress);
           },
           (error) => {
@@ -23,7 +22,6 @@ function ImageUpload({setUrl}) {
           () => {
             // Upload completed, get the download URL
             getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-              console.log('File available at', downloadURL);
             setUrl(downloadURL)
             });
           }

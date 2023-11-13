@@ -51,7 +51,6 @@ export const FirebaseProvider = ({children}) => {
                       }
                       set(ref(FIREBASE_DB, "user/" + data.user.uid), dataDump)
                           .then(() => {
-                            console.log('created')
                           })
                           .catch((error) => {
                             console.log(error)
