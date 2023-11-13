@@ -28,9 +28,8 @@ const Transaksi = () => {
       setDataTransaction(data)
       if(data){
         data.map((list)=>{
-          
           onValue(ref(FIREBASE_DB, "transactions/" + list), (ss) => { 
-          if(ss){
+          if(ss.val()){
             if(ss.val().buyStatus == 0){
               setKeyBelum((keyBelum)=>[...keyBelum, list])
               setDataBelum((dataBelum)=>[...dataBelum, ss.val()])

@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { AiOutlineClose } from "react-icons/ai"
+import { BiArrowBack } from "react-icons/bi"
+import { AiOutlineCheck } from "react-icons/ai"
+import { BsArrowRight } from "react-icons/bs"
 import Loading from './Loading'
 import { ImageUpload } from '../pages'
 import { useFirebase } from "../FirebaseContext";
-import {FIREBASE_DB} from '../config/firebaseinit';
-import {set,ref, onValue, update} from "firebase/database"
+import { FIREBASE_DB } from '../config/firebaseinit';
+import { set, ref, onValue } from "firebase/database"
 import Confirmation from './Confirmation';
+import { BoxWrap, MapWrap } from '../assets'
 const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataProv, setDataProv] = useState([])
@@ -29,33 +32,34 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   const { user } = useFirebase();
   const [codeID, setCodeID] = useState(0)
   const [transactionData, setTransactionData] = useState([])
+  const [step, setStep] = useState(1)
 
   const handleBuy = async () => {
     const cr = selectedOption.split("|");
     const data = {
-      produkID : ProdukID,
+      produkID: ProdukID,
       provinsi: selectedProv,
       city: selectedCity,
       alamat: fullAddress,
       img: urlImg,
       kurir: selectedCourier,
       pengiriman: cr[0],
-      qty: qty,
+      qty: urlImg.length,
       packaging: packaging,
       bubble_wrap: bubbleWrap,
       price: parseInt(price) * parseInt(qty) + parseInt(cr[1], 10),
-      buyStatus : 0,
+      buyStatus: 0,
     }
     const timeStamp = Math.floor(new Date().getTime() / 1000)
     setCodeID(timeStamp)
-    await set(ref(FIREBASE_DB, "transactions/" + user.uid.slice(0,5)+"A"+timeStamp), data)
+    await set(ref(FIREBASE_DB, "transactions/" + user.uid.slice(0, 5) + "A" + timeStamp), data)
       .then(() => {
         setIsConfirmed(true)
       })
       .catch((error) => {
         console.log(error)
       });
-    await set(ref(FIREBASE_DB, "user/" + user.uid + "/transaction/"), [...transactionData,(user.uid.slice(0,5)+"A"+timeStamp)] )
+    await set(ref(FIREBASE_DB, "user/" + user.uid + "/transaction/"), [...transactionData, (user.uid.slice(0, 5) + "A" + timeStamp)])
       .then(() => {
         setIsConfirmed(true)
       })
@@ -104,14 +108,14 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
         console.error('Error fetching data:', error);
         setIsLoading(false)
       })
-      onValue(ref(FIREBASE_DB, "user/" + user.uid + "/transaction"), (snapshot) => {
-        const data = snapshot.val();
-        if(data){
-          const key = Object.keys(data);
-          setTransactionData(data)
-        }
-          
-      });
+    onValue(ref(FIREBASE_DB, "user/" + user.uid + "/transaction"), (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const key = Object.keys(data);
+        setTransactionData(data)
+      }
+
+    });
   }, []);
 
   const handleClose = (e) => {
@@ -194,100 +198,157 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
     }
   }
 
+  const handleStepUp = (e) => {
+    e.preventDefault()
+    if (step < 5) {
+      setStep(step + 1)
+    }
+  }
+
+  const handleStepDown = (e) => {
+    e.preventDefault()
+    if (step < 1) {
+      handleClose()
+    }
+    else {
+      setStep(step - 1)
+    }
+  }
+
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setPopBuy={setPopBuy} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0,5)+'A'+codeID} /> : 
-      <div className='flex bg-amber-800 flex-col w-3/5 h-96 px-3 py-1 relative'>
-        <div className='w-full flex justify-end items-center'>
-          <AiOutlineClose className='text-xl text-white bg-red-500 mt-2' onClick={handleClose} />
-        </div>
-        <div className='flex'>
-          <div className='flex-1 flex flex-col px-4'>
-            <label className='text-amber-50 mt-4 text-xs'>Pilih Provinsi</label>
-            <select className='px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">
-              <option value={0} >Pilih Provinsi</option>
-              {dataProv ? dataProv.map(prov => {
-                return (<option value={prov.province_id} key={prov.province_id}>{prov.province}</option>)
-              }) : null}
-            </select>
-            <label className='text-amber-50 mt-4 text-xs'>Pilih Kota</label>
-            <select className='px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCity} name="Kota">
-              <option value={0} >Pilih Kota</option>
-              {dataCity ? dataCity.map(city => {
-                return (<option value={city.city_id} key={city.city_id}>{city.type} {city.city_name}</option>)
-              }) : null}
-            </select>
-            <div className='flex flex-col'>
-              <label className='text-amber-50 mt-4 text-xs'>Alamat Lengkap</label>
-              <input className='px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={fullAddress} onChange={(e) => setFullAddress(e.currentTarget.value)} required />
+      {isConfirmed ? <Confirmation setPopUp={setPopBuy} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
+        <div className='flex bg-slate-50 flex-col w-full h-full relative'>
+          <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
+            <div className='flex items-center justify-center'>
+              <span className={`text-xl w-10 h-10 ${step > 1 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 1 ? <AiOutlineCheck /> : "1"}</span>
+              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Upload Foto</span>
             </div>
-            <div className='mt-6'>
-              <ImageUpload setUrl={setUrlImg} />
+            <div className='flex items-center justify-center'>
+              <span className={`text-xl w-10 h-10 ${step > 2 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 2 ? <AiOutlineCheck /> : "2"}</span>
+              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Pilih Packaging</span>
+            </div>
+            <div className='flex items-center justify-center'>
+              <span className={`text-xl w-10 h-10 ${step > 3 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 3 ? <AiOutlineCheck /> : "3"}</span>
+              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Pilih pengiriman</span>
+            </div>
+            <div className='flex items-center justify-center'>
+              <span className={`text-xl w-10 h-10 ${step > 4 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 4 ? <AiOutlineCheck /> : "4"}</span>
+              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Konfirmasi Pembayaran</span>
             </div>
           </div>
-          <div className='flex-1 flex flex-col px-4'>
-            <label className='text-amber-50 mt-4 text-xs'>Pilih Kurir</label>
-            <select className='px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCourier} name="choice">
-              <option value={0} >Pilih Kurir</option>
-              {dataCourier ? dataCourier.map((courierList, i) => {
-                return (<option value={courierList} key={i}>{courierList.toUpperCase()}</option>)
-              }) : null}
-            </select>
-            <label className='text-amber-50 mt-4 text-xs'>Pilih Jenis Pengiriman</label>
-            <select className='px-1 py-1.5 text-md mt-1 text-amber-950' onChange={(e) => setSelectedOption(e.target.value)} name="choice">
-              <option value={0} >Pilih Pengiriman</option>
-              {dataOption.costs ? dataOption.costs.map((option, i) => {
-                return (<option className='' value={option.service + '|' + parseInt(option.cost[0].value)} key={i}><span className='text-xs'>{option.service}</span> | <span>{parseInt(option.cost[0].value) == 0 ? "CHAT ADMIN" : new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(option.cost[0].value))}</span> | <span>{option.cost[0].etd} Hari</span></option>)
-              }) : null}
-            </select>
-            <div className='flex flex-col mt-4'>
-              <div className='flex justify-between items-center'>
-                <div className='flex-1 flex flex-col'>
-                  <label className='text-amber-50 text-xs'>Jumlah</label>
-                  <input className='px-1 py-1.5 text-md mt-1 w-2/3 text-amber-950' min={1} value={qty} onChange={(e) => setQty(e.currentTarget.value)} type="number" required />
+          {step == 1 ?
+            <div className='bg-slate-200 h-full'>
+              <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
+                <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
+                <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg</p>
+                <div className='mt-6'>
+                  <ImageUpload url={urlImg} setUrl={setUrlImg} />
                 </div>
-                <div className='flex-1'>
-                  <p className='text-xs text-amber-50'>Pilihan Packaging</p>
-                  <div className='flex gap-5  mt-2'>
-                    <div className='flex items-center' required>
-                      <input type="radio" value="map" checked={packaging == "map"} onChange={e => setPackaging(e.currentTarget.value)} name="packaging" />
-                      <label htmlFor="packaging" className='ml-1 text-xs text-amber-50'>Map</label>
-                    </div>
-                    <div className='flex items-center'>
-                      <input type="radio" value="box" checked={packaging == "box"} onChange={e => setPackaging(e.currentTarget.value)} name="packaging" />
-                      <label htmlFor="packaging" className='ml-1 text-xs text-amber-50'>Box</label>
-                    </div>
+              </div>
+
+            </div>
+            : step == 2 ?
+              <div className='bg-slate-200 h-full'>
+                <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
+                  <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
+                  <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
+                  <div className='flex gap-5  mt-8'>
+                    <a onClick={() => setPackaging("map")} className={`rounded-lg ${packaging == "map" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
+                      <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
+                    </a>
+                    <a onClick={() => setPackaging("box")} className={`rounded-lg ${packaging == "box" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
+                      <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
+                    </a>
                   </div>
                 </div>
               </div>
-              <div className='flex items-center mt-4'>
-                {inBound ?
-                  <input type="checkbox" onChange={e => setBubbleWrap(e.currentTarget.value)} value={bubbleWrap} />
-                  :
-                  <input type="checkbox" value={() => setBubbleWrap(true)} checked />
-                }
-                <label className='ml-1 text-xs text-amber-50'>Bubble Wrap</label>
-              </div>
-            </div>
-            <hr className='mt-3 opacity-60' />
-            <p className='text-white mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-            <div className='w-full text-center mt-5'>
-              {isComplete ?
-                <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center mx-4 py-1.5'>
-                  Beli Sekarang
-                </a>
+              : step == 3 ?
+                <div className='bg-slate-200 h-full'>
+                  <div className='bg-slate-50 flex mt-10 mx-10 px-5 py-8'>
+                    <div className='flex-1 flex flex-col px-4'>
+                      <label className='text-slate-800 mt-4 text-xs'>Pilih Provinsi</label>
+                      <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">
+                        <option value={0} >Pilih Provinsi</option>
+                        {dataProv ? dataProv.map(prov => {
+                          return (<option value={prov.province_id} key={prov.province_id}>{prov.province}</option>)
+                        }) : null}
+                      </select>
+                      <label className='text-slate-800 mt-4 text-xs'>Pilih Kota</label>
+                      <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCity} name="Kota">
+                        <option value={0} >Pilih Kota</option>
+                        {dataCity ? dataCity.map(city => {
+                          return (<option value={city.city_id} key={city.city_id}>{city.type} {city.city_name}</option>)
+                        }) : null}
+                      </select>
+                      <div className='flex flex-col'>
+                        <label className='text-slate-800 mt-4 text-xs'>Alamat Lengkap</label>
+                        <input className='border boder-amber-800 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={fullAddress} onChange={(e) => setFullAddress(e.currentTarget.value)} required />
+                      </div>
+                    </div>
+                    <div className='flex-1 flex flex-col px-4'>
+                      <label className='text-slate-800 mt-4 text-xs'>Pilih Kurir</label>
+                      <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCourier} name="choice">
+                        <option value={0} >Pilih Kurir</option>
+                        {dataCourier ? dataCourier.map((courierList, i) => {
+                          return (<option value={courierList} key={i}>{courierList.toUpperCase()}</option>)
+                        }) : null}
+                      </select>
+                      <label className='text-slate-800 mt-4 text-xs'>Pilih Jenis Pengiriman</label>
+                      <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={(e) => setSelectedOption(e.target.value)} name="choice">
+                        <option value={0} >Pilih Pengiriman</option>
+                        {dataOption.costs ? dataOption.costs.map((option, i) => {
+                          return (<option className='' value={option.service + '|' + parseInt(option.cost[0].value)} key={i}><span className='text-xs'>{option.service}</span> | <span>{parseInt(option.cost[0].value) == 0 ? "CHAT ADMIN" : new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(option.cost[0].value))}</span> | <span>{option.cost[0].etd} Hari</span></option>)
+                        }) : null}
+                      </select>
+                      <div className='flex flex-col mt-8'>
+                        <div className='flex items-center mt-4'>
+                          {inBound ?
+                            <input type="checkbox" onChange={e => setBubbleWrap(e.currentTarget.value)} value={bubbleWrap} />
+                            :
+                            <input type="checkbox" value={() => setBubbleWrap(true)} checked />
+                          }
+                          <label className='ml-1 text-xs text-slate-800'>Bubble Wrap</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 :
-                <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center mx-4 py-1.5'>
-                  Beli Sekarang
-                </a>
-              }
 
-            </div>
-
+                <div className='bg-slate-200 h-full'>
+                  <div className='bg-slate-50 flex flex-col mt-10 mx-auto w-5/12 px-5 py-8'>
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) ).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{packaging == "map" ? 'Rp 2.000,00' : 'Rp 3.000,00'},-</span></p>
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                  <hr className='mt-3 opacity-60' />
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                  <div className='w-full text-center mt-5'>
+                    {isComplete ?
+                      <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center py-1.5'>
+                        Beli Sekarang
+                      </a>
+                      :
+                      <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center py-1.5'>
+                        Beli Sekarang
+                      </a>
+                    }
+                  </div>
+                  </div>
+                </div>
+          }
+          <div className='w-full flex justify-between bg-slate-200 items-center'>
+            <button className='flex justify-center items-center bg-amber-800 px-6 py-2' onClick={handleStepDown}>
+              <BiArrowBack className='text-xl text-white' />
+              <span className='text-white ml-2'>Kembali</span>
+            </button>
+            <button className='flex justify-center items-center bg-amber-800 px-6 py-2' onClick={handleStepUp}>
+              <BsArrowRight className='text-xl text-white' />
+              <span className='text-white ml-2'>Lanjut</span>
+            </button>
           </div>
         </div>
-      </div>
       }
     </div>
   )

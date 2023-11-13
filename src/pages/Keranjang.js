@@ -22,8 +22,8 @@ const Keranjang = () => {
     });
     onValue(ref(FIREBASE_DB, "carts/"), (snapshot) => {
       const data = snapshot.val();
-      const key = Object.keys(data);
       if (data) {
+        const key = Object.keys(data);
         setDataFullCart(data)
         setKeyFullCart(key)
       }
@@ -47,7 +47,7 @@ const Keranjang = () => {
 
   return (
     <div className='flex flex-col w-full h-full relative'>
-      {popUp ? <PopUpChekcout list={checked} price={money} weightTotal={weight} setPopUp={setPopUp}/>:null}
+      {popUp ? <PopUpChekcout list={checked} price={money} weightTotal={weight} setPopUp={setPopUp} dataCart={dataCart}/>:null}
       {dataCart[0] ? dataCart.map((list,i) => {
         return (<CartCard list={list} checked={checked} setChecked={setChecked} handleClick={handleClick} id={i} />)
       }) : null}

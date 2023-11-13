@@ -1,7 +1,7 @@
 import React from 'react'
 import Barcode from 'react-barcode';
 import { Cart } from '../assets'
-const Confirmation = ({setPopBuy, setIsConfirmed, price, code}) => {
+const Confirmation = ({setPopUp, setIsConfirmed, price, code}) => {
     return (
         <div>
             <div className="p-6 bg-white rounded-lg shadow-md w-96">
@@ -20,7 +20,7 @@ const Confirmation = ({setPopBuy, setIsConfirmed, price, code}) => {
                 {price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
                 </p>
                 <div className="flex items-center justify-between mt-4">
-                    <a onClick={()=>{setIsConfirmed(false);setPopBuy(false);}} className="mr-1 text-xs text-gray-400 hover:text-gray-800" href="#">
+                    <a onClick={()=>{setIsConfirmed(false);setPopUp(false);}} className="mr-1 text-xs text-gray-400 hover:text-gray-800" href="#">
                         Bayar Nanti
                     </a>
                     <div className="w-1/2">
