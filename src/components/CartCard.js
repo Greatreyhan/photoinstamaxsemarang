@@ -91,7 +91,7 @@ const CartCard = ({list, checked, setChecked, id, handleClick}) => {
           />
           <div className="w-4/12 mx-5 text-amber-50">
             <p className="font-semibold text-md">{dataGoods[dataItem.produkID] ? dataGoods[dataItem.produkID].title : "..."}</p>
-            <p className="text-white text-xs opacity-60 capitalize">Packaging {dataItem.packaging}</p>
+            <p className="text-white text-xs opacity-60 capitalize">Packaging {dataItem.packaging ? dataItem.packaging.split("|")[0]: ""}</p>
             <div className="text-sm flex items-center gap-2 mt-2">
               <AiOutlinePlus onClick={handleAdd} className="rounded-full text-white w-4 h-4 cursor-pointer border"  />
               <p className="bg-white bg-opacity-0 text-center text-md" >{dataItem.qty}</p>

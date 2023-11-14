@@ -222,7 +222,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
 
   const handleStepDown = (e) => {
     e.preventDefault()
-    if (step < 1) {
+    if (step == 1) {
       handleClose()
     }
     else {
