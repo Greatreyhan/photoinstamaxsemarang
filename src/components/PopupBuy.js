@@ -9,7 +9,7 @@ import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue } from "firebase/database"
 import Confirmation from './Confirmation';
 import { BoxWrap, MapWrap } from '../assets'
-const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
+const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataProv, setDataProv] = useState([])
   const [dataCity, setDataCity] = useState([])
@@ -23,7 +23,7 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   const [weight, setWeight] = useState(1000)
   const [fullAddress, setFullAddress] = useState("")
   const [qty, setQty] = useState(1)
-  const [packaging, setPackaging] = useState("map")
+  const [packaging, setPackaging] = useState("map|2000")
   const [urlImg, setUrlImg] = useState("")
   const [isComplete, setIsComplete] = useState(false)
   const [inBound, setInBound] = useState(false)
@@ -33,6 +33,8 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   const [codeID, setCodeID] = useState(0)
   const [transactionData, setTransactionData] = useState([])
   const [step, setStep] = useState(1)
+  const [toNext, setToNext] = useState(false)
+  const [lastStep, setLastStep] = useState(1)
 
   const handleBuy = async () => {
     const cr = selectedOption.split("|");
@@ -47,7 +49,7 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
       qty: urlImg.length,
       packaging: packaging,
       bubble_wrap: bubbleWrap,
-      price: parseInt(price) * parseInt(qty) + parseInt(cr[1], 10),
+      price: parseInt(price) * urlImg.length + parseInt(cr[1], 10) + parseInt(packaging.split("|")[1]),
       buyStatus: 0,
     }
     const timeStamp = Math.floor(new Date().getTime() / 1000)
@@ -69,10 +71,19 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
   }
 
   useEffect(() => {
+    if(step == 1 && urlImg.length >= 1){
+      setToNext(true)
+    }
+    if(step == 2){
+      setToNext(true)
+    }
+    if(step == 3 && selectedOption != ""){
+      setToNext(true)
+    }
     if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && urlImg != "") {
       setIsComplete(true)
     }
-  }, [selectedProv, selectedCity, selectedCourier, selectedOption, fullAddress, urlImg])
+  }, [packaging, selectedProv, selectedCity, selectedCourier, selectedOption, fullAddress, urlImg, step])
 
   useEffect(() => {
     setIsLoading(true)
@@ -200,7 +211,11 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
 
   const handleStepUp = (e) => {
     e.preventDefault()
+    if(lastStep < step) setLastStep(step)
     if (step < 5) {
+      if(lastStep < step){
+        setToNext(false)
+      }
       setStep(step + 1)
     }
   }
@@ -255,10 +270,10 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
                   <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                   <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
                   <div className='flex gap-5  mt-8'>
-                    <a onClick={() => setPackaging("map")} className={`rounded-lg ${packaging == "map" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
+                    <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
                     </a>
-                    <a onClick={() => setPackaging("box")} className={`rounded-lg ${packaging == "box" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
+                    <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
                     </a>
                   </div>
@@ -319,11 +334,16 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
 
                 <div className='bg-slate-200 h-full'>
                   <div className='bg-slate-50 flex flex-col mt-10 mx-auto w-5/12 px-5 py-8'>
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>{name}</span> <span>{urlImg ? urlImg.length : 0} barang</span></p>
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Packaging</span> <span className='capitalize'>{packaging.split("|")[0]} </span></p>
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Pengiriman</span> <span className='uppercase'>{ selectedCourier+"-"+selectedOption.split("|")[0]} </span></p>
+                  </div>
+                  <div className='bg-slate-50 flex flex-col mt-4 mx-auto w-5/12 px-5 py-8'>
                   <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) ).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{packaging == "map" ? 'Rp 2.000,00' : 'Rp 3.000,00'},-</span></p>
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                   <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                  <hr className='mt-3 opacity-60' />
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                  <hr className='mt-3 opacity-80' />
+                  <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1])).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                   <div className='w-full text-center mt-5'>
                     {isComplete ?
                       <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center py-1.5'>
@@ -343,10 +363,18 @@ const PopupBuy = ({ Name, price, setPopBuy, ProdukID }) => {
               <BiArrowBack className='text-xl text-white' />
               <span className='text-white ml-2'>Kembali</span>
             </button>
+            {toNext || (lastStep > step) ? 
             <button className='flex justify-center items-center bg-amber-800 px-6 py-2' onClick={handleStepUp}>
+            <BsArrowRight className='text-xl text-white' />
+            <span className='text-white ml-2'>Lanjut</span>
+          </button>
+            :
+            <button className='flex justify-center items-center bg-slate-800 px-6 py-2'disabled onClick={handleStepUp}>
               <BsArrowRight className='text-xl text-white' />
               <span className='text-white ml-2'>Lanjut</span>
             </button>
+            }
+            
           </div>
         </div>
       }
