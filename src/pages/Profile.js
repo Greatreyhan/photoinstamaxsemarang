@@ -33,7 +33,7 @@ const Profile = () => {
     <div className='flex w-full mx-auto pt-14'>
         {/* Nav Menu */}
         {user ?
-        <div className='w-3/12 m-5 shadow-md shadow-slate-500'>
+        <div className='w-3/12 m-5 shadow-md shadow-slate-500 h-screen bg-amber-950'>
             {/* Profile with picture */}
             <div className='flex justify-center flex-col items-center bg-amber-900 px-8 py-8'>
                 <img className='rounded-full w-36 h-36 object-cover object-center' src={pictPerson} />

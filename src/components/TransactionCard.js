@@ -10,8 +10,10 @@ const TransactionCard = ({ list, id }) => {
     useEffect(() => {
         onValue(ref(FIREBASE_DB, "goods"), (snapshot) => {
             const data = snapshot.val();
+            if(data){
             const key = Object.keys(data)
             setDataItem(data)
+            }
         });
     }, [])
     return (
@@ -34,20 +36,35 @@ const TransactionCard = ({ list, id }) => {
 
                 <p className='font-mono'>INV/2{id}</p>
             </div>
-            {dataItem[list.produkID] ?
-                <div className='flex mt-3 items-center'>
-                    <div className='bg-white px-1 pb-8 pt-1 shadow-xl'>
-                    <img className='w-32 h-32 object-cover object-center' src={list.img} />
+            {dataItem != [] ?
+                Array.isArray(list.produkID) ?
+                    <div className='flex mt-3 items-center'>
+                        <div className='bg-white px-1 pb-8 pt-1 shadow-xl'>
+                            <img className='w-32 h-32 object-cover object-center' src={list.img[0]} />
+                        </div>
+                        <div className='w-4/12 mx-5 text-amber-50'>
+                            <p className='font-semibold text-lg'>{dataItem[list.produkID[0].produkID] ? dataItem[list.produkID[0].produkID].title: null}</p>
+                            <p className='text-sm'>{list.qty} Buah</p>
+                        </div>
+                        <div className='w-4/12 text-amber-50 pl-2 border-l-2 border-white border-opacity-20'>
+                            <p className='text-sm'>Total Belanja</p>
+                            <p className='text-lg font-bold'>{list.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
+                        </div>
                     </div>
-                    <div className='w-4/12 mx-5 text-amber-50'>
-                        <p className='font-semibold text-lg'>{dataItem[list.produkID].title}</p>
-                        <p className='text-sm'>{list.qty} Buah</p>
+                    :
+                    <div className='flex mt-3 items-center'>
+                        <div className='bg-white px-1 pb-8 pt-1 shadow-xl'>
+                            <img className='w-32 h-32 object-cover object-center' src={list.img} />
+                        </div>
+                        <div className='w-4/12 mx-5 text-amber-50'>
+                            <p className='font-semibold text-lg'>{dataItem[list.produkID] ? dataItem[list.produkID].title : null}</p>
+                            <p className='text-sm'>{list.qty} Buah</p>
+                        </div>
+                        <div className='w-4/12 text-amber-50 pl-2 border-l-2 border-white border-opacity-20'>
+                            <p className='text-sm'>Total Belanja</p>
+                            <p className='text-lg font-bold'>{list.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
+                        </div>
                     </div>
-                    <div className='w-4/12 text-amber-50 pl-2 border-l-2 border-white border-opacity-20'>
-                        <p className='text-sm'>Total Belanja</p>
-                        <p className='text-lg font-bold'>{list.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
-                    </div>
-                </div>
                 :
                 null}
             <div className='flex justify-end '>
