@@ -24,9 +24,9 @@ const Transaksi = () => {
   useEffect(() => {
     onValue(ref(FIREBASE_DB, "user/" + user.uid +"/transaction"), (snapshot) => {
       const data = snapshot.val();
-      const key = Object.keys(data)
-      setDataTransaction(data)
       if(data){
+        const key = Object.keys(data)
+        setDataTransaction(data)
         data.map((list)=>{
           onValue(ref(FIREBASE_DB, "transactions/" + list), (ss) => { 
           if(ss.val()){

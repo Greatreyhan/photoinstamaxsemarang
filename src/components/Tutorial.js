@@ -3,7 +3,7 @@ import { Choose, Received, Sending } from "../assets";
 
 const Tutorial = () => {
   return (
-    <div className="bg-slate-50 pt-12">
+    <div className="bg-slate-50 pt-16">
       <h2 className="text-4xl text-amber-900 text-center font-bold">
         Tata Cara Pembelian
       </h2>

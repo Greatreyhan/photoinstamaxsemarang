@@ -38,15 +38,15 @@ export const FirebaseProvider = ({children}) => {
                 console.error('Error Sign In', err);
             }
         },
-        signUp: async (email, password) => {
+        signUp: async (email, password, phone, address) => {
             try {
                 await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password)
                 .then((data) => {
                     const dataDump = {
                         username : email.match(/([^@]*)@/)[1],
-                        phone : "0",
-                        address : "",
-                        pict : "https://plus.unsplash.com/premium_photo-1688747278757-3e90d8b2e9b4?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dGhpbmt8ZW58MHx8MHx8fDA%3D",
+                        phone : phone,
+                        address : address,
+                        pict : "https://firebasestorage.googleapis.com/v0/b/photoinstamaxsemarang.appspot.com/o/profile%2F726e5ff73caaef10c1a8a7f473547638.png?alt=media&token=af255546-69b0-420c-8acd-6fd541416a1d",
                         email : email
                       }
                       set(ref(FIREBASE_DB, "user/" + data.user.uid), dataDump)

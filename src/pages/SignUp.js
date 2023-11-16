@@ -2,14 +2,18 @@ import React, { useState } from "react";
 import { useFirebase } from "../FirebaseContext";
 import { Link,Navigate } from "react-router-dom";
 import { HeroLogin } from "../assets";
+import { MdOutlineWhatsapp, MdLocationOn } from "react-icons/md";
+
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("")
+  const [address, setAddress] = useState("")
   const { signUp, user } = useFirebase();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signUp(email, password);
+    await signUp(email, password, phone, address);
   };
 
   if (user) {
@@ -21,7 +25,7 @@ const SignUp = () => {
       <div className="flex flex-wrap w-full">
         <div className="flex flex-col w-full md:w-1/2">
 
-          <div className="flex flex-col justify-center px-8 pt-8 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
+          <div className="flex flex-col justify-center px-8 pt-12 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">
             <p className="text-3xl text-center">Hallo.</p>
             <form
               onSubmit={handleSubmit}
@@ -47,10 +51,11 @@ const SignUp = () => {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
               </div>
-              <div className="flex flex-col pt-4 mb-12">
+              <div className="flex flex-col pt-4">
                 <div className="flex relative ">
                   <span className=" inline-flex  items-center px-3 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
                     <svg
@@ -70,6 +75,39 @@ const SignUp = () => {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col pt-4">
+                <div className="flex relative ">
+                  <span className=" inline-flex  items-center px-2.5 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
+                  <MdOutlineWhatsapp className="text-xl" />
+                  </span>
+                  <input
+                    id="design-login-phone"
+                    className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                    type="text"
+                    placeholder="Nomor WA"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col pt-4 mb-12">
+                <div className="flex relative ">
+                  <span className=" inline-flex  items-center px-2.5 border-t bg-white border-l border-b  border-gray-300 text-gray-500 shadow-sm text-sm">
+                    <MdLocationOn className="text-xl" />
+                  </span>
+                  <input
+                    id="design-login-address"
+                    className=" flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+                    type="text"
+                    placeholder="Alamat"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    required
                   />
                 </div>
               </div>
@@ -83,8 +121,8 @@ const SignUp = () => {
             <div className="pt-12 pb-12 text-center">
               <p>
                 Sudah Punya Akun?
-                <Link to="/signUp" className="font-semibold underline">
-                  Masuk di sini
+                <Link to="/login" className="font-semibold underline ml-2">
+                   Masuk di sini
                 </Link>
               </p>
             </div>

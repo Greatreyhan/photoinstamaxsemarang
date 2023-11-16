@@ -18,7 +18,6 @@ import {
   HeroProduct3,
 } from "../assets";
 import { Tutorial } from "../components";
-import axios from "axios";
 
 const Home = () => {
   const { user, signOut } = useFirebase();
@@ -42,9 +41,6 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [imageShow.length]);
 
-  if (!user) {
-    return null;
-  }
   return (
     <div>
       {/* Hero Image */}
@@ -89,7 +85,7 @@ const Home = () => {
           </div>
         </div>
         {/* Description */}
-        <div className="ml-12 flex-1">
+        <div className="ml-12 flex-1" id="polaroid">
           <h2 className="text-3xl font-bold text-amber-900">
             Pembuatan Cetak Polaroid
           </h2>
@@ -137,7 +133,7 @@ const Home = () => {
       </div>
 
       {/* Packaging */}
-      <div className="w-full mx-auto flex justify-center">
+      <div className="w-full mx-auto flex justify-center" id="product">
         <div className="w-5/12 ml-36 mt-10">
           <h2 className="text-4xl font-bold text-amber-900">
             Variasi

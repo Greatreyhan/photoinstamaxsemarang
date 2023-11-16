@@ -18,41 +18,45 @@ const Navigation = () => {
     <Navigate to="/login" />
     await signOut();
   };
-  return (
-    <nav className="w-full fixed bg-white bg-opacity-70 z-50">
-      {cart ? <Cart isOpen={setCart} /> : null}
-      <div className="flex w-10/12 justify-between items-center mx-auto">
-        <div className="w-14">
-          <img className="w-full" src={Logo} />
-        </div>
-        <div className="flex flex-1 justify-end items-center text-slate-700">
-          <Link className={location.pathname == "/" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold`: `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/">Home</Link>
-          <Link className={location.pathname == "/products" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold`: `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/products">Products</Link>
-          <Link className={location.pathname == "/tutorial" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold`: `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/tutorial">Order Tutorial</Link>
-          <a href="#contact" className={`hover:font-semibold hover:text-slate-950 font-medium m-3`}>Contact</a>
-          {user ? 
-          <div onClick={()=>setOpenMenu(!openMenu)}>
-            <p className="font-medium m-3 py-1.5 text-amber-50 px-7 rounded-sm bg-amber-900 capitalize flex items-center cursor-pointer"><span>{user.email.match(/([^@]*)@/)[1]}</span><AiOutlineCaretDown className="ml-2 w-3" /></p>
-            {openMenu ? 
-            <div className="absolute bg-white w-48 shadow-lg">
-              <Link className="flex justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" to="/profile"><span>Profile</span><BsPersonFill /></Link>
-              <hr />
-              <a onClick={()=>setCart(!cart)} className="flex cursor-pointer justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" ><span>Keranjang</span><BsFillCartFill /></a>
-              <hr />
-              <a onClick={handleLogout} className="flex cursor-pointer justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" ><span>Log Out</span><MdOutlineLogout /></a>
-              <hr />
+  if(location.pathname == "/login" || location.pathname == "/signUp"){
+    return(null)
+  }
+  else{
+    return (
+      <nav className="w-full fixed bg-white bg-opacity-70 z-50">
+        {cart ? <Cart isOpen={setCart} /> : null}
+        <div className="flex w-10/12 justify-between items-center mx-auto">
+          <div className="w-14">
+            <img className="w-full" src={Logo} />
+          </div>
+          <div className="flex flex-1 justify-end items-center text-slate-700">
+            <Link className={location.pathname == "/" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold`: `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/">Home</Link>
+            <Link className={location.pathname == "/products" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold`: `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/products">Products</Link>
+            <Link className={location.pathname == "/tutorial" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold`: `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/tutorial">Order Tutorial</Link>
+            <a href="#contact" className={`hover:font-semibold hover:text-slate-950 font-medium m-3`}>Contact</a>
+            {user ? 
+            <div onClick={()=>setOpenMenu(!openMenu)}>
+              <p className="font-medium m-3 py-1.5 text-amber-50 px-7 rounded-sm bg-amber-900 capitalize flex items-center cursor-pointer"><span>{user.email.match(/([^@]*)@/)[1]}</span><AiOutlineCaretDown className="ml-2 w-3" /></p>
+              {openMenu ? 
+              <div className="absolute bg-white w-48 shadow-lg">
+                <Link className="flex justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" to="/profile"><span>Profile</span><BsPersonFill /></Link>
+                <hr />
+                <a onClick={()=>setCart(!cart)} className="flex cursor-pointer justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" ><span>Keranjang</span><BsFillCartFill /></a>
+                <hr />
+                <a onClick={handleLogout} className="flex cursor-pointer justify-between items-center text-amber-950 hover:bg-amber-50 px-4 py-2" ><span>Log Out</span><MdOutlineLogout /></a>
+                <hr />
+              </div>
+              : null
+              }
             </div>
-            : null
+            :
+            <Link className={`font-medium m-3 py-1.5 text-amber-50 px-7 rounded-sm bg-amber-900`} to="/login">Login</Link>
             }
           </div>
-          // <Link className={`font-medium m-3 py-1.5 text-amber-50 px-7 rounded-sm bg-amber-900 capitalize`} to="/">{user.email.match(/([^@]*)@/)[1]}</Link>
-          :
-          <Link className={`font-medium m-3 py-1.5 text-amber-50 px-7 rounded-sm bg-amber-900`} to="/login">Login</Link>
-          }
         </div>
-      </div>
-    </nav>
-  );
+      </nav>
+    );
+  }
 };
 
 export default Navigation;

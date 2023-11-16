@@ -1,13 +1,18 @@
 import React,{useState} from "react";
 import PopupGood from "./PopupGood";
 import PopupBuy from "./PopupBuy";
+import { PopupBuyDefault, PopupGoodDefault } from ".";
 const Goods = ({Title, Desc, Price, Category, Weight, ImageSource, ProdukID }) => {
   const [popUp, setPopUp] = useState(false)
+  const [popUpDef, setPopUpDef] = useState(false)
   const [popBuy, setPopBuy] = useState(false)
+  const [popUpBuyDef, setPopUpBuyDef] = useState(false)
   return (
     <div className="m-auto overflow-hidden shadow-lg cursor-pointer h-90 w-60 md:w-80 rounded-md border-2 border-amber-900 border-opacity-30">
       {popUp ? <PopupGood name={Title} price={Price} setPopUp={setPopUp} weight={Weight} ProdukID={ProdukID} /> : null}
+      {popUpDef ? <PopupGoodDefault name={Title} price={Price} setPopUp={setPopUpDef} weight={Weight} ProdukID={ProdukID} ImageSource={ImageSource} /> : null}
       {popBuy ? <PopupBuy name={Title} price={Price} setPopBuy={setPopBuy} weight={Weight} ProdukID={ProdukID} /> : null}
+      {popUpBuyDef ? <PopupBuyDefault name={Title} price={Price} setPopBuy={setPopUpBuyDef} weight={Weight} ProdukID={ProdukID} ImageSource={ImageSource} /> : null}
       <a href="#" className="block w-full h-full">
         <img
           alt="blog photo"
@@ -28,8 +33,8 @@ const Goods = ({Title, Desc, Price, Category, Weight, ImageSource, ProdukID }) =
             </div>
           </div> */}
           <div className="flex justify-end text-sm my-5 items-center">
-            <a onClick={()=>setPopUp(!popUp)} className="text-amber-900">Masukkan Keranjang</a>
-            <a onClick={()=>setPopBuy(!popBuy)} className="px-8 py-1 text-amber-50 font-semibold bg-amber-900 hover:shadow-none shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] ml-6">Beli</a>
+            <a onClick={Category == 1 ? ()=>setPopUp(!popUp) : ()=>setPopUpDef(!popUpDef)} className="text-amber-900">Masukkan Keranjang</a>
+            <a onClick={Category == 1 ? ()=>setPopBuy(!popBuy) : ()=>setPopUpBuyDef(!popUpBuyDef) } className="px-8 py-1 text-amber-50 font-semibold bg-amber-900 hover:shadow-none shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] ml-6">Beli</a>
           </div>
         </div>
       </a>
