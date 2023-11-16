@@ -14,4 +14,11 @@ import Alert from "./Alert"
 import PopUpChekcout from "./PopUpChekcout";
 import PopupBuyDefault from "./popUpBuyDefault";
 import PopupGoodDefault from "./PopUpGoodDefault";
-export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault}
+import NavAdmin from "./NavAdmin";
+import Dashboard from "./Dashboard"
+import Persona from "./Persona";
+import TileProduct from "./TileProduct";
+import Pesanan from "./Pesanan"
+import Pengguna from "./Pengguna"
+import Produk from "./Produk"
+export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan}

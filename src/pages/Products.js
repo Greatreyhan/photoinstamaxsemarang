@@ -2,8 +2,6 @@ import React,{useState, useEffect} from 'react'
 import { FIREBASE_DB } from '../config/firebaseinit'
 import { onValue, ref } from 'firebase/database'
 import { Goods } from '../components'
-import { BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap } from '../assets'
-
 const Products = () => {
   const [dataItems, setDataItems] = useState([])
   useEffect(()=>{

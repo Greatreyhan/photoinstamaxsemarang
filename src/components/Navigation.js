@@ -18,7 +18,7 @@ const Navigation = () => {
     <Navigate to="/login" />
     await signOut();
   };
-  if(location.pathname == "/login" || location.pathname == "/signUp"){
+  if(location.pathname == "/login" || location.pathname == "/signUp" || location.pathname == "/admin"){
     return(null)
   }
   else{

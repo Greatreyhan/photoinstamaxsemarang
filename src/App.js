@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, Login, SignUp, Checkout, ImageUpload, Products, AboutUs, Profile } from "./pages";
 import { PrivateRoute, Navigation, Footer, Tutorial } from "./components";
 import { FirebaseProvider } from "./FirebaseContext";
+import Admin from "./pages/Admin";
 const App = () => {
   return (
     <FirebaseProvider>
@@ -13,6 +14,7 @@ const App = () => {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/tutorial" element={<Tutorial />} />
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<Checkout />} />

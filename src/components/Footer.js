@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 const Footer = () => {
   const location = useLocation();
-  if(location.pathname == "/login" || location.pathname == "/signUp"){
+  if(location.pathname == "/login" || location.pathname == "/signUp" || location.pathname == "/admin"){
     return(null)
   }
   else{
