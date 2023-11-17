@@ -21,4 +21,5 @@ import TileProduct from "./TileProduct";
 import Pesanan from "./Pesanan"
 import Pengguna from "./Pengguna"
 import Produk from "./Produk"
-export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan}
+import DetailTransaction from "./DetailTransaction";
+export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan, DetailTransaction}

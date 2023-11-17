@@ -68,6 +68,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
       bubble_wrap: bubbleWrap,
       weight: weightTotal,
       price: parseInt(price) + parseInt(cr[1], 10),
+      userID : user.uid,
       buyStatus: 0,
     }
     const timeStamp = Math.floor(new Date().getTime() / 1000)
@@ -234,14 +235,14 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
                     <select className='border border-slate-400 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">
                       <option value={0} >Pilih Provinsi</option>
                       {dataProv ? dataProv.map(prov => {
-                        return (<option value={prov.province_id} key={prov.province_id}>{prov.province}</option>)
+                        return (<option value={prov.province_id + "|" + prov.province} key={prov.province_id}>{prov.province}</option>)
                       }) : null}
                     </select>
                     <label className='text-amber-950 mt-4 text-xs'>Pilih Kota</label>
                     <select className='border border-slate-400 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCity} name="Kota">
                       <option value={0} >Pilih Kota</option>
                       {dataCity ? dataCity.map(city => {
-                        return (<option value={city.city_id} key={city.city_id}>{city.type} {city.city_name}</option>)
+                        return (<option value={city.city_id + "|" + city.city_name} key={city.city_id}>{city.type} {city.city_name}</option>)
                       }) : null}
                     </select>
                     <div className='flex flex-col'>
