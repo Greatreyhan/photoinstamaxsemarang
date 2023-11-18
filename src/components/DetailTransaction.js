@@ -1,19 +1,40 @@
 import React, { useState, useEffect } from 'react'
 import { FIREBASE_DB } from '../config/firebaseinit'
-import { onValue, ref } from 'firebase/database'
+import { onValue, ref, set } from 'firebase/database'
 import { FaFileImage } from "react-icons/fa";
+import { MdSave } from "react-icons/md";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
 const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
     const [userData, setUserData] = useState([])
+    const [resi, setResi] = useState("")
+    const [status, setStatus] = useState(0)
     useEffect(() => {
+        onValue(ref(FIREBASE_DB, "transactions/" + keyItem), (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                console.log(data)
+                setResi(data.resi ? data.resi : "")
+                setStatus(parseInt(data.status))
+            }
+        });
         onValue(ref(FIREBASE_DB, "user/" + data.userID), (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 setUserData(data)
-                const key = Object.keys(data)
             }
         });
     }, [])
+    const handleSave = () => {
+        const updateData = { ...data, resi: resi, buyStatus: parseInt(status) }
+        set(ref(FIREBASE_DB, "transactions/" + keyItem), updateData)
+            .then(() => {
+                setPopUpDetail(false)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+    }
     return (
         <div className='w-screen h-screen fixed bg-black top-0 left-0 bg-opacity-50 flex justify-center items-center'>
 
@@ -84,7 +105,13 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Status
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {data.buyStatus}
+                                <select onChange={e => setStatus(e.currentTarget.value)} className='border border-slate-400 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' name="Status">
+                                    <option value={0} >Belum Dibayar</option>
+                                    <option value={1} >Diproses</option>
+                                    <option value={2} >Dikirim</option>
+                                    <option value={3} >Diterima</option>
+                                    <option value={4} >Gagal</option>
+                                </select>
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -92,7 +119,7 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Resi
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                
+                                <input className='border-b border-slate-700 py-1 px-3' type="text" value={resi} onChange={(e) => setResi(e.currentTarget.value)} />
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -100,12 +127,12 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Gambar
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={data.img}><FaFileImage /></a>
+                                <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={data.img}><FaFileImage /></a>
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 flex justify-between">
-                            <a onClick={(e)=>{setPopUpDetail(false); e.preventDefault()}} className='px-6 py-2 text-md text-amber-900 flex justify-center items-center ' href={data.img}><FaFileImage className='mr-2' /> Kembali</a>
-                            <a className='bg-green-200 px-6 py-2 text-md text-green-950 flex justify-center items-center rounded border-slate-500 border' target="_blank" href={data.img}><FaFileImage className='mr-2' /> Simpan</a>
+                            <a onClick={(e) => { setPopUpDetail(false); e.preventDefault() }} className='px- cursor-pointer py-2 text-md text-amber-900 flex justify-center items-center ' href={data.img}><IoIosArrowRoundBack className='mr-2' /> Kembali</a>
+                            <a onClick={handleSave} className='bg-green-200 px-6 py-2 text-md cursor-pointer text-green-950 flex justify-center items-center rounded border-slate-500 border'><MdSave className='mr-2' /> Simpan</a>
                         </div>
                     </dl>
                 </div>

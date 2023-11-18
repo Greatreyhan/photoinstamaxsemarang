@@ -5,6 +5,7 @@ import { FaFileImage } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 import DetailTransaction from './DetailTransaction';
 
+
 const Pesanan = () => {
   const [dataItems, setDataItems] = useState([])
   const [keyItems, setKeyItems] = useState([])
@@ -51,7 +52,6 @@ const Pesanan = () => {
   }
 
   const handleDelete = (e) => {
-    console.log("start delete")
     e.preventDefault()
     const goodid = e.currentTarget.id.split("|")[0]
     const userid = e.currentTarget.id.split("|")[1]
@@ -90,6 +90,9 @@ const Pesanan = () => {
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
               Produk
+            </th>
+            <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
+              Resi
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
               Alamat
@@ -131,6 +134,9 @@ const Pesanan = () => {
                   <td className="border p-2 dark:border-dark-5 text-sm">
                     {Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title}
                   </td>
+                  <td className="border p-2 dark:border-dark-5 uppercase text-sm text-center">
+                    {dataItems[key].resi ? dataItems[key].resi : "-"}
+                  </td>
                   <td className="border p-2 dark:border-dark-5 text-sm w-52">
                     {dataItems[key].alamat + ", " + dataItems[key].provinsi.split("|")[1] + ", " + dataItems[key].city.split("|")[1]}
                   </td>
@@ -143,8 +149,8 @@ const Pesanan = () => {
                   <td className="border p-2 dark:border-dark-5 text-sm">
                     {dataItems[key].price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }).slice(0, -3)}
                   </td>
-                  <td className="border p-2 dark:border-dark-5">
-                    {dataItems[key].packaging.split("|")[0]}
+                  <td className="border p-2 dark:border-dark-5 text-center">
+                    {dataItems[key].packaging ? dataItems[key].packaging.split("|")[0]  : "-"}
                   </td>
                   <td className="border p-2 dark:border-dark-5">
                     <div className='flex items-center justify-center'>

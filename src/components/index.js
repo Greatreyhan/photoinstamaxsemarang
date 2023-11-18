@@ -22,4 +22,7 @@ import Pesanan from "./Pesanan"
 import Pengguna from "./Pengguna"
 import Produk from "./Produk"
 import DetailTransaction from "./DetailTransaction";
-export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan, DetailTransaction}
+import GoodsAdmin from "./GoodsAdmin";
+import PopUpGoodsAdmin from "./PopUpGoodsAdmin";
+import UploadImageAdmin from "./UploadImageAdmin";
+export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan, DetailTransaction, GoodsAdmin, PopUpGoodsAdmin, UploadImageAdmin}
