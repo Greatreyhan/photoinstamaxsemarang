@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { FIREBASE_DB } from '../config/firebaseinit'
-import { set, ref, remove } from 'firebase/database'
-import { MdEdit, MdDelete } from "react-icons/md";
-import { MdFileUpload } from "react-icons/md";
+import { set, ref } from 'firebase/database'
 import { UploadImageAdmin } from '../components';
+import { IoMdClose } from "react-icons/io";
+
 
 
 const PopUpGoodsAdmin = ({data, length, setPopUp, i}) => {
@@ -33,13 +33,13 @@ const PopUpGoodsAdmin = ({data, length, setPopUp, i}) => {
         const updateData = {
             title : title,
             desc : desc,
-            img : imgSrc[0],
+            img : imgSrc,
             price : price,
             qty : qty,
             weight : weight,
             type : type
         }
-        set(ref(FIREBASE_DB, "goods/" + (i+1)), updateData)
+        set(ref(FIREBASE_DB, "goods/" + (i)), updateData)
             .then(() => {
                 setPopUp(false)
             })
@@ -49,7 +49,8 @@ const PopUpGoodsAdmin = ({data, length, setPopUp, i}) => {
     }
     return (
         <div className='fixed w-screen h-screen top-0 left-0 bg-black bg-opacity-50 flex justify-center items-center'>
-            <div className="flex w-6/12 overflow-hidden bg-white rounded-lg shadow-lg">
+            <div className="flex w-6/12 overflow-hidden bg-white rounded-lg shadow-lg relative">
+                <IoMdClose onClick={()=>setPopUp(false)} className='absolute z-10 top-0 rounded-full text-white left-0 bg-rose-500 w-8 h-8 cursor-pointer p-1' />
                 <div className="w-2/3 bg-cover bg-slate-200 flex justify-center items-center">
                     {/* {imgSrc ? <img src={imgSrc} className='object-cover w-full h-full' /> : <MdFileUpload className='text-5xl text-slate-400' />} */}
                     <UploadImageAdmin url={imgSrc} setUrl={setImgSrc} />

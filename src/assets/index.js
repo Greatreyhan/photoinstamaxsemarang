@@ -22,4 +22,7 @@ import Tiktok from "./tiktok.png"
 import HeroProduct3 from "./hero_product3.png"
 import ProfilePict from "./profile.png"
 import Cart from "./cart.png"
-export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart}
+import BCA from "./bca.png"
+import BNI from "./bni.png"
+
+export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart, BCA, BNI}
