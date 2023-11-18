@@ -60,7 +60,7 @@ function ImageUpload({ url, setUrl }) {
         : null}
       <div className='rounded-lg flex h-20 w-20 border-2 border-amber-800 border-opacity-50 relative'>
         <AiOutlinePlus className='absolute flex w-full h-full px-4 py-4 text-amber-800 justify-center items-center' />
-        <input style={{ opacity: '0%' }} className='text-white text-sm' type="file" onChange={handleImageChange} />
+        <input style={{ opacity: '0%' }} className='text-white text-sm w-full h-full cursor-pointer' type="file" onChange={handleImageChange} />
       </div>
     </div>
   );

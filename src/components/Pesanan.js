@@ -13,6 +13,7 @@ const Pesanan = () => {
   const [dataProv, setDataProv] = useState([])
   const [dataCity, setDataCity] = useState([])
   const [popUpDetail, setPopUpDetail] = useState(false)
+  const [detailID, setDetailID] = useState(0)
   useEffect(() => {
     onValue(ref(FIREBASE_DB, "transactions"), (snapshot) => {
       const data = snapshot.val();
@@ -124,7 +125,7 @@ const Pesanan = () => {
                 <tr className="text-gray-700" key={i}>
                   <td className="border p-2 dark:border-dark-5">
                   {popUpDetail ?
-                    <DetailTransaction keyItem={key} data={dataItems[key]} name={Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title} setPopUpDetail={setPopUpDetail} />
+                    <DetailTransaction countID={detailID} keyItem={keyItems} data={dataItems} name={Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title} setPopUpDetail={setPopUpDetail} />
                     : null}
                     {i}
                   </td>
@@ -164,7 +165,7 @@ const Pesanan = () => {
                   </td>
                   <td className="border p-2 dark:border-dark-5">
                     <div className='flex gap-1'>
-                      <a onClick={(e) => { setPopUpDetail(!popUpDetail); e.preventDefault() }} id={key + "|" + dataItems[key].userID} className='bg-blue-200 w-6 h-6 text-sm text-blue-900 flex justify-center items-center rounded-full' href={""}><MdEdit /></a>
+                      <a onClick={() =>{setPopUpDetail(!popUpDetail); setDetailID(i)} } id={key + "|" + dataItems[key].userID} className='bg-blue-200 w-6 h-6 text-sm text-blue-900 flex justify-center items-center rounded-full' href={"#"}><MdEdit /></a>
                       <a onClick={handleDelete} id={key + "|" + dataItems[key].userID} className='bg-rose-200 w-6 h-6 text-sm text-rose-900 flex justify-center items-center rounded-full' href={""}><MdDelete /></a>
                     </div>
                   </td>

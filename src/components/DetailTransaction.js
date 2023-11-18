@@ -5,23 +5,30 @@ import { FaFileImage } from "react-icons/fa";
 import { MdSave } from "react-icons/md";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
+const DetailTransaction = ({ countID, keyItem, data, name, setPopUpDetail }) => {
     const [userData, setUserData] = useState([])
     const [resi, setResi] = useState("")
     const [status, setStatus] = useState(0)
+    const [goods, setGoods] = useState([])
     useEffect(() => {
+        console.log(data[keyItem[countID]])
         onValue(ref(FIREBASE_DB, "transactions/" + keyItem), (snapshot) => {
             const data = snapshot.val();
             if (data) {
-                console.log(data)
-                setResi(data.resi ? data.resi : "")
+                setResi(data[keyItem[countID]].resi ? data[keyItem[countID]].resi : "")
                 setStatus(parseInt(data.status))
             }
         });
-        onValue(ref(FIREBASE_DB, "user/" + data.userID), (snapshot) => {
+        onValue(ref(FIREBASE_DB, "user/" + data[keyItem[countID]].userID), (snapshot) => {
             const data = snapshot.val();
             if (data) {
                 setUserData(data)
+            }
+        });
+        onValue(ref(FIREBASE_DB, "goods"), (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                setGoods(data)
             }
         });
     }, [])
@@ -41,10 +48,10 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
             <div className="max-w-2xl overflow-hidden bg-white shadow sm:rounded-lg py-8">
                 <div className="px-4 py-5 sm:px-6">
                     <h3 className="text-lg font-medium leading-6 text-gray-900">
-                        {name}
+                        {data[keyItem[countID]].userName ? data[keyItem[countID]].userName : userData.username}
                     </h3>
                     <p className="max-w-2xl mt-1 text-sm text-gray-500 uppercase">
-                        ID {keyItem}
+                        ID {keyItem[countID]}
                     </p>
                 </div>
                 <div className="border-t border-gray-200">
@@ -54,7 +61,7 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Email
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {userData.email}
+                                {data[keyItem[countID]].email ? data[keyItem[countID]].email : userData.email}
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -62,7 +69,7 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Phone
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {userData.phone}
+                                {data[keyItem[countID]].phone ? data[keyItem[countID]].phone : userData.phone}
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -70,7 +77,7 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Alamat
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {data.alamat}, {data.city.split("|")[1]}, {data.provinsi.split("|")[1]}
+                                {data[keyItem[countID]].alamat ? data[keyItem[countID]].alamat : ""}, {data[keyItem[countID]].city.split("|")[1]}, {data[keyItem[countID]].provinsi.split("|")[1]}
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -81,7 +88,7 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 {new Intl.NumberFormat('id-ID', {
                                     style: 'currency',
                                     currency: 'IDR'
-                                }).format(data.price)}
+                                }).format(data[keyItem[countID]].price)}
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -89,7 +96,7 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Packaging
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 uppercase">
-                                {data.kurir}- {data.pengiriman}
+                                {data[keyItem[countID]].kurir}- {data[keyItem[countID]].pengiriman}
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -97,7 +104,7 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                                 Jumlah
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {data.qty} buah
+                                {data[keyItem[countID]].qty} buah
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -124,14 +131,22 @@ const DetailTransaction = ({ keyItem, data, name, setPopUpDetail }) => {
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
+                                Produk
+                            </dt>
+                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                {goods[data[keyItem[countID]].produkID] ? Array.isArray(goods[data[keyItem[countID]].produkID]) ? goods[data[keyItem[countID]].produkID].map(item=> item.title) : goods[data[keyItem[countID]].produkID].title : ""}
+                            </dd>
+                        </div>
+                        <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                            <dt className="text-sm font-medium text-gray-500">
                                 Gambar
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={data.img}><FaFileImage /></a>
+                                <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={data[keyItem[countID]].img}><FaFileImage /></a>
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 flex justify-between">
-                            <a onClick={(e) => { setPopUpDetail(false); e.preventDefault() }} className='px- cursor-pointer py-2 text-md text-amber-900 flex justify-center items-center ' href={data.img}><IoIosArrowRoundBack className='mr-2' /> Kembali</a>
+                            <a onClick={(e) => { setPopUpDetail(false); e.preventDefault() }} className='px- cursor-pointer py-2 text-md text-amber-900 flex justify-center items-center ' href={data[keyItem[countID]].img}><IoIosArrowRoundBack className='mr-2' /> Kembali</a>
                             <a onClick={handleSave} className='bg-green-200 px-6 py-2 text-md cursor-pointer text-green-950 flex justify-center items-center rounded border-slate-500 border'><MdSave className='mr-2' /> Simpan</a>
                         </div>
                     </dl>

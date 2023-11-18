@@ -258,7 +258,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
             <div className='bg-slate-200 h-full'>
               <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                 <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
-                <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg</p>
+                <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg .png .heic atau .jpeg</p>
                 <div className='mt-6'>
                   <ImageUpload url={urlImg} setUrl={setUrlImg} />
                 </div>
