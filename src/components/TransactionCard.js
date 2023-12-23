@@ -50,26 +50,26 @@ const TransactionCard = ({ list, id }) => {
                 <PopUpTransaction setPopUp={setPopUp} price={list.price} code={id} />
             </div> : null}
 
-            <div className='flex text-sm py-2 text-amber-50'>
+            <div className='flex flex-wrap text-sm py-2 text-amber-50'>
                 <p className='mr-3 font-bold flex items-center'><BsFillBagPlusFill /><span className='ml-1'>Produk</span></p>
-                <p className='mx-3'>{new Date(id.slice(6) * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                <p className='mx-3 '>{new Date(id.slice(6) * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
                 {list.buyStatus == 0 ?
-                    <span className='bg-amber-500 rounded-full px-6 text-amber-50 mx-3'>Belum Dibayar</span>
+                    <span className='bg-amber-500 md:text-md text-xs rounded-full px-6  md:mt-0 mt-2 text-amber-50 mx-0 md:mx-3'>Belum Dibayar</span>
                     :
                     list.buyStatus == 1 ?
-                        <span className='bg-blue-500 rounded-full px-6 text-blue-50 mx-3'>Diproses</span>
+                        <span className='bg-blue-500 md:text-md text-xs rounded-full px-6  md:mt-0 mt-2 text-blue-50 mx-0 md:mx-3'>Diproses</span>
                         :
                         list.buyStatus == 2 ?
-                            <span className='bg-cyan-500 rounded-full px-6 text-green-50 mx-3'>Dikirim</span>
+                            <span className='bg-cyan-500 md:text-md text-xs rounded-full px-6  md:mt-0 mt-2 text-green-50 mx-0 md:mx-3'>Dikirim</span>
                             :
                             list.buyStatus == 3 ?
-                            <span className='bg-green-500 rounded-full px-6 text-green-50 mx-3'>Selesai</span>
+                            <span className='bg-green-500 md:text-md text-xs rounded-full px-6  md:mt-0 mt-2 text-green-50 mx-0 md:mx-3'>Selesai</span>
                             :
-                            <span className='bg-red-500 rounded-full px-6 text-red-50 mx-3'>Terkendala</span>
+                            <span className='bg-red-500 md:text-md text-xs rounded-full px-6  md:mt-0 mt-2 text-red-50 mx-0 md:mx-3'>Terkendala</span>
 
                 }
 
-                <p className='font-mono'>INV/2{id}</p>
+                <p className='font-mono  md:mt-0 mt-2 md:ml-0 ml-2'>INV/2{id}</p>
             </div>
             {dataItem != [] ?
                 Array.isArray(list.produkID) ?

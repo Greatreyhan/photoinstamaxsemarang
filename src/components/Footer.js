@@ -10,18 +10,20 @@ const Footer = () => {
   else{
     return (
       <footer className="bg-amber-950  pt-4 pb-8 xl:pt-8" id="contact">
-        <div className="w-10/12 px-4 mx-auto text-slate-50 sm:px-6 md:px-8 ">
+        <div className="md:w-10/12 w-11/12 px-4 mx-auto text-slate-50 sm:px-6 md:px-8 ">
           <ul className="flex flex-wrap justify-center pb-8 text-lg font-light">
-          <li className="w-1/2 md:w-2/5 lg:w-2/5">
-              <div className="text-left">
+          <li className="w-full md:w-2/5">
+              <div className="text-left md:block flex items-center">
                 <img className="w-20 h-20 rounded-full" src={Logo} />
-                <h2 className="text-slate-50 font-semibold text-md mt-6">
+                <div className="md:ml-0 ml-4">
+                <h2 className="text-slate-50 font-semibold text-md mt-0 md:mt-6">
                   Photo Instax Semarang
                 </h2>
                 <p>Jl. Kanguru Utara IX No. 7, Gayamsari, Semarang</p>
+                </div>
               </div>
             </li>
-            <li className="w-1/2 md:w-1/5 lg:w-1/5">
+            <li className="w-4/12 md:mt-0 mt-4 md:text-left text-center md:w-1/5">
               <div className="text-left">
                 <h2 className="text-slate-50 font-semibold text-md uppercase mb-4">
                   Products
@@ -39,7 +41,7 @@ const Footer = () => {
                 </ul>
               </div>
             </li>
-            <li className="w-1/2 md:w-1/5 lg:w-1/5">
+            <li className="w-4/12 md:mt-0 mt-4 md:text-left text-center md:w-1/5">
               <div className="text-left">
                 <h2 className="text-slate-50 font-semibold text-md uppercase mb-4">
                   Contacts
@@ -57,7 +59,7 @@ const Footer = () => {
                 </ul>
               </div>
             </li>
-            <li className="w-1/2 md:w-1/5 lg:w-1/5">
+            <li className="w-4/12 md:mt-0 mt-4 md:text-left text-center md:w-1/5">
               <div className="text-left">
                 <h2 className="text-slate-50 font-semibold text-md uppercase mb-4">
                   Online Shop

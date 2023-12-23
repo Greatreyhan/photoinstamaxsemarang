@@ -3,11 +3,11 @@ import { Choose, Received, Sending } from "../assets";
 
 const Tutorial = () => {
   return (
-    <div className="bg-slate-50 pt-16">
+    <div className="bg-slate-50 py-20 md:py-16">
       <h2 className="text-4xl text-amber-900 text-center font-bold">
         Tata Cara Pembelian
       </h2>
-      <div className="flex flex-wrap items-center justify-center py-16">
+      <div className="flex flex-wrap items-center justify-center py-6 md:py-16">
         <div className="relative flex-shrink-0 max-w-xs mx-2 mb-6 mt-8 overflow-hidden bg-amber-500 shadow-lg">
           <svg
             className="absolute bottom-0 left-0 mb-8"

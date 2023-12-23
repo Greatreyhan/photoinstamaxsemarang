@@ -11,7 +11,7 @@ const Goods = ({ Title, Desc, Price, Category, Weight, ImageSource, ProdukID }) 
   const [popUpBuyDef, setPopUpBuyDef] = useState(false)
   const { user } = useFirebase()
   return (
-    <div className="m-auto overflow-hidden shadow-lg cursor-pointer h-90 w-60 md:w-80 rounded-md border-2 border-amber-900 border-opacity-30">
+    <div className="m-auto overflow-hidden shadow-lg cursor-pointer h-90 w-80 md:w-80 rounded-md border-2 border-amber-900 border-opacity-30">
       {popUp ? <PopupGood name={Title} price={Price} setPopUp={setPopUp} weight={Weight} ProdukID={ProdukID} /> : null}
       {popUpDef ? <PopupGoodDefault name={Title} price={Price} setPopUp={setPopUpDef} weight={Weight} ProdukID={ProdukID} ImageSource={ImageSource} /> : null}
       {popBuy ? <PopupBuy name={Title} price={Price} setPopBuy={setPopBuy} weight={Weight} ProdukID={ProdukID} /> : null}

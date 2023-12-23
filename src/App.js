@@ -22,6 +22,7 @@ const App = () => {
           <Route path="/tutorial" element={<Tutorial />} />
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/profile/:pageId" element={<Profile />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>

@@ -8,12 +8,16 @@ import Keranjang from './Keranjang';
 import { Navigate } from 'react-router-dom';
 import { onValue, ref, set } from 'firebase/database'
 import { FIREBASE_DB } from '../config/firebaseinit'
+import { useParams } from 'react-router-dom';
 
 const Profile = () => {
     const [page, setPage] = useState("setting")
     const { signOut, user } = useFirebase();
     const [pictPerson, setPictPerson] = useState("")
+    const {switchPage, setSwitchPage} = useState("") 
+    let {pageId} = useParams();
     useEffect(() => {
+      if(pageId == "transaksi") setPage('transaksi')
         onValue(ref(FIREBASE_DB, "user/" + user.uid), (snapshot) => {
           const data = snapshot.val();
           const key = Object.keys(data)
@@ -33,7 +37,7 @@ const Profile = () => {
     <div className='flex w-full mx-auto pt-14'>
         {/* Nav Menu */}
         {user ?
-        <div className='w-3/12 m-5 shadow-md shadow-slate-500 h-screen bg-amber-950'>
+        <div className='w-3/12 md:block hidden m-5 shadow-md shadow-slate-500 h-screen bg-amber-950'>
             {/* Profile with picture */}
             <div className='flex justify-center flex-col items-center bg-amber-900 px-8 py-8'>
                 <img className='rounded-full w-36 h-36 object-cover object-center' src={pictPerson} />
@@ -48,10 +52,10 @@ const Profile = () => {
         </div>
         : null}
         {/* Show Content */}
-        <div className='w-9/12 m-5 bg-amber-900 shadow-md shadow-slate-500'>
+        <div className='md:w-9/12 w-full md:m-5 m-0 md:my-0 my-12 bg-amber-900 shadow-md shadow-slate-500'>
             {page == "setting" ? <Setting />
             : 
-             page == "transaksi" ? <Transaksi /> 
+             page == "transaksi" || pageId == "transaksi"? <Transaksi /> 
             :
             <Keranjang />
             }
