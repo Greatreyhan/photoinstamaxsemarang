@@ -30,7 +30,7 @@ const Pesanan = () => {
         setGoods(data)
       }
     });
-    fetch('http://localhost:4000/api/provinsi', {
+    fetch('https://proud-plum-duckling.cyclic.app/api/provinsi', {
       method: 'GET',
     })
       .then((resp) => {
@@ -139,7 +139,7 @@ const Pesanan = () => {
                     {dataItems[key].resi ? dataItems[key].resi : "-"}
                   </td>
                   <td className="border p-2 dark:border-dark-5 text-sm w-52">
-                    {dataItems[key].alamat + ", " + dataItems[key].provinsi.split("|")[1] + ", " + dataItems[key].city.split("|")[1]}
+                    {dataItems[key].provinsi == 0 ?  dataItems[key].pengiriman : dataItems[key].alamat + ", " + (dataItems[key].provinsi == 0 ? "" : dataItems[key].provinsi.split("|")[1]) + ", " + (dataItems[key].city == 1 ? "" : dataItems[key].city.split("|")[1])}
                   </td>
                   <td className="border p-2 dark:border-dark-5 uppercase text-sm">
                     {dataItems[key].kurir} - {dataItems[key].pengiriman}

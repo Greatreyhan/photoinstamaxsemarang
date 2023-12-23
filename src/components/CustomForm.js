@@ -5,13 +5,17 @@ import { BsArrowRight } from "react-icons/bs"
 import Loading from './Loading'
 import { ImageUpload } from '../pages'
 import { FIREBASE_DB } from '../config/firebaseinit';
-import { set, ref, onValue } from "firebase/database"
-import Confirmation from './Confirmation';
+import { set, ref } from "firebase/database"
 import { BoxWrap, MapWrap } from '../assets'
 import { Navigate } from 'react-router-dom'
 import PopUpCustom from './PopUpCustom'
+import Message from './Message'
 const CustomForm = ({ price = 5000 }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [handleUnameEcommerce, setHandleUnameEcommerce] = useState("")
+    const [unameEcommerce, setUnameEcommerce] = useState("")
+    const [handleEcommerce, setHandleEcommerce] = useState('Tokopedia')
+    const [commerce, setCommerce] = useState('')
     const [dataProv, setDataProv] = useState([])
     const [dataCity, setDataCity] = useState([])
     const [dataCourier, setDataCourier] = useState(['jne', 'pos', 'tiki'])
@@ -23,7 +27,6 @@ const CustomForm = ({ price = 5000 }) => {
     const [originCity, setOriginCity] = useState(399)
     const [weight, setWeight] = useState(1000)
     const [fullAddress, setFullAddress] = useState("")
-    const [qty, setQty] = useState(1)
     const [packaging, setPackaging] = useState("map|2000")
     const [urlImg, setUrlImg] = useState("")
     const [isComplete, setIsComplete] = useState(false)
@@ -38,10 +41,10 @@ const CustomForm = ({ price = 5000 }) => {
     const [emailUser, setEmaiUser] = useState("")
     const [phoneUser, setPhoneUser] = useState("")
     const [popUp, setPopUp] = useState(true)
-
+    const [typeMsg, setTypeMsg] = useState(0)
+    const [msg, setMsg] = useState("")
 
     const handleBuy = async () => {
-        const cr = selectedOption.split("|");
         const timeStamp = Math.floor(new Date().getTime() / 1000)
         const data = {
             produkID: 1,
@@ -50,11 +53,11 @@ const CustomForm = ({ price = 5000 }) => {
             alamat: fullAddress,
             img: urlImg,
             kurir: selectedCourier,
-            pengiriman: cr[0],
+            pengiriman: handleEcommerce + "|" + unameEcommerce,
             qty: urlImg.length,
             packaging: packaging,
             bubble_wrap: bubbleWrap,
-            price: parseInt(price) * urlImg.length + parseInt(cr[1], 10) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000),
+            price: parseInt(price) * urlImg.length + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000),
             userID: "CST" + timeStamp,
             buyStatus: 0,
             userName: userName,
@@ -79,23 +82,23 @@ const CustomForm = ({ price = 5000 }) => {
         if (step == 2) {
             setToNext(true)
         }
-        if (step == 3 && selectedOption != "") {
+        if (step == 3 && unameEcommerce != "") {
             setToNext(true)
         }
-        if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && urlImg != "" && userName != "" && emailUser != "" && phoneUser != "") {
+        if (urlImg != "" && userName != "" && emailUser != "" && phoneUser != "") {
             setIsComplete(true)
         }
         else {
             setIsComplete(false)
         }
-        if(!popUp){
-            return(<Navigate to="/products"/>)
+        if (!popUp) {
+            return (<Navigate to="/products" />)
         }
-    }, [popUp,packaging, selectedProv, selectedCity, selectedCourier, selectedOption, fullAddress, urlImg, step, userName, emailUser, phoneUser])
+    }, [popUp, packaging, selectedProv, selectedCity, selectedCourier, unameEcommerce, fullAddress, urlImg, step, userName, emailUser, phoneUser])
 
     useEffect(() => {
         setIsLoading(true)
-        fetch('http://localhost:4000/api/provinsi', {
+        fetch('https://proud-plum-duckling.cyclic.app/api/provinsi', {
             method: 'GET',
         })
             .then((resp) => {
@@ -110,7 +113,7 @@ const CustomForm = ({ price = 5000 }) => {
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
-        fetch('http://localhost:4000/api/kota/1', {
+        fetch('https://proud-plum-duckling.cyclic.app/api/kota/1', {
             method: 'GET',
         })
             .then((resp) => {
@@ -132,7 +135,7 @@ const CustomForm = ({ price = 5000 }) => {
     const handleProv = (e) => {
         setIsLoading(true)
         setSelectedProv(e.target.value)
-        fetch('http://localhost:4000/api/kota/' + e.target.value, {
+        fetch('https://proud-plum-duckling.cyclic.app/api/kota/' + e.target.value, {
             method: 'GET',
         })
             .then((resp) => {
@@ -185,7 +188,7 @@ const CustomForm = ({ price = 5000 }) => {
         }
         else {
             setSelectedCourier(e.target.value)
-            fetch(`http://localhost:4000/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
+            fetch(`https://proud-plum-duckling.cyclic.app/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
                 method: 'GET',
             })
                 .then((resp) => {
@@ -228,7 +231,9 @@ const CustomForm = ({ price = 5000 }) => {
     return (
         <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50 '>
             {isLoading ? <Loading /> : null}
-            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} price={(parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000))} code={"CUSTM" + 'A' + codeID} /> :
+            <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
+            {/* Heading */}
+            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} price={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000))} code={"CUSTM" + 'A' + codeID} /> :
                 <div className='flex bg-slate-50 flex-col w-full h-full relative'>
                     <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
                         <div className='flex items-center justify-center'>
@@ -241,20 +246,22 @@ const CustomForm = ({ price = 5000 }) => {
                         </div>
                         <div className='flex items-center justify-center'>
                             <span className={`text-xl w-10 h-10 ${step > 3 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 3 ? <AiOutlineCheck /> : "3"}</span>
-                            <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Pilih pengiriman</span>
+                            <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Isi Data</span>
                         </div>
                         <div className='flex items-center justify-center'>
                             <span className={`text-xl w-10 h-10 ${step > 4 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 4 ? <AiOutlineCheck /> : "4"}</span>
                             <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Konfirmasi Pembayaran</span>
                         </div>
                     </div>
+
+                    {/* Step Upload Image */}
                     {step == 1 ?
                         <div className='bg-slate-200 h-full'>
                             <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                                 <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
                                 <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg .png .heic atau .jpeg</p>
                                 <div className='mt-6'>
-                                    <ImageUpload url={urlImg} setUrl={setUrlImg} />
+                                    <ImageUpload url={urlImg} setUrl={setUrlImg} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg} />
                                 </div>
                             </div>
 
@@ -264,12 +271,14 @@ const CustomForm = ({ price = 5000 }) => {
                                 <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                                     <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                                     <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
-                                    <div className='flex gap-5  mt-8'>
-                                        <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 cursor-pointer shadow-lg`}>
+                                    <div className='flex justify-around gap-5  mt-8'>
+                                        <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
                                             <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
+                                            <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
                                         </a>
-                                        <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 cursor-pointer shadow-lg`}>
+                                        <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
                                             <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
+                                            <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
                                         </a>
                                     </div>
                                 </div>
@@ -278,50 +287,15 @@ const CustomForm = ({ price = 5000 }) => {
                                 <div className='bg-slate-200 h-full'>
                                     <div className='bg-slate-50 flex mt-10 mx-10 px-5 py-8'>
                                         <div className='flex-1 flex flex-col px-4'>
-                                            <label className='text-slate-800 mt-4 text-xs'>Pilih Provinsi</label>
-                                            <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">
-                                                <option value={0} >Pilih Provinsi</option>
-                                                {dataProv ? dataProv.map(prov => {
-                                                    return (<option value={prov.province_id + "|" + prov.province} key={prov.province_id}>{prov.province}</option>)
-                                                }) : null}
+                                            <label className='text-slate-800 mt-4 text-xs'>Pilih E-Commerce</label>
+                                            <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={setHandleEcommerce} name="Kota">
+                                                <option value={'Tokopedia'} >Tokopedia</option>
+                                                <option value={'Shopee'} >Shopee</option>
                                             </select>
-                                            <label className='text-slate-800 mt-4 text-xs'>Pilih Kota</label>
-                                            <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCity} name="Kota">
-                                                <option value={0} >Pilih Kota</option>
-                                                {dataCity ? dataCity.map(city => {
-                                                    return (<option value={city.city_id + "|" + city.city_name} key={city.city_id}>{city.type} {city.city_name}</option>)
-                                                }) : null}
-                                            </select>
-                                            <div className='flex flex-col'>
-                                                <label className='text-slate-800 mt-4 text-xs'>Alamat Lengkap</label>
-                                                <input className='border boder-amber-800 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={fullAddress} onChange={(e) => setFullAddress(e.currentTarget.value)} required />
-                                            </div>
                                         </div>
                                         <div className='flex-1 flex flex-col px-4'>
-                                            <label className='text-slate-800 mt-4 text-xs'>Pilih Kurir</label>
-                                            <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCourier} name="choice">
-                                                <option value={0} >Pilih Kurir</option>
-                                                {dataCourier ? dataCourier.map((courierList, i) => {
-                                                    return (<option value={courierList} key={i}>{courierList.toUpperCase()}</option>)
-                                                }) : null}
-                                            </select>
-                                            <label className='text-slate-800 mt-4 text-xs'>Pilih Jenis Pengiriman</label>
-                                            <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={(e) => setSelectedOption(e.target.value)} name="choice">
-                                                <option value={0} >Pilih Pengiriman</option>
-                                                {dataOption.costs ? dataOption.costs.map((option, i) => {
-                                                    return (<option className='' value={option.service + '|' + parseInt(option.cost[0].value)} key={i}><span className='text-xs'>{option.service}</span> | <span>{parseInt(option.cost[0].value) == 0 ? "CHAT ADMIN" : new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(option.cost[0].value))}</span> | <span>{option.cost[0].etd} Hari</span></option>)
-                                                }) : null}
-                                            </select>
-                                            <div className='flex flex-col mt-8'>
-                                                <div className='flex items-center mt-4'>
-                                                    {inBound ?
-                                                        <input type="checkbox" onChange={e => setBubbleWrap(e.currentTarget.value)} value={bubbleWrap} />
-                                                        :
-                                                        <input type="checkbox" value={() => setBubbleWrap(true)} checked />
-                                                    }
-                                                    <label className='ml-1 text-xs text-slate-800'>Bubble Wrap</label>
-                                                </div>
-                                            </div>
+                                            <label className='text-slate-800 mt-4 text-xs'>Nama Akun</label>
+                                            <input className='border boder-amber-800 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={unameEcommerce} onChange={(e) => setUnameEcommerce(e.currentTarget.value)} required />
                                         </div>
                                     </div>
                                 </div>
@@ -345,22 +319,22 @@ const CustomForm = ({ price = 5000 }) => {
                                         </div>
                                     </div>
                                     <div className='bg-slate-50 flex flex-col mt-2 mx-auto w-5/12 px-5 py-5'>
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                                        {console.log(parseInt(price), (urlImg.length))}
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         {inBound ? null :
                                             <p className='text-amber-950 mt-1 flex justify-between'><span>Bubble Wrap</span> <span>{parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         }
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                                         <hr className='mt-3 opacity-80' />
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length)  + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         <div className='w-full text-center mt-5'>
                                             {isComplete ?
                                                 <a onClick={handleBuy} className='bg-amber-500 cursor-pointer flex px-5 justify-center py-1.5'>
-                                                    Beli Sekarang
+                                                    Konfirmasi Sekarang
                                                 </a>
                                                 :
                                                 <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center py-1.5'>
-                                                    Beli Sekarang
+                                                    Konfirmasi Sekarang
                                                 </a>
                                             }
                                         </div>

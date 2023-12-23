@@ -59,7 +59,7 @@ const Setting = () => {
           <div className="border-l-2 border-white border-opacity-40 flex-1 mx-8">
             <h2 className="text-2xl mt-8 text-center font-semibold text-amber-50">Informasi Pengguna</h2>
             <div className="flex items-center ml-10 mt-8">
-              <label for="username" className="text-amber-50 w-14">
+              <label htmlFor="username" className="text-amber-50 w-14">
                 Nama
               </label>
               <input
@@ -73,7 +73,7 @@ const Setting = () => {
               />
             </div>
             <div className="flex items-center ml-10 mt-4">
-              <label for="address" className="text-amber-50 w-14">
+              <label htmlFor="address" className="text-amber-50 w-14">
                 Alamat
               </label>
               <input
@@ -87,7 +87,7 @@ const Setting = () => {
               />
             </div>
             <div className="flex items-center ml-10 mt-4">
-              <label for="email" className="text-amber-50 w-14">
+              <label htmlFor="email" className="text-amber-50 w-14">
                 Email
               </label>
               <input
@@ -101,7 +101,7 @@ const Setting = () => {
               />
             </div>
             <div className="flex items-center ml-10 mt-4">
-              <label for="phone" className="text-amber-50 w-14">
+              <label htmlFor="phone" className="text-amber-50 w-14">
                 No. Hp
               </label>
               <input

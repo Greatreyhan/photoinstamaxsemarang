@@ -37,12 +37,12 @@ const Goods = ({ Title, Desc, Price, Category, Weight, ImageSource, ProdukID }) 
           </div> */}
           <div className="flex justify-end text-sm my-5 items-center">
             {user ?
-              <a onClick={Category == 1 ? () => setPopUp(!popUp) : () => setPopUpDef(!popUpDef)} className="text-amber-900">Masukkan Keranjang</a>
+              <button onClick={Category == 1 ? () => setPopUp(!popUp) : () => setPopUpDef(!popUpDef)} className="text-amber-900">Masukkan Keranjang</button>
               :
               <Link to="/login" className="text-amber-900">Masukkan Keranjang</Link>
             }
             {user ?
-              <a onClick={Category == 1 ? () => setPopBuy(!popBuy) : () => setPopUpBuyDef(!popUpBuyDef)} className="px-8 py-1 text-amber-50 font-semibold bg-amber-900 hover:shadow-none shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] ml-6">Beli</a> :
+              <button onClick={Category == 1 ? () => setPopBuy(!popBuy) : () => setPopUpBuyDef(!popUpBuyDef)} className="px-8 py-1 text-amber-50 font-semibold bg-amber-900 hover:shadow-none shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] ml-6">Beli</button> :
               <Link to="/login" className="px-8 py-1 text-amber-50 font-semibold bg-amber-900 hover:shadow-none shadow-[3px_3px_0px_0px_rgba(0,0,0,0.5)] ml-6">Beli</Link>}
 
           </div>

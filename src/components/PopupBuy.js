@@ -9,6 +9,7 @@ import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue } from "firebase/database"
 import Confirmation from './Confirmation';
 import { BoxWrap, MapWrap } from '../assets'
+import Message from './Message'
 const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataProv, setDataProv] = useState([])
@@ -35,6 +36,8 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   const [step, setStep] = useState(1)
   const [toNext, setToNext] = useState(false)
   const [lastStep, setLastStep] = useState(1)
+  const [typeMsg, setTypeMsg] = useState(0)
+  const [msg, setMsg] = useState("")
 
   const handleBuy = async () => {
     const cr = selectedOption.split("|");
@@ -72,23 +75,23 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   }
 
   useEffect(() => {
-    if(step == 1 && urlImg.length >= 1){
+    if (step == 1 && urlImg.length >= 1) {
       setToNext(true)
     }
-    if(step == 2){
+    if (step == 2) {
       setToNext(true)
     }
-    if(step == 3 && selectedOption != ""){
+    if (step == 3 && selectedOption != "") {
       setToNext(true)
     }
-    if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && urlImg != "") {
+    if (selectedProv != 0 && selectedOption != "" && urlImg != "") {
       setIsComplete(true)
     }
-  }, [packaging, selectedProv, selectedCity, selectedCourier, selectedOption, fullAddress, urlImg, step])
+  }, [packaging, selectedProv, selectedCity, selectedOption, fullAddress, urlImg, step])
 
   useEffect(() => {
     setIsLoading(true)
-    fetch('http://localhost:4000/api/provinsi', {
+    fetch('https://proud-plum-duckling.cyclic.app/api/provinsi', {
       method: 'GET',
     })
       .then((resp) => {
@@ -103,7 +106,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-    fetch('http://localhost:4000/api/kota/1', {
+    fetch('https://proud-plum-duckling.cyclic.app/api/kota/1', {
       method: 'GET',
     })
       .then((resp) => {
@@ -137,7 +140,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   const handleProv = (e) => {
     setIsLoading(true)
     setSelectedProv(e.target.value)
-    fetch('http://localhost:4000/api/kota/' + e.target.value, {
+    fetch('https://proud-plum-duckling.cyclic.app/api/kota/' + e.target.value, {
       method: 'GET',
     })
       .then((resp) => {
@@ -158,7 +161,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
 
   const handleCity = (e) => {
     setSelectedCity(e.target.value)
-    if (e.target.value == originCity) {
+    if (e.target.value.match(/\d+/)[0] == originCity) {
       setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'grab'])
       setInBound(true)
     }
@@ -190,7 +193,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
     }
     else {
       setSelectedCourier(e.target.value)
-      fetch(`http://localhost:4000/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
+      fetch(`https://proud-plum-duckling.cyclic.app/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
         method: 'GET',
       })
         .then((resp) => {
@@ -212,9 +215,9 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
 
   const handleStepUp = (e) => {
     e.preventDefault()
-    if(lastStep < step) setLastStep(step)
+    if (lastStep < step) setLastStep(step)
     if (step < 5) {
-      if(lastStep < step){
+      if (lastStep < step) {
         setToNext(false)
       }
       setStep(step + 1)
@@ -234,6 +237,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
+      <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
       {isConfirmed ? <Confirmation setPopUp={setPopBuy} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
         <div className='flex bg-slate-50 flex-col w-full h-full relative'>
           <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
@@ -260,7 +264,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                 <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
                 <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg .png .heic atau .jpeg</p>
                 <div className='mt-6'>
-                  <ImageUpload url={urlImg} setUrl={setUrlImg} />
+                  <ImageUpload url={urlImg} setUrl={setUrlImg} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg} />
                 </div>
               </div>
 
@@ -270,12 +274,14 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                 <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                   <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                   <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
-                  <div className='flex gap-5  mt-8'>
-                    <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
+                  <div className='flex justify-around gap-5  mt-8'>
+                    <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
+                      <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
                     </a>
-                    <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
+                    <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
+                      <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
                     </a>
                   </div>
                 </div>
@@ -295,7 +301,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                       <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCity} name="Kota">
                         <option value={0} >Pilih Kota</option>
                         {dataCity ? dataCity.map(city => {
-                          return (<option value={city.city_id + "|" +city.city_name } key={city.city_id}>{city.type} {city.city_name}</option>)
+                          return (<option value={city.city_id + "|" + city.city_name} key={city.city_id}>{city.type} {city.city_name}</option>)
                         }) : null}
                       </select>
                       <div className='flex flex-col'>
@@ -334,28 +340,29 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                 :
 
                 <div className='bg-slate-200 h-full'>
+                  {console.log(selectedCourier)}
                   <div className='bg-slate-50 flex flex-col mt-10 mx-auto w-5/12 px-5 py-8'>
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>{name}</span> <span>{urlImg ? urlImg.length : 0} barang</span></p>
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Packaging</span> <span className='capitalize'>{packaging.split("|")[0]} </span></p>
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Pengiriman</span> <span className='uppercase'>{ selectedCourier+"-"+selectedOption.split("|")[0]} </span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>{name}</span> <span>{urlImg ? urlImg.length : 0} barang</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Packaging</span> <span className='capitalize'>{packaging.split("|")[0]} </span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Pengiriman</span> <span className='uppercase'>{selectedCourier + "-" + selectedOption.split("|")[0]} </span></p>
                   </div>
                   <div className='bg-slate-50 flex flex-col mt-4 mx-auto w-5/12 px-5 py-8'>
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) ).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                  <hr className='mt-3 opacity-80' />
-                  <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1])).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                  <div className='w-full text-center mt-5'>
-                    {isComplete ?
-                      <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center py-1.5'>
-                        Beli Sekarang
-                      </a>
-                      :
-                      <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center py-1.5'>
-                        Beli Sekarang
-                      </a>
-                    }
-                  </div>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                    <hr className='mt-3 opacity-80' />
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1])).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                    <div className='w-full text-center mt-5'>
+                      {isComplete ?
+                        <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center py-1.5'>
+                          Beli Sekarang
+                        </a>
+                        :
+                        <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center py-1.5'>
+                          Beli Sekarang
+                        </a>
+                      }
+                    </div>
                   </div>
                 </div>
           }
@@ -364,18 +371,18 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
               <BiArrowBack className='text-xl text-white' />
               <span className='text-white ml-2'>Kembali</span>
             </button>
-            {toNext || (lastStep > step) ? 
-            <button className='flex justify-center items-center bg-amber-800 px-6 py-2' onClick={handleStepUp}>
-            <BsArrowRight className='text-xl text-white' />
-            <span className='text-white ml-2'>Lanjut</span>
-          </button>
-            :
-            <button className='flex justify-center items-center bg-slate-800 px-6 py-2'disabled onClick={handleStepUp}>
-              <BsArrowRight className='text-xl text-white' />
-              <span className='text-white ml-2'>Lanjut</span>
-            </button>
+            {toNext || (lastStep > step) ?
+              <button className='flex justify-center items-center bg-amber-800 px-6 py-2' onClick={handleStepUp}>
+                <BsArrowRight className='text-xl text-white' />
+                <span className='text-white ml-2'>Lanjut</span>
+              </button>
+              :
+              <button className='flex justify-center items-center bg-slate-800 px-6 py-2' disabled onClick={handleStepUp}>
+                <BsArrowRight className='text-xl text-white' />
+                <span className='text-white ml-2'>Lanjut</span>
+              </button>
             }
-            
+
           </div>
         </div>
       }
