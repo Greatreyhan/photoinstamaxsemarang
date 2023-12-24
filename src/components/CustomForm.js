@@ -233,24 +233,24 @@ const CustomForm = ({ price = 5000 }) => {
             {isLoading ? <Loading /> : null}
             <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
             {/* Heading */}
-            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} price={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000))} code={"CUSTM" + 'A' + codeID} /> :
+            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000))} code={"CUSTM" + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
                 <div className='flex bg-slate-50 flex-col w-full h-full relative'>
-                    <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
-                        <div className='flex items-center justify-center'>
-                            <span className={`text-xl w-10 h-10 ${step > 1 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 1 ? <AiOutlineCheck /> : "1"}</span>
-                            <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Upload Foto</span>
+                    <div className='w-full bg-slate-50 shadow py-4 md:gap-x-6 gap-x-2 flex justify-center items-start md:items-center'>
+                        <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+                            <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 1 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 1 ? <AiOutlineCheck /> : "1"}</span>
+                            <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Upload Foto</span>
                         </div>
-                        <div className='flex items-center justify-center'>
-                            <span className={`text-xl w-10 h-10 ${step > 2 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 2 ? <AiOutlineCheck /> : "2"}</span>
-                            <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Pilih Packaging</span>
+                        <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+                            <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 2 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 2 ? <AiOutlineCheck /> : "2"}</span>
+                            <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Pilih Packaging</span>
                         </div>
-                        <div className='flex items-center justify-center'>
-                            <span className={`text-xl w-10 h-10 ${step > 3 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 3 ? <AiOutlineCheck /> : "3"}</span>
-                            <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Isi Data</span>
+                        <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+                            <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 3 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 3 ? <AiOutlineCheck /> : "3"}</span>
+                            <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Isi Data</span>
                         </div>
-                        <div className='flex items-center justify-center'>
-                            <span className={`text-xl w-10 h-10 ${step > 4 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 4 ? <AiOutlineCheck /> : "4"}</span>
-                            <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Konfirmasi Pembayaran</span>
+                        <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+                            <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 4 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 4 ? <AiOutlineCheck /> : "4"}</span>
+                            <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Konfirmasi Pembayaran</span>
                         </div>
                     </div>
 
@@ -268,7 +268,7 @@ const CustomForm = ({ price = 5000 }) => {
                         </div>
                         : step == 2 ?
                             <div className='bg-slate-200 h-full'>
-                                <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
+                                <div className='bg-slate-50 mt-10 md:mx-10 px-5 py-8'>
                                     <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                                     <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
                                     <div className='flex justify-around gap-5  mt-8'>
@@ -285,7 +285,7 @@ const CustomForm = ({ price = 5000 }) => {
                             </div>
                             : step == 3 ?
                                 <div className='bg-slate-200 h-full'>
-                                    <div className='bg-slate-50 flex mt-10 mx-10 px-5 py-8'>
+                                    <div className='bg-slate-50 flex flex-wrap mt-10 mx-10 px-5 py-8'>
                                         <div className='flex-1 flex flex-col px-4'>
                                             <label className='text-slate-800 mt-4 text-xs'>Pilih E-Commerce</label>
                                             <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={setHandleEcommerce} name="Kota">
@@ -302,12 +302,12 @@ const CustomForm = ({ price = 5000 }) => {
                                 :
 
                                 <div className='bg-slate-200 h-full'>
-                                    <div className='bg-slate-50 flex flex-col mt-2 mx-auto w-5/12 px-5 py-4'>
+                                    <div className='bg-slate-50 flex flex-col mt-2 mx-auto md:w-5/12 w-11/12 px-5 py-4'>
                                         <div className='flex flex-col'>
                                             <label className='text-slate-800 text-xs'>Nama Lengkap</label>
                                             <input className='border boder-amber-800 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={userName} onChange={(e) => setUserName(e.currentTarget.value)} required />
                                         </div>
-                                        <div className='flex justify-between gap-x-2'>
+                                        <div className='flex flex-wrap justify-between gap-x-2'>
                                             <div className='flex flex-col flex-1'>
                                                 <label className='text-slate-800 mt-4 text-xs'>Email</label>
                                                 <input className='border boder-amber-800 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={emailUser} onChange={(e) => setEmaiUser(e.currentTarget.value)} required />
@@ -318,8 +318,7 @@ const CustomForm = ({ price = 5000 }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='bg-slate-50 flex flex-col mt-2 mx-auto w-5/12 px-5 py-5'>
-                                        {console.log(parseInt(price), (urlImg.length))}
+                                    <div className='bg-slate-50 flex flex-col mt-2 mx-auto md:w-5/12 w-11/12 px-5 py-5'>
                                         <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         {inBound ? null :

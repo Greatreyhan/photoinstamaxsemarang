@@ -7,6 +7,7 @@ import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue } from "firebase/database"
 import Alert from './Alert';
 import { BoxWrap, MapWrap } from '../assets'
+import Message from './Message';
 const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [qty, setQty] = useState(1)
@@ -17,9 +18,8 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
     const { user } = useFirebase();
     const [codeID, setCodeID] = useState(0)
     const [cartData, setCartData] = useState([])
-    const [step, setStep] = useState(1)
-    const [toNext, setToNext] = useState(false)
-    const [lastStep, setLastStep] = useState(1)
+    const [typeMsg, setTypeMsg] = useState(0)
+    const [msg, setMsg] = useState("")
 
     const handleCart = async () => {
         const data = {
@@ -85,6 +85,7 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
     return (
         <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
             {isLoading ? <Loading /> : null}
+            <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
             {isConfirmed ? <Alert setPopBuy={setPopUp} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
                 <>
                     <div className='flex bg-slate-50 w-full h-full relative flex-wrap'>
@@ -92,22 +93,24 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
                         <div className='bg-slate-200 h-full flex-1'>
                             <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                                 <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
-                                <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg</p>
+                                <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg, .jpeg, .png, atau .heic</p>
                                 <div className='mt-6'>
-                                    <ImageUpload url={urlImg} setUrl={setUrlImg} />
+                                    <ImageUpload url={urlImg} setUrl={setUrlImg} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg}  />
                                 </div>
                             </div>
                             <div className='bg-slate-50 mt-2 mx-10 px-5 py-8'>
                                 <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                                 <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
-                                <div className='flex gap-5  mt-8'>
-                                    <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
-                                        <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
-                                    </a>
-                                    <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex h-28 w-28 shadow-lg`}>
-                                        <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
-                                    </a>
-                                </div>
+                                <div className='flex justify-around gap-5  mt-8'>
+                                        <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
+                                            <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
+                                            <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
+                                        </a>
+                                        <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
+                                            <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
+                                            <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
+                                        </a>
+                                    </div>
                             </div>
                         </div>
 

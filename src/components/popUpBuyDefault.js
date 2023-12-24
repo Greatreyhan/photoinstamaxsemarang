@@ -247,7 +247,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
           </div>
           {step == 1 ?
                 <div className='bg-slate-200 h-full'>
-                  <div className='bg-slate-50 flex mt-10 mx-10 px-5 py-8'>
+                  <div className='bg-slate-50 flex flwx-wrap mt-10 mx-10 px-5 py-8'>
                     <div className='flex-1 flex flex-col px-4'>
                       <label className='text-slate-800 mt-4 text-xs'>Pilih Provinsi</label>
                       <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">

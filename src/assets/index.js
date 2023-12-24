@@ -24,5 +24,6 @@ import ProfilePict from "./profile.png"
 import Cart from "./cart.png"
 import BCA from "./bca.png"
 import BNI from "./bni.png"
+import Qris from "./Qris.jpg"
 
-export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart, BCA, BNI}
+export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart, BCA, BNI, Qris}
