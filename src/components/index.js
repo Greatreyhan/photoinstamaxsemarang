@@ -29,4 +29,5 @@ import PopUpTransaction from "./popUpTransaction";
 import PrivateAdmin from "./PrivateAdmin";
 import PopUpCustom from "./PopUpCustom";
 import Message from "./Message"
-export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan, DetailTransaction, GoodsAdmin, PopUpGoodsAdmin, UploadImageAdmin, PopUpTransaction, PrivateAdmin, PopUpCustom, Message}
+import NewProduct from "./NewProduct"
+export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan, DetailTransaction, GoodsAdmin, PopUpGoodsAdmin, UploadImageAdmin, PopUpTransaction, PrivateAdmin, PopUpCustom, Message, NewProduct}

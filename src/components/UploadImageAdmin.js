@@ -4,10 +4,11 @@ import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebas
 import { AiOutlinePlus, AiOutlineClose } from 'react-icons/ai'
 import { MdFileUpload } from "react-icons/md";
 
-function UploadImageAdmin({ url, setUrl }) {
+function UploadImageAdmin({ url, setUrl, setStatus}) {
     const [progress, setProgress] = useState(0);
 
     const handleImageChange = (e) => {
+        setStatus(true)
         if (e.target.files[0]) {
             const storageRef = ref(FIREBASE_STORE, `images/${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}/${Math.floor(Date.now() / 1000)}`);
             const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
@@ -20,32 +21,19 @@ function UploadImageAdmin({ url, setUrl }) {
                 },
                 (error) => {
                     console.error(error);
+                    setStatus(false)
                 },
                 () => {
                     // Upload completed, get the download URL
                     getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
                         const newUrl = [...url, downloadURL]
                         setUrl(newUrl)
+                        setStatus(false)
                     });
                 }
             );
         }
     };
-
-    // const handleDelete = (e) => {
-    //     const urlID = e.currentTarget.id
-    //     const newUrl = [...url]
-    //     newUrl.splice(newUrl.indexOf(urlID), 1)
-    //     setUrl(newUrl)
-    //     const pathStartIndex = urlID.indexOf('/o/') + 3;
-    //     const pathEndIndex = urlID.indexOf('?alt=media');
-    //     const filePath = urlID.substring(pathStartIndex, pathEndIndex);
-    //     const storageRef = ref(FIREBASE_STORE, decodeURIComponent(filePath));
-    //     deleteObject(storageRef).then(() => {
-    //     }).catch((error) => {
-    //         console.log("Terjadi Error: ", error)
-    //     })
-    // }
 
     return (
         <div className='w-full h-full flex flex-col gap-x-5 items-center justify-center flex-wrap'>
