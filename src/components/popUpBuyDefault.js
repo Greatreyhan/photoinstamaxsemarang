@@ -233,7 +233,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setPopUp={setPopBuy} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000))} code={"CUSTM" + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
         <div className='flex bg-slate-50 flex-col w-full h-full relative'>
           <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
             <div className='flex items-center justify-center'>
@@ -247,7 +247,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
           </div>
           {step == 1 ?
                 <div className='bg-slate-200 h-full'>
-                  <div className='bg-slate-50 flex flwx-wrap mt-10 mx-10 px-5 py-8'>
+                  <div className='bg-slate-50 flex flex-wrap mt-10 mx-10 px-5 py-8'>
                     <div className='flex-1 flex flex-col px-4'>
                       <label className='text-slate-800 mt-4 text-xs'>Pilih Provinsi</label>
                       <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">
@@ -299,11 +299,11 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
                 :
 
                 <div className='bg-slate-200 h-full'>
-                  <div className='bg-slate-50 flex flex-col mt-10 mx-auto w-5/12 px-5 py-8'>
+                  <div className='bg-slate-50 flex flex-col mt-10 mx-auto md:w-5/12 w-11/12 px-5 py-8'>
                   <p className='text-amber-950 mt-1 flex justify-between'><span>{name}</span> <span><input className='border-b-2 text-center border-amber-500' type="number" min="1" max="99" value={qty} onChange={(e)=>setQty(e.currentTarget.value)} /> barang</span></p>
                   <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Pengiriman</span> <span className='uppercase'>{ selectedCourier+"-"+selectedOption.split("|")[0]} </span></p>
                   </div>
-                  <div className='bg-slate-50 flex flex-col mt-4 mx-auto w-5/12 px-5 py-8'>
+                  <div className='bg-slate-50 flex flex-col mt-4 mx-auto  md:w-5/12 w-11/12 px-5 py-8'>
                   <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (qty) ).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                   <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                   <hr className='mt-3 opacity-80' />

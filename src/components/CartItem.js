@@ -53,9 +53,7 @@ const CartItem = ({ list }) => {
             <p className="font-semibold text-md">{dataGoods[dataItem.produkID] ? dataGoods[dataItem.produkID].title : "..."}</p>
             <p className="text-white text-xs opacity-60 capitalize">Packaging {dataItem.packaging}</p>
             <div className="text-sm flex items-center gap-2 mt-2">
-              <AiOutlinePlus onClick={handleAdd} className="rounded-full text-white w-4 h-4 cursor-pointer border"  />
               <p className="bg-white bg-opacity-0 text-center text-md" >{dataItem.qty}</p>
-              <AiOutlineMinus onClick={handleMin} className="rounded-full text-white w-4 h-4 cursor-pointer border" />
               <p>Produk</p>
             </div>
           </div>

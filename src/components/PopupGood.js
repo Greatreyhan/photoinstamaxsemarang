@@ -28,7 +28,7 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
             qty: urlImg.length,
             weight: parseInt(weight),
             packaging: packaging,
-            price: parseInt(price) * urlImg.length + parseInt(packaging.split("|")[1]),
+            price: parseInt(price) * urlImg.length + parseInt(packaging.split("|")[1] * (urlImg.length)),
         }
         const timeStamp = Math.floor(new Date().getTime() / 1000)
         setCodeID(timeStamp)
@@ -83,63 +83,68 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
     }
 
     return (
-        <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
+        <div className='w-full h-screen overflow-y-auto bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
             {isLoading ? <Loading /> : null}
             <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
             {isConfirmed ? <Alert setPopBuy={setPopUp} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
                 <>
-                    <div className='flex bg-slate-50 w-full h-full relative flex-wrap'>
+                    <div className='flex justify-center bg-slate-50 w-full h-full relative flex-wrap'>
 
-                        <div className='bg-slate-200 h-full flex-1'>
+                        <div className='bg-slate-200 h-auto md:h-full flex-1'>
                             <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                                 <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
                                 <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg, .jpeg, .png, atau .heic</p>
                                 <div className='mt-6'>
-                                    <ImageUpload url={urlImg} setUrl={setUrlImg} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg}  />
+                                    <ImageUpload url={urlImg} setUrl={setUrlImg} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg} />
                                 </div>
                             </div>
-                            <div className='bg-slate-50 mt-2 mx-10 px-5 py-8'>
+                            <div className='bg-slate-50 mt-2 mx-10 px-5 py-8 pb-16'>
                                 <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                                 <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
                                 <div className='flex justify-around gap-5  mt-8'>
-                                        <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
-                                            <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
-                                            <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
-                                        </a>
-                                        <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
-                                            <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
-                                            <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
-                                        </a>
-                                    </div>
+                                    <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
+                                        <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
+                                        <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
+                                    </a>
+                                    <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
+                                        <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
+                                        <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
+                                    </a>
+                                </div>
                             </div>
                         </div>
 
-                        <div className='bg-slate-200 h-full w-4/12 pr-10'>
-                            <div className='bg-slate-50 flex flex-col mt-10 w-full px-5 py-8'>
+                        <div className='bg-slate-200 md:h-full h-auto w-full md:w-4/12 md:pr-10'>
+                            <div className='bg-slate-50 flex flex-col mt-2 md:mt-10 w-full px-5 py-8'>
                                 <p className='text-amber-950 mt-1 flex justify-between'><span>{name}</span> <span>{urlImg ? urlImg.length : 0} barang</span></p>
                                 <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Packaging</span> <span className='capitalize'>{packaging.split("|")[0]} </span></p>
                             </div>
-                            <div className='bg-slate-50 flex flex-col mt-4 mx-auto w-full px-5 py-8'>
+                            <div className='bg-slate-50 flex flex-col mt-2 mx-auto w-full px-5 py-2 md:py-5'>
                                 <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
-                                <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1] * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                 <hr className='mt-3 opacity-80' />
-                                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1])).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]* (urlImg.length))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                 <div className='w-full text-center mt-5'>
                                     {isComplete ?
+                                        <div className='flex flex-col'>
                                         <a onClick={handleCart} className='bg-amber-500 flex px-5 justify-center py-1.5'>
                                             Masuk Keranjang
                                         </a>
+                                        <a onClick={handleClose} className='flex items-center py-1.5 px-5 mt-2  justify-center text-amber-800'><MdKeyboardBackspace className='text-xl' /><span className='ml-1 text-sm'>Kembali</span></a>
+                                        </div>
                                         :
+                                        <div className='flex flex-col'>
                                         <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center py-1.5'>
                                             Masuk Keranjang
                                         </a>
+                                        <a onClick={handleClose} className='flex items-center py-1.5 px-5 mt-2  justify-center text-amber-800'><MdKeyboardBackspace className='text-xl' /><span className='ml-1 text-sm'>Kembali</span></a>
+                                        </div>
                                     }
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className='bg-slate-200 w-full '>
-                        <a onClick={handleClose} className='flex items-center w-36 py-2 justify-center text-white bg-amber-800'><MdKeyboardBackspace className='text-xl' /><span className='ml-1 text-sm'>Kembali</span></a>
                     </div>
                 </>
             }

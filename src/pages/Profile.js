@@ -53,7 +53,7 @@ const Profile = () => {
         : null}
         {/* Show Content */}
         <div className='md:w-9/12 w-full md:m-5 m-0 md:my-0 my-12 bg-amber-900 shadow-md shadow-slate-500'>
-            {page == "setting" ? <Setting />
+            {page == "setting" || pageId == "setting" ? <Setting />
             : 
              page == "transaksi" || pageId == "transaksi"? <Transaksi /> 
             :

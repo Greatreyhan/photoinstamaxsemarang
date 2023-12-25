@@ -57,7 +57,7 @@ const CustomForm = ({ price = 5000 }) => {
             qty: urlImg.length,
             packaging: packaging,
             bubble_wrap: bubbleWrap,
-            price: parseInt(price) * urlImg.length + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000),
+            price: parseInt(price) * urlImg.length + parseInt(packaging.split("|")[1]* urlImg.length) + (inBound ? 0 : 1000),
             userID: "CST" + timeStamp,
             buyStatus: 0,
             userName: userName,
@@ -233,7 +233,7 @@ const CustomForm = ({ price = 5000 }) => {
             {isLoading ? <Loading /> : null}
             <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
             {/* Heading */}
-            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000))} code={"CUSTM" + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
+            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} setIsConfirmed={setIsConfirmed} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]* (urlImg.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]* (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={handleEcommerce} /> :
                 <div className='flex bg-slate-50 flex-col w-full h-full relative'>
                     <div className='w-full bg-slate-50 shadow py-4 md:gap-x-6 gap-x-2 flex justify-center items-start md:items-center'>
                         <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
@@ -320,12 +320,12 @@ const CustomForm = ({ price = 5000 }) => {
                                     </div>
                                     <div className='bg-slate-50 flex flex-col mt-2 mx-auto md:w-5/12 w-11/12 px-5 py-5'>
                                         <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]* (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         {inBound ? null :
                                             <p className='text-amber-950 mt-1 flex justify-between'><span>Bubble Wrap</span> <span>{parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         }
                                         <hr className='mt-3 opacity-80' />
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length)  + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length)  + parseInt(packaging.split("|")[1]* (urlImg.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         <div className='w-full text-center mt-5'>
                                             {isComplete ?
                                                 <a onClick={handleBuy} className='bg-amber-500 cursor-pointer flex px-5 justify-center py-1.5'>

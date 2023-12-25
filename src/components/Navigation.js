@@ -16,7 +16,6 @@ const Navigation = () => {
   const [show, setShow] = useState(false)
 
   const handleLogout = async (e) => {
-    e.preventDefault();
     <Navigate to="/login" />
     await signOut();
   };
@@ -64,11 +63,11 @@ const Navigation = () => {
             <Link onClick={() => setShow(!show)} className={location.pathname == "/" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold` : `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/">Home</Link>
             <Link onClick={() => setShow(!show)} className={location.pathname == "/products" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold` : `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/products">Products</Link>
             <Link onClick={() => setShow(!show)} className={location.pathname == "/tutorial" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold` : `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/tutorial">Order Tutorial</Link>
-            <Link onClick={() => setShow(!show)} className={location.pathname == "/profile" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold` : `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/tutorial">Transaksi</Link>
-            <a href="#contact" className={`hover:font-semibold hover:text-slate-950 font-medium m-3`}>Contact</a>
+            <Link onClick={() => setShow(!show)} className={location.pathname == "/profile/transaksi" ? `text-amber-950 m-3 border-b-4 border-amber-900 font-bold` : `hover:font-semibold hover:text-slate-950 font-medium m-3`} to="/profile/transaksi">Transaksi</Link>
+            <a onClick={() => setShow(!show)} href="#contact" className={`hover:font-semibold hover:text-slate-950 font-medium m-3`}>Contact</a>
             {user ?
               <>
-                <Link onClick={() => setShow(!show)} className="hover:font-semibold hover:text-slate-950 font-medium m-3 capitalize" to="/profile"><span>{user.email.match(/([^@]*)@/)[1]}</span></Link>
+                <Link onClick={() => setShow(!show)} className="hover:font-semibold hover:text-slate-950 font-medium m-3 capitalize" to="/profile/setting"><span>{user.email.match(/([^@]*)@/)[1]}</span></Link>
                 <hr />
                 <a onClick={() =>{setCart(!cart); setShow(!show)}} className="hover:font-semibold hover:text-slate-950 font-medium m-3" ><span>Keranjang</span></a>
                 <hr />

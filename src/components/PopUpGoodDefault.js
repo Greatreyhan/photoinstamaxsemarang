@@ -87,10 +87,10 @@ const PopupGoodDefault = ({ name, price, setPopUp, weight, ProdukID, ImageSource
                 <>
                     <div className='flex bg-slate-50 w-full h-full relative flex-wrap'>
 
-                        <div className='bg-slate-200 h-full w-full pr-10'>
-                            <div className='bg-slate-50 w-4/12 flex flex-col mt-10 mx-auto px-5 py-8'>
+                        <div className='bg-slate-200 h-full w-full pr-0 md:pr-10'>
+                            <div className='bg-slate-50 md:w-4/12 w-11/12 flex flex-col mt-10 mx-auto px-5 py-8'>
                                 <p className='text-amber-950 mt-1 flex justify-between'><span>{name}</span> <span><input className='border-b-2 text-center border-amber-500' type="number" min="1" max="99" value={qty} onChange={(e)=>setQty(e.currentTarget.value)} /> barang</span></p>                            </div>
-                            <div className='bg-slate-50 w-4/12 flex flex-col mt-4 mx-auto px-5 py-8'>
+                            <div className='bg-slate-50 md:w-4/12 w-11/12 flex flex-col mt-4 mx-auto px-5 py-8'>
                                 <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                 <hr className='mt-3 opacity-80' />
                                 <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
