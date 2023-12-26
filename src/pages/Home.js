@@ -17,6 +17,7 @@ import {
   Shopee,
   Tiktok,
   HeroProduct3,
+  PolaroidHero,
 } from "../assets";
 import { Tutorial } from "../components";
 
@@ -72,7 +73,7 @@ const Home = () => {
       {/* Polaroid Detail with Changing Image */}
       <div className="w-full flex flex-wrap justify-between items-center">
         {/* Polaroid */}
-        <div className="md:flex-1 w-full bg-amber-800 py-12 flex justify-center items-center">
+        {/* <div className="md:flex-1 w-full bg-amber-800 py-12 flex justify-center items-center">
           <div className="md:w-7/12 w-9/12 px-8 py-8 bg-slate-100 rounded-md shadow-2xl rotate-3">
             <div className="w-full h-72">
               <img
@@ -84,6 +85,9 @@ const Home = () => {
               {imageShow[currentSlide][1]}
             </p>
           </div>
+        </div> */}
+        <div className="md:flex-1 w-full flex justify-center items-center">
+          <img src={PolaroidHero} className="w-full h-full object-cover" />
         </div>
         {/* Description */}
         <div className="md:ml-12 w-10/12 mx-auto ml-0 flex-1 mt-8" id="polaroid">
@@ -134,7 +138,7 @@ const Home = () => {
       </div>
 
       {/* Packaging */}
-      <div className="w-full mx-auto flex flex-wrap justify-center" id="product">
+      <div className="w-full mx-auto flex flex-wrap md:flex-nowrap justify-center" id="product">
         <div className="md:w-5/12 w-10/12 md:ml-36 ml-0 mt-10 md:order-1 order-2">
           <h2 className="text-4xl font-bold text-amber-900">
             Variasi
