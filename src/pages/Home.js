@@ -18,6 +18,12 @@ import {
   Tiktok,
   HeroProduct3,
   PolaroidHero,
+  Product1,
+  Product2,
+  Product3,
+  Product4,
+  Product5,
+  Product6
 } from "../assets";
 import { Tutorial } from "../components";
 
@@ -153,29 +159,42 @@ const Home = () => {
         </div>
         <div className="md:w-7/12 w-full flex flex-wrap justify-center md:order-2 order-1 md:mt-0 mt-8">
           <Link to="/products" className="w-4/12 relative">
-            <img src={BoxWrap} className="w-full h-full object-cover" />
+            <img src={Product1} className="w-full h-full object-cover" />
             <span className="absolute h-full top-0 flex cursor-pointer transition-opacity duration-500 hover:opacity-100 opacity-0 justify-center items-center text-amber-50 font-semibold text-lg bg-black bg-opacity-60 w-full">
-              Box Wrap
+              Polaroid
             </span>
           </Link>
           <Link to="/products" className="w-4/12 relative">
-            <img src={FrameWrap} className="w-full h-full object-cover" />
+            <img src={Product2} className="w-full h-full object-cover" />
             <span className="absolute h-full top-0 flex cursor-pointer transition-opacity duration-500 hover:opacity-100 opacity-0 justify-center items-center text-amber-50 font-semibold text-lg bg-black bg-opacity-60 w-full">
-              Frame
+              Frame Kayu
             </span>
           </Link>
           <Link to="/products" className="w-4/12 relative">
-            <img src={MapWrap} className="w-full h-full object-cover" />
+            <img src={Product3} className="w-full h-full object-cover" />
             <span className="absolute h-full top-0 flex cursor-pointer transition-opacity duration-500 hover:opacity-100 opacity-0 justify-center items-center text-amber-50 font-semibold text-lg bg-black bg-opacity-60 w-full">
-              Map Wrap
+              Gantungan Kunci
             </span>
           </Link>
           <Link to="/products" className="w-4/12 relative">
-            <img src={StandWrap} className="w-full h-full object-cover" />
+            <img src={Product4} className="w-full h-full object-cover" />
             <span className="absolute h-full top-0 flex cursor-pointer transition-opacity duration-500 hover:opacity-100 opacity-0 justify-center items-center text-amber-50 font-semibold text-lg bg-black bg-opacity-60 w-full">
               Acrylic Stand
             </span>
           </Link>
+          <Link to="/products" className="w-4/12 relative">
+            <img src={Product5} className="w-full h-full object-cover" />
+            <span className="absolute h-full top-0 flex cursor-pointer transition-opacity duration-500 hover:opacity-100 opacity-0 justify-center items-center text-amber-50 font-semibold text-lg bg-black bg-opacity-60 w-full">
+              Kertas Film
+            </span>
+          </Link>
+          <Link to="/products" className="w-4/12 relative">
+            <img src={Product6} className="w-full h-full object-cover" />
+            <span className="absolute h-full top-0 flex cursor-pointer transition-opacity duration-500 hover:opacity-100 opacity-0 justify-center items-center text-amber-50 font-semibold text-lg bg-black bg-opacity-60 w-full">
+              Acrylic Stand
+            </span>
+          </Link>
+          
         </div>
       </div>
 

@@ -26,4 +26,10 @@ import BCA from "./bca.png"
 import BNI from "./bni.png"
 import Qris from "./Qris.jpg"
 import PolaroidHero from "./Polaroid_Hero.jpeg"
-export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart, BCA, BNI, Qris, PolaroidHero}
+import Product1 from "./Product1.JPG"
+import Product2 from "./Product2.JPG"
+import Product3 from "./Product3.JPG"
+import Product4 from "./Product4.JPG"
+import Product5 from "./Product5.JPG"
+import Product6 from "./Product6.JPG"
+export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart, BCA, BNI, Qris, PolaroidHero, Product1, Product2, Product3, Product4, Product5, Product6 }
