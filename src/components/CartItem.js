@@ -43,7 +43,7 @@ const CartItem = ({ list }) => {
   }
   if (dataItem != [] && dataGoods != []) {
     return (
-      <div className="mx-5 flex flex-col my-2 bg-amber-800 px-3 py-2 rounded-lg border-2 border-white border-opacity-20">
+      <div className="md:mx-5 mx-2 flex flex-col my-2 bg-amber-800 px-3 py-2 rounded-lg border-2 border-white border-opacity-20">
         <div className="flex items-center">
           <img
             className="w-20 h-20 object-cover object-center rounded-lg"
@@ -59,7 +59,7 @@ const CartItem = ({ list }) => {
           </div>
           <div className="w-4/12 text-amber-50 pl-2 border-l-2 border-white border-opacity-20">
             <p className="text-sm">Harga Produk</p>
-            <p className="text-lg font-bold">{new Intl.NumberFormat('id-ID', {
+            <p className="md:text-lg text-md font-bold">{new Intl.NumberFormat('id-ID', {
               style: 'currency',
               currency: 'IDR'
             }).format(dataItem.price)}</p>

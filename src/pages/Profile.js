@@ -18,6 +18,7 @@ const Profile = () => {
     let {pageId} = useParams();
     useEffect(() => {
       if(pageId == "transaksi") setPage('transaksi')
+      if(pageId == "keranjang") setPage('keranjang')
         onValue(ref(FIREBASE_DB, "user/" + user.uid), (snapshot) => {
           const data = snapshot.val();
           const key = Object.keys(data)
@@ -52,10 +53,12 @@ const Profile = () => {
         </div>
         : null}
         {/* Show Content */}
-        <div className='md:w-9/12 w-full md:m-5 m-0 md:my-0 my-12 bg-amber-900 shadow-md shadow-slate-500'>
+        <div className='md:w-9/12 w-full md:m-5 m-0 my-0 bg-amber-900 shadow-md overflow-y-scroll'>
             {page == "setting" || pageId == "setting" ? <Setting />
             : 
              page == "transaksi" || pageId == "transaksi"? <Transaksi /> 
+            :
+             page == "keranjang" || pageId == "keranjang"? <Keranjang /> 
             :
             <Keranjang />
             }

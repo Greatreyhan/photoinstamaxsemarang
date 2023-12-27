@@ -67,7 +67,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
       packaging: packaging,
       bubble_wrap: bubbleWrap,
       weight: weightTotal,
-      price: parseInt(price) + parseInt(cr[1], 10),
+      price: parseInt(price) + parseInt(selectedOption.split("|")[1], 10),
       userID : user.uid,
       buyStatus: 0,
     }
@@ -223,7 +223,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setPopUp={setPopUp} setIsConfirmed={setIsConfirmed} price={parseInt(price) * parseInt(qty) + parseInt(selectedOption.split("|")[1], 10)} code={user.uid.substring(0, 5) + 'A' + codeID} /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopUp} produk={(parseInt(price) * parseInt(qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={((parseInt(price) * parseInt(qty)) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={(0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}  /> :
         <>
           <div className='flex bg-slate-50 w-full h-full relative flex-wrap'>
 
@@ -288,7 +288,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
                 <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) + parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                 <div className='w-full text-center mt-5'>
                   {isComplete ?
-                    <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center mx-4 py-1.5'>
+                    <a onClick={handleBuy} className='bg-amber-500 cursor-pointer flex px-5 justify-center mx-4 py-1.5'>
                       Beli Sekarang
                     </a>
                     :

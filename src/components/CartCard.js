@@ -75,13 +75,13 @@ const CartCard = ({list, checked, setChecked, id, handleClick}) => {
   
   if (dataItem != [] && dataGoods != []) {
     return (
-      <div className="mx-5 flex flex-col my-2 bg-amber-800 px-3 py-2 rounded-lg border-2 border-white border-opacity-20">
-        <div className="flex items-center">
+      <div className="md:mx-5 mx-1 flex flex-col my-2 bg-amber-800 md:px-3 px-1 py-2 rounded-lg border-2 border-white border-opacity-20">
+        <div className="flex justify-between items-center">
           <div className="w-1/12 flex justify-center">
             {isCheck ? 
-            <a onClick={handleUncheck} className="text-smd text-amber-950 font-bold cursor-pointer bg-amber-50 rounded-sm px-1 py-1"><AiOutlineCheck /></a>
+            <a onClick={handleUncheck} className="text-smd text-amber-950 font-bold cursor-pointer bg-amber-50 rounded-sm "><AiOutlineCheck /></a>
             : 
-            <a onClick={handleCheck} className="text-smd text-amber-50 font-bold cursor-pointer bg-amber-50 rounded-sm px-1 py-1"><AiOutlineCheck /></a>
+            <a onClick={handleCheck} className="text-smd text-amber-50 font-bold cursor-pointer bg-amber-50 rounded-sm "><AiOutlineCheck /></a>
             }
             
           </div>
@@ -89,22 +89,20 @@ const CartCard = ({list, checked, setChecked, id, handleClick}) => {
             className="w-20 h-20 object-cover object-center rounded-lg"
             src={dataItem.img}
           />
-          <div className="w-4/12 mx-5 text-amber-50">
+          <div className="w-4/12 md:ml-5 ml-2 text-amber-50">
             <p className="font-semibold text-md">{dataGoods[dataItem.produkID] ? dataGoods[dataItem.produkID].title : "..."}</p>
             <p className="text-white text-xs opacity-60 capitalize">Packaging {dataItem.packaging ? dataItem.packaging.split("|")[0]: ""}</p>
             <div className="text-sm flex items-center gap-2 mt-2">
-              <AiOutlinePlus onClick={handleAdd} className="rounded-full text-white w-4 h-4 cursor-pointer border"  />
               <p className="bg-white bg-opacity-0 text-center text-md" >{dataItem.qty}</p>
-              <AiOutlineMinus onClick={handleMin} className="rounded-full text-white w-4 h-4 cursor-pointer border" />
               <p>Produk</p>
             </div>
           </div>
           <div className="w-4/12 text-amber-50 pl-2 border-l-2 border-white border-opacity-20">
             <p className="text-sm">Harga Produk</p>
-            <p className="text-lg font-bold">{new Intl.NumberFormat('id-ID', {
+            <p className="md:text-lg text-md font-bold">{new Intl.NumberFormat('id-ID', {
               style: 'currency',
               currency: 'IDR'
-            }).format(dataItem.price*dataItem.qty)}</p>
+            }).format(dataItem.price)}</p>
           </div>
           <div className="w-1/12 text-amber-50 pl-2 ">
             <a onClick={handleDelete} className="text-sm cursor-pointer"><BsTrash3Fill /></a>

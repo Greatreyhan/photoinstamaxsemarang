@@ -13,6 +13,7 @@ export const useFirebase = () =>{
 export const FirebaseProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [msgNot, setMsgNot] = useState("");
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, authUser=>{
@@ -30,12 +31,13 @@ export const FirebaseProvider = ({children}) => {
     const value = {
         user,
         loading,
+        msgNot,
         signIn : async (email,password) =>{
             try{
                 await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
             }
             catch(err){
-                console.error('Error Sign In', err);
+                setMsgNot(err.message)
             }
         },
         signUp: async (email, password, phone, address) => {
@@ -56,8 +58,8 @@ export const FirebaseProvider = ({children}) => {
                             console.log(error)
                           });
                   })
-                  .catch((error) => {
-                    console.log(error)
+                  .catch((err) => {
+                    setMsgNot(err.message)
                   });
             } catch (error) {
               console.error('Error signing up:', error);
@@ -68,7 +70,7 @@ export const FirebaseProvider = ({children}) => {
                 await signOut(FIREBASE_AUTH);
             }
             catch(err){
-                console.error('Error Sign Out', err)
+                setMsgNot(err.message)
             }
         }
     }

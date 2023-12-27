@@ -39,7 +39,7 @@ const Confirmation = ({setPopUp, setIsConfirmed, produk, total, code, packaging,
                     <Link onClick={()=>{setPopUp(false);setIsConfirmed(false)}} className="py-2 px-4 text-amber-900 w-full transition ease-in duration-200 text-center text-base font-semibold " to="/products">
                         Bayar Nanti
                     </Link>
-                        <a href={"https://wa.me/6281225554727?text="+total.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })+"|"+code} target="_blank" type="button" className="py-2 px-4  bg-amber-600 hover:bg-amber-700 focus:ring-amber-500 focus:ring-offset-amber-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2">
+                        <a href={"https://wa.me/6281225554727?text="+(total.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }))+"|"+code} target="_blank" type="button" className="py-2 px-4  bg-amber-600 hover:bg-amber-700 focus:ring-amber-500 focus:ring-offset-amber-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2">
                             Konfirmasi
                         </a>
                 </div>

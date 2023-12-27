@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFirebase } from "../FirebaseContext";
 import { Link,Navigate } from "react-router-dom";
 import { HeroLogin } from "../assets";
 import { MdOutlineWhatsapp, MdLocationOn } from "react-icons/md";
-
+import { Message } from "../components";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("")
   const [address, setAddress] = useState("")
-  const { signUp, user } = useFirebase();
+  const { signUp, user, msgNot } = useFirebase();
+  const [typeMsg, setTypeMsg] = useState(0)
+  const [msg, setMsg] = useState("")
+  
+  useEffect(()=>{
+    setMsg("")
+    if(msgNot){
+      setMsg(msgNot)
+      setTypeMsg(3)
+    }
+  },[msgNot])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +32,9 @@ const SignUp = () => {
 
   return (
     <div>
+      <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
       <div className="flex flex-wrap w-full">
+
         <div className="flex flex-col w-full md:w-1/2">
 
           <div className="flex flex-col justify-center px-8 pt-12 my-auto md:justify-start md:pt-0 md:px-24 lg:px-32">

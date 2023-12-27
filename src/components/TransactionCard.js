@@ -27,7 +27,8 @@ const TransactionCard = ({ list, id }) => {
         });
     }, [])
 
-    const handleDelete = () => {
+    const handleDelete = (e) => {
+        e.preventDefault()
         remove(ref(FIREBASE_DB, "transactions/" + id))
             .then(() => {
                 console.log('deleted')
@@ -39,10 +40,12 @@ const TransactionCard = ({ list, id }) => {
         remove(ref(FIREBASE_DB, "user/" + user.uid + "/transaction/"+(dataTransaction.indexOf(id))))
             .then(() => {
                 console.log('deleted')
+                window.location.reload();
             })
             .catch((error) => {
                 console.log(error)
             });
+            
     }
     return (
         <div className='mx-5 flex flex-col bg-amber-800 px-8 py-4 rounded-lg mt-5 border-2 border-white border-opacity-20'>
@@ -75,7 +78,7 @@ const TransactionCard = ({ list, id }) => {
                 Array.isArray(list.produkID) ?
                     <div className='flex mt-3 items-center'>
                         <div className='bg-white px-1 pb-8 pt-1 shadow-xl'>
-                            <img className='w-32 h-32 object-cover object-center' src={list.img[0]} />
+                            <img className='w-32 h-32 object-cover object-center' src={list.img} />
                         </div>
                         <div className='w-4/12 mx-5 text-amber-50'>
                             <p className='font-semibold text-lg'>{dataItem[list.produkID[0].produkID] ? dataItem[list.produkID[0].produkID].title : null}</p>
@@ -103,7 +106,7 @@ const TransactionCard = ({ list, id }) => {
                 :
                 null}
             <div className='flex justify-end '>
-                <button onClick={handleDelete} className='mx-8 px- text-white font-semibold hover:font-bold'>Batalkan</button>
+                <button onClick={(e)=>handleDelete(e)} className='mx-8 px- text-white font-semibold hover:font-bold'>Batalkan</button>
                 <button onClick={() => setPopUp(true)} className="px-8 py-1.5 hover:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-amber-100 text-lg font-semibold text-amber-950">Bayar</button>
             </div>
         </div>

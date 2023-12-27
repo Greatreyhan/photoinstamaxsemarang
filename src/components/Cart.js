@@ -5,6 +5,7 @@ import CartItem from './CartItem'
 import { useFirebase } from "../FirebaseContext";
 import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue, update } from "firebase/database"
+import { Link } from 'react-router-dom';
 const Cart = ({isOpen}) => {
   const [dataCart, setDataCart] = useState([])
   const { user } = useFirebase();
@@ -17,7 +18,7 @@ const Cart = ({isOpen}) => {
     });
 }, []);
   return (
-    <div className='w-full flex justify-center items-center h-screen bg-black bg-opacity-40'>
+    <div className='w-full flex flex-col justify-center items-center h-screen bg-black bg-opacity-40'>
         <div className='md:w-5/12 w-full h-96 pb-4 bg-amber-200 shadow-lg'>
             <div className='flex items-center bg-amber-950 justify-between'>
                 <p className='bold text-amber-50 px-5 py-2 text-lg flex items-center'><BsFillCartFill className='mr-2' /><span>Keranjang</span></p>
@@ -29,6 +30,9 @@ const Cart = ({isOpen}) => {
                 return (<CartItem list={list} />)
               }):null}
             </div>
+        </div>
+        <div className='flex justify-end bg-amber-200 w-full md:w-5/12'>
+          <Link onClick={()=>isOpen(false)} to="/profile/keranjang" className='px-8 py-2 bg-amber-900 text-white font-semibold' >Checkout</Link>
         </div>
     </div>
   )

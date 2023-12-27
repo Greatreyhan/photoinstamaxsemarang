@@ -30,32 +30,35 @@ const Keranjang = () => {
     });
   }, []);
 
-  const handleClick = () =>{
-    if(checked != []){
+  const handleClick = () => {
+    if (checked != []) {
       let dataMoney = 0;
       let dataWeight = 0;
       let dataQty = 0;
-      checked.map(list=>{
+      checked.map(list => {
         dataQty += dataFullCart[list].qty
         dataWeight += dataFullCart[list].weight
         dataMoney += dataFullCart[list].price
       })
-      setMoney(dataMoney*dataQty)
-      setWeight(dataWeight*dataQty)
+      setMoney(dataMoney)
+      setWeight(dataWeight * dataQty)
     }
   }
 
   return (
     <div className='flex flex-col w-full h-full relative'>
-      {popUp ? <PopUpChekcout list={checked} price={money} weightTotal={weight} setPopUp={setPopUp} dataCart={dataCart}/>:null}
-      {dataCart[0] ? dataCart.map((list,i) => {
-        return (<CartCard list={list} checked={checked} setChecked={setChecked} handleClick={handleClick} id={i} />)
-      }) : null}
+      <div className='h-full pb-12 '>
+        {popUp ? <PopUpChekcout list={checked} price={money} weightTotal={weight} setPopUp={setPopUp} dataCart={dataCart} /> : null}
+        {dataCart[0] ? dataCart.map((list, i) => {
+          return (<CartCard list={list} checked={checked} setChecked={setChecked} handleClick={handleClick} id={i} />)
+        }) : null}
+      </div>
+
       <div className='absolute bottom-0 w-full flex justify-between items-center bg-amber-700'>
-        <div className='px-8 text-white'>
-          Total Keseluruhan <span className='font-bold ml-8 border-l-2 py-2 pl-4 border-white border-opacity-50 text-lg'>Rp {money.toLocaleString('id-ID')},-</span>      
+        <div className='px-8 text-white flex flex-col'>
+          <span className='text-xs'>Total Keseluruhan </span><span className='font-bold border-white border-opacity-50 text-lg'>Rp {money.toLocaleString('id-ID')},-</span>
         </div>
-        <a onClick={()=>setPopUp(true)} className='flex justify-center px-8 py-2 bg-amber-500 text-amber-950 uppercase cursor-pointer'>
+        <a onClick={() => setPopUp(true)} className='flex justify-center px-8 py-2 h-full bg-amber-500 text-white uppercase cursor-pointer'>
           Bayar Sekarang
         </a>
       </div>
