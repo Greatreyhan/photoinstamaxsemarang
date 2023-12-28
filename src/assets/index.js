@@ -32,4 +32,7 @@ import Product3 from "./Product3.JPG"
 import Product4 from "./Product4.JPG"
 import Product5 from "./Product5.JPG"
 import Product6 from "./Product6.JPG"
-export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart, BCA, BNI, Qris, PolaroidHero, Product1, Product2, Product3, Product4, Product5, Product6 }
+import Dana from "./dana.png"
+import Mandiri from "./Mandiri.webp"
+import Shopeepay from "./Shopeepay.png"
+export {HeroLogin, Logo, HeroProduct, HeroProduct2, Polaroid1, Polaroid2, Polaroid3, Polaroid4, Polaroid5, Polaroid6, BoxWrap, FilmWrap, FrameWrap, MapWrap, StandWrap, Tokopedia, Shopee, Choose, Sending, Received, Tiktok, HeroProduct3, ProfilePict, Cart, BCA, BNI, Qris, PolaroidHero, Product1, Product2, Product3, Product4, Product5, Product6, Dana, Mandiri, Shopeepay}

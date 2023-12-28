@@ -1,7 +1,7 @@
 import React from 'react'
 import Barcode from 'react-barcode';
 import { Cart } from '../assets'
-import { BNI, BCA, Qris } from '../assets';
+import { Dana, Mandiri, Shopeepay, Qris } from '../assets';
 import { Link, Navigate } from 'react-router-dom';
 const Confirmation = ({setPopUp, setIsConfirmed, produk, total, code, packaging, bubble, ongkir=0}) => {
     return (
@@ -17,8 +17,9 @@ const Confirmation = ({setPopUp, setIsConfirmed, produk, total, code, packaging,
                     </div>
                     <div className='mt-4'>
                         <p className='text-xs mb-2'>Melalui Bank</p>
-                        <p className='font-normal opacity-80 text-sm flex items-center'><img className='md:w-24 w-16 my-3' src={BNI} /><span className='ml-2 text-xl md:text-2xl font-semibold'>1002321341243</span></p>
-                        <p className='font-normal opacity-80 text-sm flex items-center'><img className='md:w-24 w-16 my-3' src={BCA} /><span className='ml-2 text-xl md:text-2xl font-semibold'>1231029409994</span></p>
+                        <p className='font-normal opacity-80 text-sm flex items-center'><img className='md:w-24 w-16 my-3' src={Mandiri} /><span className='ml-2 text-xl md:text-2xl font-semibold'>1350017132737 <span className='text-sm font-normal'>(MUHAMMAD ERZA S)</span></span></p>
+                        <p className='font-normal opacity-80 text-sm flex items-center'><img className='md:w-24 w-16 my-3' src={Dana} /><span className='ml-2 text-xl md:text-2xl font-semibold'>081225554727  <span className='text-sm font-normal'>(Karmini)</span></span></p>
+                        <p className='font-normal opacity-80 text-sm flex items-center'><img className='md:w-24 w-16 my-3' src={Shopeepay} /><span className='ml-2 text-xl md:text-2xl font-semibold'>081225554727 <span className='text-sm font-normal'>(MUHAMMAD ERZA S)</span></span></p>
                     </div>
                 </div>
             </div>
@@ -39,7 +40,7 @@ const Confirmation = ({setPopUp, setIsConfirmed, produk, total, code, packaging,
                     <Link onClick={()=>{setPopUp(false);setIsConfirmed(false)}} className="py-2 px-4 text-amber-900 w-full transition ease-in duration-200 text-center text-base font-semibold " to="/products">
                         Bayar Nanti
                     </Link>
-                        <a href={"https://wa.me/6281225554727?text="+(total.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }))+"|"+code} target="_blank" type="button" className="py-2 px-4  bg-amber-600 hover:bg-amber-700 focus:ring-amber-500 focus:ring-offset-amber-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2">
+                        <a href={"https://wa.me/62895618388388?text="+(total.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }))+"|"+code} target="_blank" type="button" className="py-2 px-4  bg-amber-600 hover:bg-amber-700 focus:ring-amber-500 focus:ring-offset-amber-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2">
                             Konfirmasi
                         </a>
                 </div>

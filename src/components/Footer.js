@@ -1,6 +1,7 @@
 import React from "react";
 import { Logo } from "../assets";
 import { useLocation } from "react-router-dom";
+import {Link} from "react-router-dom"
 
 const Footer = () => {
   const location = useLocation();
@@ -36,7 +37,7 @@ const Footer = () => {
                     <a href="#product">Gift Wrap</a>
                   </li>
                   <li className="mb-4 transition-colors duration-200 hover:font-semibold">
-                    <a href="/custom-order">Custom Order</a>
+                    <Link to="/custom">Custom Order</Link>
                   </li>
                 </ul>
               </div>
@@ -48,10 +49,10 @@ const Footer = () => {
                 </h2>
                 <ul>
                   <li className="mb-4 transition-colors duration-200 hover:font-semibold">
-                    <a href="https://wa.me/6281225554727">Whatsapp</a>
+                    <a href="https://wa.me/62895618388388">Whatsapp</a>
                   </li>
                   <li className="mb-4 transition-colors duration-200 hover:font-semibold">
-                    <a href="#">Facebook</a>
+                    <a href="mailto:photoinstax.semarang@gmail.com">Email</a>
                   </li>
                   <li className="mb-4 transition-colors duration-200 hover:font-semibold">
                     <a href="https://www.instagram.com/photoinstax.semarang/">Instagram</a>
@@ -70,9 +71,6 @@ const Footer = () => {
                   </li>
                   <li className="mb-4 transition-colors duration-200 hover:font-semibold">
                     <a href="https://shopee.co.id/photoinstaxsemarang">Shopee</a>
-                  </li>
-                  <li className="mb-4 transition-colors duration-200 hover:font-semibold">
-                    <a href="#">Lazada</a>
                   </li>
                 </ul>
               </div>

@@ -162,7 +162,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   const handleCity = (e) => {
     setSelectedCity(e.target.value)
     if (e.target.value.match(/\d+/)[0] == originCity) {
-      setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'grab'])
+      setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'ambil sendiri'])
       setInBound(true)
     }
     else {
@@ -171,7 +171,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   }
   const handleCourier = (e) => {
     setIsLoading(true)
-    if (e.target.value == 'gojek' || e.target.value == 'grab') {
+    if (e.target.value == 'gojek' || e.target.value == 'ambil sendiri') {
       setDataOption({
         "code": "COD",
         "name": "POS Indonesia (POS)",
@@ -238,7 +238,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
       <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]* (urlImg.length)) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={parseInt(packaging.split("|")[1] * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}  /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]* (urlImg.length)) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={user.uid.slice(0, 5) + 'A' + codeID} packaging={parseInt(packaging.split("|")[1] * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}  /> :
         <div className='flex bg-slate-50 flex-col w-full h-full relative'>
           <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
             <div className='flex items-center justify-center'>

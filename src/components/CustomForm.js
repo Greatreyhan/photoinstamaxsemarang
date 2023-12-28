@@ -12,10 +12,9 @@ import PopUpCustom from './PopUpCustom'
 import Message from './Message'
 const CustomForm = ({ price = 5000 }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [handleUnameEcommerce, setHandleUnameEcommerce] = useState("")
     const [unameEcommerce, setUnameEcommerce] = useState("")
     const [handleEcommerce, setHandleEcommerce] = useState('Tokopedia')
-    const [commerce, setCommerce] = useState('')
+    const [noPesanan, setNoPesanan] = useState('')
     const [dataProv, setDataProv] = useState([])
     const [dataCity, setDataCity] = useState([])
     const [dataCourier, setDataCourier] = useState(['jne', 'pos', 'tiki'])
@@ -23,12 +22,13 @@ const CustomForm = ({ price = 5000 }) => {
     const [selectedProv, setSelectedProv] = useState(0)
     const [selectedCity, setSelectedCity] = useState(1)
     const [selectedCourier, setSelectedCourier] = useState('')
-    const [selectedOption, setSelectedOption] = useState("")
     const [originCity, setOriginCity] = useState(399)
     const [weight, setWeight] = useState(1000)
     const [fullAddress, setFullAddress] = useState("")
     const [packaging, setPackaging] = useState("map|2000")
     const [urlImg, setUrlImg] = useState("")
+    const [urlImgWhite, setUrlImgWhite] = useState("")
+    const [urlImgBlack, setUrlImgBlack] = useState("")
     const [isComplete, setIsComplete] = useState(false)
     const [inBound, setInBound] = useState(false)
     const [bubbleWrap, setBubbleWrap] = useState(true)
@@ -51,21 +51,23 @@ const CustomForm = ({ price = 5000 }) => {
             provinsi: selectedProv,
             city: selectedCity,
             alamat: fullAddress,
-            img: urlImg,
+            img: urlImgWhite,
             kurir: selectedCourier,
-            pengiriman: handleEcommerce + "|" + unameEcommerce,
-            qty: urlImg.length,
+            pengiriman: handleEcommerce + "|" + unameEcommerce + "|" + noPesanan,
+            qty: urlImgWhite.length + urlImgBlack.length,
             packaging: packaging,
             bubble_wrap: bubbleWrap,
-            price: parseInt(price) * urlImg.length + parseInt(packaging.split("|")[1]* urlImg.length) + (inBound ? 0 : 1000),
+            price: (parseInt(price) * urlImgWhite.length) + ((parseInt(price) * urlImgBlack.length)) + parseInt(packaging.split("|")[1]* urlImg.length) + (inBound ? 0 : 1000),
             userID: "CST" + timeStamp,
             buyStatus: 0,
             userName: userName,
             email: emailUser,
-            phone: phoneUser
+            phone: phoneUser,
+            imgWhite : urlImgWhite,
+            imgBlack : urlImgBlack,
         }
         setCodeID(timeStamp)
-        await set(ref(FIREBASE_DB, "transactions/" + "CUSTM" + "A" + timeStamp), data)
+        await set(ref(FIREBASE_DB, "custom/" + "CUSTM" + "A" + timeStamp), data)
             .then(() => {
                 <Navigate to="/products" />
                 setIsConfirmed(true);
@@ -76,7 +78,7 @@ const CustomForm = ({ price = 5000 }) => {
     }
 
     useEffect(() => {
-        if (step == 1 && urlImg.length >= 1) {
+        if (step == 1 && (urlImgWhite.length >= 1 || urlImgBlack.length >= 1)) {
             setToNext(true)
         }
         if (step == 2) {
@@ -85,7 +87,7 @@ const CustomForm = ({ price = 5000 }) => {
         if (step == 3 && unameEcommerce != "") {
             setToNext(true)
         }
-        if (urlImg != "" && userName != "" && emailUser != "" && phoneUser != "") {
+        if ((urlImgWhite != "" || urlImgBlack != "") && userName != "" && emailUser != "" && phoneUser != "") {
             setIsComplete(true)
         }
         else {
@@ -94,7 +96,7 @@ const CustomForm = ({ price = 5000 }) => {
         if (!popUp) {
             return (<Navigate to="/products" />)
         }
-    }, [popUp, packaging, selectedProv, selectedCity, selectedCourier, unameEcommerce, fullAddress, urlImg, step, userName, emailUser, phoneUser])
+    }, [popUp, packaging, selectedProv, selectedCity, selectedCourier, unameEcommerce, fullAddress, urlImgWhite, urlImgBlack, step, userName, emailUser, phoneUser])
 
     useEffect(() => {
         setIsLoading(true)
@@ -233,7 +235,7 @@ const CustomForm = ({ price = 5000 }) => {
             {isLoading ? <Loading /> : null}
             <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
             {/* Heading */}
-            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} setIsConfirmed={setIsConfirmed} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]* (urlImg.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]* (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={handleEcommerce} /> :
+            {isConfirmed ? <PopUpCustom setPopUp={setIsConfirmed} setIsConfirmed={setIsConfirmed} produk={((parseInt(price) * (urlImgWhite.length))+(parseInt(price) * (urlImgBlack.length))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(((parseInt(price) * (urlImgWhite.length))+(parseInt(price) * (urlImgBlack.length))) + parseInt(packaging.split("|")[1]* (urlImgWhite.length + urlImgBlack.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID + "|" + handleEcommerce + "|" + unameEcommerce + "|" + noPesanan} packaging={parseInt(packaging.split("|")[1]* (urlImgWhite.length + urlImgBlack.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={handleEcommerce} /> :
                 <div className='flex bg-slate-50 flex-col w-full h-full relative'>
                     <div className='w-full bg-slate-50 shadow py-4 md:gap-x-6 gap-x-2 flex justify-center items-start md:items-center'>
                         <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
@@ -260,8 +262,13 @@ const CustomForm = ({ price = 5000 }) => {
                             <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                                 <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
                                 <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg .png .heic atau .jpeg</p>
-                                <div className='mt-6'>
-                                    <ImageUpload url={urlImg} setUrl={setUrlImg} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg} />
+                                <h2 className='mt-6'>Gambar Putih</h2>
+                                <div className='mt-2'>
+                                    <ImageUpload url={urlImgWhite} setUrl={setUrlImgWhite} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg} />
+                                </div>
+                                <h3 className='mt-6'>Gambar Hitam</h3>
+                                <div className='mt-2'>
+                                    <ImageUpload url={urlImgBlack} setUrl={setUrlImgBlack} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg} />
                                 </div>
                             </div>
 
@@ -297,6 +304,10 @@ const CustomForm = ({ price = 5000 }) => {
                                             <label className='text-slate-800 mt-4 text-xs'>Nama Akun</label>
                                             <input className='border boder-amber-800 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={unameEcommerce} onChange={(e) => setUnameEcommerce(e.currentTarget.value)} required />
                                         </div>
+                                        <div className='flex-1 flex flex-col px-4'>
+                                            <label className='text-slate-800 mt-4 text-xs'>No Pesanan</label>
+                                            <input className='border boder-amber-800 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={noPesanan} onChange={(e) => setNoPesanan(e.currentTarget.value)} required />
+                                        </div>
                                     </div>
                                 </div>
                                 :
@@ -319,13 +330,13 @@ const CustomForm = ({ price = 5000 }) => {
                                         </div>
                                     </div>
                                     <div className='bg-slate-50 flex flex-col mt-2 mx-auto md:w-5/12 w-11/12 px-5 py-5'>
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]* (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImgWhite.length+urlImgBlack.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]* (urlImgWhite.length+urlImgBlack.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         {inBound ? null :
                                             <p className='text-amber-950 mt-1 flex justify-between'><span>Bubble Wrap</span> <span>{parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         }
                                         <hr className='mt-3 opacity-80' />
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length)  + parseInt(packaging.split("|")[1]* (urlImg.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImgWhite.length+urlImgBlack.length)  + parseInt(packaging.split("|")[1]* (urlImgWhite.length+urlImgBlack.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         <div className='w-full text-center mt-5'>
                                             {isComplete ?
                                                 <a onClick={handleBuy} className='bg-amber-500 cursor-pointer flex px-5 justify-center py-1.5'>

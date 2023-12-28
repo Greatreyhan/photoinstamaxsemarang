@@ -158,7 +158,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
   const handleCity = (e) => {
     setSelectedCity(e.target.value)
     if (e.target.value == originCity) {
-      setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'grab'])
+      setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'ambil sendiri'])
       setInBound(true)
     }
     else {
@@ -167,7 +167,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
   }
   const handleCourier = (e) => {
     setIsLoading(true)
-    if (e.target.value == 'gojek' || e.target.value == 'grab') {
+    if (e.target.value == 'gojek' || e.target.value == 'ambil sendiri') {
       setDataOption({
         "code": "COD",
         "name": "POS Indonesia (POS)",
