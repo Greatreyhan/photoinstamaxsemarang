@@ -159,7 +159,7 @@ const CustomForm = ({ price = 5000 }) => {
     const handleCity = (e) => {
         setSelectedCity(e.target.value)
         if (e.target.value == originCity) {
-            setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'grab'])
+            setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'Ambil Sendiri'])
             setInBound(true)
         }
         else {
@@ -168,7 +168,7 @@ const CustomForm = ({ price = 5000 }) => {
     }
     const handleCourier = (e) => {
         setIsLoading(true)
-        if (e.target.value == 'gojek' || e.target.value == 'grab') {
+        if (e.target.value == 'gojek' || e.target.value == 'Ambil Sendiri') {
             setDataOption({
                 "code": "COD",
                 "name": "POS Indonesia (POS)",
@@ -295,7 +295,7 @@ const CustomForm = ({ price = 5000 }) => {
                                     <div className='bg-slate-50 flex flex-wrap mt-10 mx-10 px-5 py-8'>
                                         <div className='flex-1 flex flex-col px-4'>
                                             <label className='text-slate-800 mt-4 text-xs'>Pilih E-Commerce</label>
-                                            <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={setHandleEcommerce} name="Kota">
+                                            <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={(e) => setHandleEcommerce(e.currentTarget.value)} name="Kota">
                                                 <option value={'Tokopedia'} >Tokopedia</option>
                                                 <option value={'Shopee'} >Shopee</option>
                                             </select>

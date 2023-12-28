@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Dashboard, NavAdmin, Pengguna, Persona, Pesanan, Produk } from '../components'
+import { Custom, Dashboard, NavAdmin, Pengguna, Persona, Pesanan, Produk } from '../components'
 
 const Admin = () => {
     const [page,setPage] = useState("Dashboard")
@@ -15,6 +15,9 @@ const Admin = () => {
             :
             page == "Pesanan" ?
             <Pesanan/>
+            :
+            page == "Custom" ?
+            <Custom/>
             :
             page == "Pengguna" ?
             <Pengguna />

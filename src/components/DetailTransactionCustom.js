@@ -5,7 +5,7 @@ import { FaFileImage } from "react-icons/fa";
 import { MdSave } from "react-icons/md";
 import { IoIosArrowRoundBack } from "react-icons/io";
 
-const DetailTransaction = ({ countID, keyItem, data, name, setPopUpDetail }) => {
+const DetailTransactionCustom = ({ countID, keyItem, data, setPopUpDetail }) => {
     const [userData, setUserData] = useState([])
     const [resi, setResi] = useState("")
     const [status, setStatus] = useState(0)
@@ -33,7 +33,7 @@ const DetailTransaction = ({ countID, keyItem, data, name, setPopUpDetail }) => 
     }, [])
     const handleSave = () => {
         const updateData = { ...data[keyItem[countID]], resi: resi, buyStatus: parseInt(status) }
-        set(ref(FIREBASE_DB, "transactions/" + keyItem[countID]), updateData)
+        set(ref(FIREBASE_DB, "custom/" + keyItem[countID]), updateData)
             .then(() => {
                 setPopUpDetail(false)
             })
@@ -73,29 +73,19 @@ const DetailTransaction = ({ countID, keyItem, data, name, setPopUpDetail }) => 
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
-                                Alamat
+                                Data
                             </dt>
-                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {data[keyItem[countID]].alamat ? data[keyItem[countID]].alamat : ""}, {data[keyItem[countID]].city.split("|")[1]}, {data[keyItem[countID]].provinsi.split("|")[1]}
+                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 uppercase">
+                                {data[keyItem[countID]].pengiriman.split("|")[0]} - {data[keyItem[countID]].pengiriman.split("|")[1]}
                             </dd>
-                        </div>
-                        <div className="px-4 py-2 bg-white sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                            <dt className="text-sm font-medium text-gray-500">
-                                Harga
-                            </dt>
-                            <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {new Intl.NumberFormat('id-ID', {
-                                    style: 'currency',
-                                    currency: 'IDR'
-                                }).format(data[keyItem[countID]].price)}
-                            </dd>
+
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
-                                Packaging
+                                Nomor Pemesanan
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2 uppercase">
-                                {data[keyItem[countID]].kurir}- {data[keyItem[countID]].pengiriman}
+                                {data[keyItem[countID]].pengiriman.split("|")[2]}
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -130,18 +120,18 @@ const DetailTransaction = ({ countID, keyItem, data, name, setPopUpDetail }) => 
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
-                                Produk
+                                Film Putih
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                {goods[data[keyItem[countID]].produkID] ? Array.isArray(goods[data[keyItem[countID]].produkID]) ? goods[data[keyItem[countID]].produkID].map(item=> item.title) : goods[data[keyItem[countID]].produkID].title : ""}
+                                <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={data[keyItem[countID]].imgWhite}><FaFileImage /></a>
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                             <dt className="text-sm font-medium text-gray-500">
-                                Gambar
+                                Film Hitam
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={data[keyItem[countID]].img}><FaFileImage /></a>
+                                <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={data[keyItem[countID]].imgBlack}><FaFileImage /></a>
                             </dd>
                         </div>
                         <div className="px-4 py-2 bg-gray-50 flex justify-between">
@@ -156,4 +146,4 @@ const DetailTransaction = ({ countID, keyItem, data, name, setPopUpDetail }) => 
     )
 }
 
-export default DetailTransaction
+export default DetailTransactionCustom

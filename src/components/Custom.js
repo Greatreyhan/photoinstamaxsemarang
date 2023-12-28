@@ -5,9 +5,10 @@ import { FaFileImage } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 import Loading from './Loading'
 import DetailTransaction from './DetailTransaction';
+import DetailTransactionCustom from './DetailTransactionCustom';
 
 
-const Pesanan = () => {
+const Custom = () => {
   const [dataItems, setDataItems] = useState([])
   const [keyItems, setKeyItems] = useState([])
   const [goods, setGoods] = useState([])
@@ -17,7 +18,7 @@ const Pesanan = () => {
   const [detailID, setDetailID] = useState(0)
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    onValue(ref(FIREBASE_DB, "transactions"), (snapshot) => {
+    onValue(ref(FIREBASE_DB, "custom"), (snapshot) => {
       const data = snapshot.val();
       if (data) {
         const key = Object.keys(data)
@@ -96,28 +97,25 @@ const Pesanan = () => {
               Date
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
-              Produk
-            </th>
-            <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
               Resi
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
-              Alamat
+              Data
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
-              Kurir
+              Nomor Pemesanan
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
               Status
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
-              Harga
-            </th>
-            <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
               Packaging
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
-              Gambar
+              Film Putih
+            </th>
+            <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
+              Film Hitam
             </th>
             <th className="border p-2 dark:border-dark-5 whitespace-nowrap font-normal text-gray-900">
               Action
@@ -131,37 +129,41 @@ const Pesanan = () => {
                 <tr className="text-gray-700" key={i}>
                   <td className="border p-2 dark:border-dark-5">
                   {popUpDetail ?
-                    <DetailTransaction countID={detailID} keyItem={keyItems} data={dataItems} name={Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title} setPopUpDetail={setPopUpDetail} />
+                    <DetailTransactionCustom countID={detailID} keyItem={keyItems} data={dataItems} name={"null"} setPopUpDetail={setPopUpDetail} />
                     : null}
                     {i}
                   </td>
                   <td className="border p-2 text-sm dark:border-dark-5">
                     {new Intl.DateTimeFormat('en-US').format(new Date(key.slice(6) * 1000))}
                   </td>
-                  <td className="border p-2 dark:border-dark-5 text-sm">
-                    {Array.isArray(dataItems[key].produkID) ? "Paket" : (goods[parseInt(dataItems[key].produkID)] ? goods[parseInt(dataItems[key].produkID)].title : "unavailable")}
-                  </td>
                   <td className="border p-2 dark:border-dark-5 uppercase text-sm text-center">
                     {dataItems[key].resi ? dataItems[key].resi : "-"}
                   </td>
                   <td className="border p-2 dark:border-dark-5 text-sm w-52">
-                    {dataItems[key].provinsi == 0 ?  dataItems[key].pengiriman : dataItems[key].alamat + ", " + (dataItems[key].provinsi == 0 ? "" : dataItems[key].provinsi.split("|")[1]) + ", " + (dataItems[key].city == 1 ? "" : dataItems[key].city.split("|")[1])}
+                  {dataItems[key].pengiriman.split("|")[0]} - {dataItems[key].pengiriman.split("|")[1]}
                   </td>
                   <td className="border p-2 dark:border-dark-5 uppercase text-sm">
-                    {dataItems[key].kurir} - {dataItems[key].pengiriman}
+                    {dataItems[key].pengiriman.split("|")[2]}
                   </td>
                   <td className="border p-2 dark:border-dark-5">
                     {dataItems[key].buyStatus == 0 ? <span className='text-xs px-2 py-1 bg-rose-100 rounded-full text-rose-950'>Konfirmasi</span> : dataItems[key].buyStatus == 1 ? <span className='text-xs px-2 py-1 bg-amber-100 rounded-full text-amber-950'>Dibayar</span> : dataItems[key].buyStatus == 2 ? <span className='text-xs px-2 py-1 bg-green-100 rounded-full text-green-950'>Dikirim</span> : <span className='text-xs px-2 py-1 bg-blue-100 rounded-full text-blue-950'>Selesai</span>}
-                  </td>
-                  <td className="border p-2 dark:border-dark-5 text-sm">
-                    {dataItems[key].price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }).slice(0, -3)}
                   </td>
                   <td className="border p-2 dark:border-dark-5 text-center">
                     {dataItems[key].packaging ? dataItems[key].packaging.split("|")[0]  : "-"}
                   </td>
                   <td className="border p-2 dark:border-dark-5">
-                    <div className='flex items-center justify-center'>
-                      {Array.isArray(dataItems[key].img) ? dataItems[key].img.map(ss => {
+                    <div className='flex flex-wrap w-36 items-center justify-center'>
+                      {Array.isArray(dataItems[key].imgWhite) ? dataItems[key].imgWhite.map(ss => {
+                        return (
+                          <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={ss}><FaFileImage /></a>
+                        )
+                      })
+                        : <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={dataItems[key].img}><FaFileImage /></a>}
+                    </div>
+                  </td>
+                  <td className="border p-2 dark:border-dark-5">
+                    <div className='flex flex-wrap w-36 items-center justify-center'>
+                      {Array.isArray(dataItems[key].imgBlack) ? dataItems[key].imgBlack.map(ss => {
                         return (
                           <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={ss}><FaFileImage /></a>
                         )
@@ -187,4 +189,4 @@ const Pesanan = () => {
   )
 }
 
-export default Pesanan
+export default Custom

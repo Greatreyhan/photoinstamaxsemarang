@@ -67,7 +67,7 @@ const Transaksi = () => {
         {dataBelum != [] ?
         dataBelum.map((list,i)=>{
           return(
-            <TransactionCard list={list} id={keyBelum[i]} />
+            <TransactionCard list={list} id={keyBelum[i]} status={1} />
           )
         })
         :
@@ -81,7 +81,7 @@ const Transaksi = () => {
       {dataProses != [] ?
         dataProses.map((list,i)=>{
           return(
-            <TransactionCard list={list} id={keyProses[i]} />
+            <TransactionCard list={list} id={keyProses[i]} status={0} />
           )
         })
         :
@@ -94,7 +94,7 @@ const Transaksi = () => {
       {dataDikirim != [] ?
         dataDikirim.map((list,i)=>{
           return(
-            <TransactionCard list={list} id={keyDikirim[i]} />
+            <TransactionCard list={list} id={keyDikirim[i]} status={0} />
           )
         })
         :
@@ -107,7 +107,7 @@ const Transaksi = () => {
       {dataSelesai != [] ?
         dataSelesai.map((list,i)=>{
           return(
-            <TransactionCard list={list} id={keySelesai[i]} />
+            <TransactionCard list={list} id={keySelesai[i]} status={0} />
           )
         })
         :
@@ -120,7 +120,7 @@ const Transaksi = () => {
       {dataSalah != [] ?
         dataSalah.map((list,i)=>{
           return(
-            <TransactionCard list={list} id={keySalah[i]} />
+            <TransactionCard list={list} id={keySalah[i]} status={0} />
           )
         })
         :

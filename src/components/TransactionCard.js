@@ -5,7 +5,7 @@ import { onValue, ref, remove } from 'firebase/database'
 import { FIREBASE_DB } from '../config/firebaseinit'
 import { PopUpTransaction } from '.';
 
-const TransactionCard = ({ list, id }) => {
+const TransactionCard = ({ list, id, status }) => {
     const [dataItem, setDataItem] = useState([])
     const [dataTransaction, setDataTransaction] = useState([])
     const [popUp, setPopUp] = useState(false)
@@ -14,6 +14,7 @@ const TransactionCard = ({ list, id }) => {
         onValue(ref(FIREBASE_DB, "goods"), (snapshot) => {
             const data = snapshot.val();
             if (data) {
+                
                 const key = Object.keys(data)
                 setDataItem(data)
             }
@@ -72,7 +73,7 @@ const TransactionCard = ({ list, id }) => {
 
                 }
 
-                <p className='font-mono  md:mt-0 mt-2 md:ml-0 ml-2'>INV/2{id}</p>
+                <p className='font-mono  md:mt-0 mt-2 md:ml-0 ml-2'>INV/2{id}/{list.resi ? list.resi : "" }</p>
             </div>
             {dataItem != [] ?
                 Array.isArray(list.produkID) ?
@@ -106,8 +107,12 @@ const TransactionCard = ({ list, id }) => {
                 :
                 null}
             <div className='flex justify-end '>
+                {status == 1 ?
                 <button onClick={(e)=>handleDelete(e)} className='mx-8 px- text-white font-semibold hover:font-bold'>Batalkan</button>
+                : null }
+                {status == 1 ?
                 <button onClick={() => setPopUp(true)} className="px-8 py-1.5 hover:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-amber-100 text-lg font-semibold text-amber-950">Bayar</button>
+                : null }
             </div>
         </div>
     )

@@ -53,6 +53,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
       userID: user.uid,
       buyStatus: 0,
     }
+    
     const timeStamp = Math.floor(new Date().getTime() / 1000)
     setCodeID(timeStamp)
     await set(ref(FIREBASE_DB, "transactions/" + user.uid.slice(0, 5) + "A" + timeStamp), data)
@@ -62,7 +63,9 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
       .catch((error) => {
         console.log(error)
       });
-    await set(ref(FIREBASE_DB, "user/" + user.uid + "/transaction/"), [...transactionData, (user.uid.slice(0, 5) + "A" + timeStamp)])
+
+    const updatedTransactionData = [...transactionData, (user.uid.slice(0, 5) + "A" + timeStamp)];
+    await set(ref(FIREBASE_DB, "user/" + user.uid + "/transaction/"), updatedTransactionData)
       .then(() => {
         setIsConfirmed(true)
       })

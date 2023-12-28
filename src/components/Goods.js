@@ -23,7 +23,7 @@ const Goods = ({ Title, Desc, Price, Category, Weight, ImageSource, ProdukID }) 
           className="object-cover w-full max-h-60"
         />
         <div className="w-full p-4 bg-white">
-          <p className="font-medium text-amber-700 text-md">Rp {Price},00</p>
+          <p className="font-medium text-amber-700 text-md">{parseInt(Price).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</p>
           <p className="mb-2 text-xl font-medium text-gray-800">
             {Title}
           </p>

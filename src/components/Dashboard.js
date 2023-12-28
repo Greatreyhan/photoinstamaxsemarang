@@ -73,7 +73,7 @@ const Dashboard = () => {
       </div>
       {dataItems ?
         dataItems.map((list, i) => {
-          if (i < 5) return <TileProduct ImageSource={list.img} title={list.title} qty={list.qty} />
+          return <TileProduct ImageSource={list.img} title={list.title} qty={list.qty} />
         })
         :
         null}
