@@ -58,9 +58,15 @@ const Keranjang = () => {
         <div className='px-8 text-white flex flex-col'>
           <span className='text-xs'>Total Keseluruhan </span><span className='font-bold border-white border-opacity-50 text-lg'>Rp {money.toLocaleString('id-ID')},-</span>
         </div>
+        {money == 0 ? 
+        <a disabled className='flex disabled: justify-center px-8 py-2 h-full bg-slate-500 text-white uppercase cursor-pointer'>
+        Bayar Sekarang
+      </a>
+        : 
         <a onClick={() => setPopUp(true)} className='flex justify-center px-8 py-2 h-full bg-amber-500 text-white uppercase cursor-pointer'>
           Bayar Sekarang
-        </a>
+        </a>}
+        
       </div>
     </div>
   )

@@ -90,6 +90,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
   }
 
   useEffect(() => {
+    console.log(selectedCourier, selectedOption, fullAddress)
     if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && fullAddress != "") {
       setIsComplete(true)
     }
@@ -177,6 +178,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
     }
   }
   const handleCourier = (e) => {
+    setSelectedCourier(e.target.value)
     setIsLoading(true)
     if (e.target.value == 'gojek' || e.target.value == 'ambil sendiri') {
       setDataOption({

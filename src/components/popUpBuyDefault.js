@@ -75,7 +75,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
   }
 
   useEffect(() => {
-    if(step == 1 && selectedOption != ""){
+    if(step == 1 && selectedOption != "" && fullAddress != ""){
       setToNext(true)
     }
     if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && qty >= 1 ) {
@@ -160,7 +160,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
 
   const handleCity = (e) => {
     setSelectedCity(e.target.value)
-    if (e.target.value == originCity) {
+    if (e.target.value.match(/\d+/)[0] == originCity)  {
       setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'ambil sendiri'])
       setInBound(true)
     }
@@ -169,6 +169,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
     }
   }
   const handleCourier = (e) => {
+    setSelectedCourier(e.target.value)
     setIsLoading(true)
     if (e.target.value == 'gojek' || e.target.value == 'ambil sendiri') {
       setDataOption({
