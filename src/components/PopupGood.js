@@ -6,7 +6,7 @@ import { useFirebase } from "../FirebaseContext";
 import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue } from "firebase/database"
 import Alert from './Alert';
-import { BoxWrap, MapWrap } from '../assets'
+import { BoxWrap, MapWrap, HeroProduct } from '../assets'
 import Message from './Message';
 const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -102,6 +102,10 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
                                 <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                                 <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
                                 <div className='flex justify-around gap-5  mt-8'>
+                                    <a onClick={() => setPackaging("none|0")} className={`rounded-lg ${packaging == "none|0" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
+                                        <img className='w-full h-full object-cover rounded-lg' src={HeroProduct} />
+                                        <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>Rp 0<sub className='text-xs font-light'>/item</sub></p>
+                                    </a>
                                     <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
                                         <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
                                         <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
@@ -121,23 +125,23 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
                             </div>
                             <div className='bg-slate-50 flex flex-col mt-2 mx-auto w-full px-5 py-2 md:py-5'>
                                 <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
-                                <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1] * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                 <hr className='mt-3 opacity-80' />
-                                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]* (urlImg.length))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1])).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                 <div className='w-full text-center mt-5'>
                                     {isComplete ?
                                         <div className='flex flex-col'>
-                                        <a onClick={handleCart} className='bg-amber-500 flex px-5 justify-center py-1.5'>
-                                            Masuk Keranjang
-                                        </a>
-                                        <a onClick={handleClose} className='flex items-center py-1.5 px-5 mt-2  justify-center text-amber-800'><MdKeyboardBackspace className='text-xl' /><span className='ml-1 text-sm'>Kembali</span></a>
+                                            <a onClick={handleCart} className='bg-amber-500 flex px-5 justify-center py-1.5'>
+                                                Masuk Keranjang
+                                            </a>
+                                            <a onClick={handleClose} className='flex items-center py-1.5 px-5 mt-2  justify-center text-amber-800'><MdKeyboardBackspace className='text-xl' /><span className='ml-1 text-sm'>Kembali</span></a>
                                         </div>
                                         :
                                         <div className='flex flex-col'>
-                                        <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center py-1.5'>
-                                            Masuk Keranjang
-                                        </a>
-                                        <a onClick={handleClose} className='flex items-center py-1.5 px-5 mt-2  justify-center text-amber-800'><MdKeyboardBackspace className='text-xl' /><span className='ml-1 text-sm'>Kembali</span></a>
+                                            <a className='bg-slate-500 cursor-not-allowed flex px-5 justify-center py-1.5'>
+                                                Masuk Keranjang
+                                            </a>
+                                            <a onClick={handleClose} className='flex items-center py-1.5 px-5 mt-2  justify-center text-amber-800'><MdKeyboardBackspace className='text-xl' /><span className='ml-1 text-sm'>Kembali</span></a>
                                         </div>
                                     }
                                 </div>

@@ -74,7 +74,7 @@ const Custom = () => {
           });
       }
     });
-    remove(ref(FIREBASE_DB, "transactions/" + goodid))
+    remove(ref(FIREBASE_DB, "custom/" + goodid))
       .then(() => {
         setIsLoading(false)
       })

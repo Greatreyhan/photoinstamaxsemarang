@@ -10,12 +10,11 @@ function ImageUpload({ url, setUrl, setIsLoading, setType, setMsg }) {
     // Define allowed file extensions
     const allowedExtensions = ['png', 'jpg', 'jpeg', 'heic'];
     if (e.target.files[0]) {
-      const storageRef = ref(FIREBASE_STORE, `images/${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}/${Math.floor(Date.now() / 1000)}`);
-      const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
-      console.log(e.target.files[0])
       // Extract file extension by finding the last dot in the file name
       const lastDotIndex = e.target.files[0].name.lastIndexOf('.');
       const fileExtension = lastDotIndex !== -1 ? e.target.files[0].name.slice(lastDotIndex + 1).toLowerCase() : '';
+      const storageRef = ref(FIREBASE_STORE, `images/${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}/${Math.floor(Date.now() / 1000)}.${fileExtension}`);
+      const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
 
       if (allowedExtensions.includes(fileExtension)) {
       uploadTask.on(
@@ -30,7 +29,7 @@ function ImageUpload({ url, setUrl, setIsLoading, setType, setMsg }) {
         () => {
           // Upload completed, get the download URL
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-            const newUrl = [...url, downloadURL]
+            const newUrl = [...url, (downloadURL+"."+fileExtension)]
             setUrl(newUrl)
             setIsLoading(false)
           });

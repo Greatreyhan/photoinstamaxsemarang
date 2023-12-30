@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { FIREBASE_DB } from '../config/firebaseinit'
 import { onValue, ref, remove } from 'firebase/database'
 import { FaFileImage } from "react-icons/fa";
+import { BiPackage } from "react-icons/bi";
 import { MdEdit, MdDelete } from "react-icons/md";
+import DetailProduk from './DetailProduk';
 import Loading from './Loading'
 import DetailTransaction from './DetailTransaction';
 
@@ -16,6 +18,8 @@ const Pesanan = () => {
   const [popUpDetail, setPopUpDetail] = useState(false)
   const [detailID, setDetailID] = useState(0)
   const [isLoading, setIsLoading] = useState(false);
+  const [produk, setProduk] = useState([])
+  const [showProduk, setShowProduk] = useState(false)
   useEffect(() => {
     onValue(ref(FIREBASE_DB, "transactions"), (snapshot) => {
       const data = snapshot.val();
@@ -55,12 +59,18 @@ const Pesanan = () => {
     console.log(e.currentTarget.id)
   }
 
+  const handleDetailProduk = (e) =>{
+    e.preventDefault()
+    // console.log(e.currentTarget.id)
+    // setProduk(e.currentTarget.id)
+    setShowProduk(true)
+  }
+
   const handleDelete = (e) => {
     setIsLoading(true)
     e.preventDefault()
     const goodid = e.currentTarget.id.split("|")[0]
     const userid = e.currentTarget.id.split("|")[1]
-    console.log(goodid)
 
     onValue(ref(FIREBASE_DB, "user/" + userid.trim() + "/transaction"), (snapshot) => {
       const data = snapshot.val();
@@ -130,6 +140,10 @@ const Pesanan = () => {
               return (
                 <tr className="text-gray-700" key={i}>
                   <td className="border p-2 dark:border-dark-5">
+                    {showProduk ? 
+                    <DetailProduk data={produk} setProduk={setShowProduk} />  
+                    : null
+                  }
                   {popUpDetail ?
                     <DetailTransaction countID={detailID} keyItem={keyItems} data={dataItems} name={Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title} setPopUpDetail={setPopUpDetail} />
                     : null}
@@ -161,12 +175,18 @@ const Pesanan = () => {
                   </td>
                   <td className="border p-2 dark:border-dark-5">
                     <div className='flex items-center justify-center'>
-                      {Array.isArray(dataItems[key].img) ? dataItems[key].img.map(ss => {
+                    {Array.isArray(dataItems[key].produkID) ? 
+                    dataItems[key].produkID.map(itm=>{
+                      return(<a onClick={(e)=>{handleDetailProduk(e);setProduk(itm)}} id={itm} className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' href={"#"}><BiPackage/></a>)
+                    })
+                    :
+                      (Array.isArray(dataItems[key].img) ? dataItems[key].img.map(ss => {
                         return (
                           <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={ss}><FaFileImage /></a>
                         )
                       })
-                        : <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={dataItems[key].img}><FaFileImage /></a>}
+                        : <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={dataItems[key].img}><FaFileImage /></a>)
+                    }
                     </div>
                   </td>
                   <td className="border p-2 dark:border-dark-5">

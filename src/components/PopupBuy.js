@@ -8,7 +8,7 @@ import { useFirebase } from "../FirebaseContext";
 import { FIREBASE_DB } from '../config/firebaseinit';
 import { set, ref, onValue } from "firebase/database"
 import Confirmation from './Confirmation';
-import { BoxWrap, MapWrap } from '../assets'
+import { BoxWrap, HeroProduct, MapWrap } from '../assets'
 import Message from './Message'
 const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,6 +56,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
       userID: user.uid,
       buyStatus: 0,
     }
+    console.log(data)
     const timeStamp = Math.floor(new Date().getTime() / 1000)
     setCodeID(timeStamp)
     await set(ref(FIREBASE_DB, "transactions/" + user.uid.slice(0, 5) + "A" + timeStamp), data)
@@ -238,7 +239,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
       <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]* (urlImg.length)) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={user.uid.slice(0, 5) + 'A' + codeID} packaging={parseInt(packaging.split("|")[1] * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}  /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={user.uid.slice(0, 5) + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}  /> :
         <div className='flex bg-slate-50 flex-col w-full h-full relative'>
           <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
             <div className='flex items-center justify-center'>
@@ -275,6 +276,10 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                   <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                   <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
                   <div className='flex justify-around gap-5  mt-8'>
+                    <a onClick={() => setPackaging("none|0")} className={`rounded-lg ${packaging == "none|0" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
+                      <img className='w-full h-full object-cover rounded-lg' src={HeroProduct} />
+                      <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>Rp 0<sub className='text-xs font-light'>/item</sub></p>
+                    </a>
                     <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
                       <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
@@ -348,10 +353,10 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                   </div>
                   <div className='bg-slate-50 flex flex-col mt-4 mx-auto w-5/12 px-5 py-8'>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1] * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                     <hr className='mt-3 opacity-80' />
-                    <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1]* (urlImg.length))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1])).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                     <div className='w-full text-center mt-5'>
                       {isComplete ?
                         <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center py-1.5'>

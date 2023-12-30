@@ -32,4 +32,5 @@ import Message from "./Message"
 import NewProduct from "./NewProduct"
 import Custom from "./Custom";
 import DetailTransactionCustom from "./DetailTransactionCustom";
-export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan, DetailTransaction, GoodsAdmin, PopUpGoodsAdmin, UploadImageAdmin, PopUpTransaction, PrivateAdmin, PopUpCustom, Message, NewProduct, Custom, DetailTransactionCustom}
+import DetailProduk from "./DetailProduk";
+export {PrivateRoute, Navigation, Footer, Tutorial, Goods, CartCard, Cart, CartItem, PopupGood, PopupBuy, Confirmation, Alert, PopUpChekcout, PopupBuyDefault, PopupGoodDefault, NavAdmin, Dashboard, Persona, TileProduct, Produk, Pengguna, Pesanan, DetailTransaction, GoodsAdmin, PopUpGoodsAdmin, UploadImageAdmin, PopUpTransaction, PrivateAdmin, PopUpCustom, Message, NewProduct, Custom, DetailTransactionCustom, DetailProduk}
