@@ -60,7 +60,7 @@ const DetailProduk = ({ data, setProduk }) => {
                             </dt>
                             <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                                 {data.img ? data.img.map(i => {
-                                    return (<a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href="#" download={i}><FaFileImage /></a>)
+                                    return (<a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={i}><FaFileImage /></a>)
                                 }) : null}                            </dd>
                         </div>
                     </dl>
