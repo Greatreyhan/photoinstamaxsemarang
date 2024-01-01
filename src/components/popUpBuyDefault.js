@@ -90,7 +90,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
 
   useEffect(() => {
     setIsLoading(true)
-    fetch('https://proud-plum-duckling.cyclic.app/api/provinsi', {
+    fetch('https://photoinstax.onrender.com/api/provinsi', {
       method: 'GET',
     })
       .then((resp) => {
@@ -105,7 +105,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-    fetch('https://proud-plum-duckling.cyclic.app/api/kota/1', {
+    fetch('https://photoinstax.onrender.com/api/kota/1', {
       method: 'GET',
     })
       .then((resp) => {
@@ -139,7 +139,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
   const handleProv = (e) => {
     setIsLoading(true)
     setSelectedProv(e.target.value)
-    fetch('https://proud-plum-duckling.cyclic.app/api/kota/' + e.target.value, {
+    fetch('https://photoinstax.onrender.com/api/kota/' + e.target.value, {
       method: 'GET',
     })
       .then((resp) => {
@@ -193,7 +193,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
     }
     else {
       setSelectedCourier(e.target.value)
-      fetch(`https://proud-plum-duckling.cyclic.app/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
+      fetch(`https://photoinstax.onrender.com/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
         method: 'GET',
       })
         .then((resp) => {

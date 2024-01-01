@@ -37,7 +37,7 @@ const Pesanan = () => {
         setGoodsKey(key)
       }
     });
-    fetch('https://proud-plum-duckling.cyclic.app/api/provinsi', {
+    fetch('https://photoinstax.onrender.com/api/provinsi', {
       method: 'GET',
     })
       .then((resp) => {
