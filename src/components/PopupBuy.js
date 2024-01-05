@@ -239,24 +239,24 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
       <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={user.uid.slice(0, 5) + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}  /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={user.uid.slice(0, 5) + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
         <div className='flex bg-slate-50 flex-col w-full h-full relative'>
-          <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
-            <div className='flex items-center justify-center'>
-              <span className={`text-xl w-10 h-10 ${step > 1 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 1 ? <AiOutlineCheck /> : "1"}</span>
-              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Upload Foto</span>
+          <div className='w-full bg-slate-50 shadow py-4 md:gap-x-6 gap-x-2 flex justify-center items-start md:items-center'>
+            <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+              <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 1 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 1 ? <AiOutlineCheck /> : "1"}</span>
+              <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Upload Foto</span>
             </div>
-            <div className='flex items-center justify-center'>
-              <span className={`text-xl w-10 h-10 ${step > 2 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 2 ? <AiOutlineCheck /> : "2"}</span>
-              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Pilih Packaging</span>
+            <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+              <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 2 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 2 ? <AiOutlineCheck /> : "2"}</span>
+              <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Pilih Packaging</span>
             </div>
-            <div className='flex items-center justify-center'>
-              <span className={`text-xl w-10 h-10 ${step > 3 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 3 ? <AiOutlineCheck /> : "3"}</span>
-              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Pilih pengiriman</span>
+            <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+              <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 3 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 3 ? <AiOutlineCheck /> : "3"}</span>
+              <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Isi Data</span>
             </div>
-            <div className='flex items-center justify-center'>
-              <span className={`text-xl w-10 h-10 ${step > 4 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 4 ? <AiOutlineCheck /> : "4"}</span>
-              <span className='text-sm text-opacity-80 ml-2 text-slate-700'>Konfirmasi Pembayaran</span>
+            <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
+              <span className={`md:text-xl text-md md:w-10 md:h-10 w-6 h-6 ${step > 4 ? "bg-amber-600 text-white" : "border-amber-800 border text-amber-800"}  rounded-full flex justify-center items-center font-semibold`}>{step > 4 ? <AiOutlineCheck /> : "4"}</span>
+              <span className='md:text-sm text-xs md:mt-0 mt-2 text-opacity-80 ml-2 text-slate-700'>Konfirmasi Pembayaran</span>
             </div>
           </div>
           {step == 1 ?
@@ -272,28 +272,28 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
             </div>
             : step == 2 ?
               <div className='bg-slate-200 h-full'>
-                <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
+                <div className='bg-slate-50 mt-10 md:mx-10 px-5 py-16 pb-24'>
                   <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                   <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
-                  <div className='flex justify-around gap-5  mt-8'>
-                    <a onClick={() => setPackaging("none|0")} className={`rounded-lg ${packaging == "none|0" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
+                  <div className='flex justify-around gap-5 mt-8'>
+                    <a onClick={() => setPackaging("none|0")} className={`rounded-lg ${packaging == "none|0" ? "border-4 border-blue-600" : ""} flex flex-col md:w-64 md:h-64 w-28 h-28 cursor-pointer shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={HeroProduct} />
-                      <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>Rp 0<sub className='text-xs font-light'>/item</sub></p>
+                      <p className='md:text-xl text-sm bg-amber-800 text-center text-white font-semibold md:font-normal mt-4 py-2'>Rp 0<sub className='text-xs font-light'>/item</sub></p>
                     </a>
-                    <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
+                    <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col md:w-64 md:h-64 w-28 h-28 cursor-pointer shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
-                      <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
+                      <p className='md:text-xl text-sm bg-amber-800 text-center text-white font-semibold md:font-normal mt-4 py-2'>Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
                     </a>
-                    <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
+                    <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col md:w-64 md:h-64 w-28 h-28 cursor-pointer shadow-lg`}>
                       <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
-                      <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
+                      <p className='md:text-xl text-sm bg-amber-800 text-center text-white font-semibold md:font-normal mt-4 py-2'>Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
                     </a>
                   </div>
                 </div>
               </div>
               : step == 3 ?
                 <div className='bg-slate-200 h-full'>
-                  <div className='bg-slate-50 flex mt-10 mx-10 px-5 py-8'>
+                  <div className='bg-slate-50 flex flex-wrap mt-10 md:mx-10 px-5 py-8'>
                     <div className='flex-1 flex flex-col px-4'>
                       <label className='text-slate-800 mt-4 text-xs'>Pilih Provinsi</label>
                       <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">
@@ -346,12 +346,12 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
 
                 <div className='bg-slate-200 h-full'>
                   {console.log(selectedCourier)}
-                  <div className='bg-slate-50 flex flex-col mt-10 mx-auto w-5/12 px-5 py-8'>
+                  <div className='bg-slate-50 flex flex-col mt-10 mx-auto md:w-5/12 w-11/12 px-5 py-8'>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>{name}</span> <span>{urlImg ? urlImg.length : 0} barang</span></p>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Packaging</span> <span className='capitalize'>{packaging.split("|")[0]} </span></p>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Pengiriman</span> <span className='uppercase'>{selectedCourier + "-" + selectedOption.split("|")[0]} </span></p>
                   </div>
-                  <div className='bg-slate-50 flex flex-col mt-4 mx-auto w-5/12 px-5 py-8'>
+                  <div className='bg-slate-50 flex flex-col mt-4 mx-auto md:w-5/12 w-11/12 px-5 py-8'>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
