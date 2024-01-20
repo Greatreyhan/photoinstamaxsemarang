@@ -277,7 +277,7 @@ const CustomForm = ({ price = 5000 }) => {
                             <div className='bg-slate-200 h-full'>
                                 <div className='bg-slate-50 mt-10 md:mx-10 px-5 py-8'>
                                     <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
-                                    <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
+                                    <p className='text-slate-600 text-xs'>Mohon tambahkan pada pesanan di Marketplace</p>
                                     <div className='flex justify-around gap-5  mt-8'>
                                         <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-64 h-64 cursor-pointer shadow-lg`}>
                                             <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
@@ -330,13 +330,13 @@ const CustomForm = ({ price = 5000 }) => {
                                         </div>
                                     </div>
                                     <div className='bg-slate-50 flex flex-col mt-2 mx-auto md:w-5/12 w-11/12 px-5 py-5'>
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImgWhite.length+urlImgBlack.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                        {/* <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{(parseInt(price) * (urlImgWhite.length+urlImgBlack.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]* (urlImgWhite.length+urlImgBlack.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         {inBound ? null :
                                             <p className='text-amber-950 mt-1 flex justify-between'><span>Bubble Wrap</span> <span>{parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
                                         }
                                         <hr className='mt-3 opacity-80' />
-                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImgWhite.length+urlImgBlack.length)  + parseInt(packaging.split("|")[1]* (urlImgWhite.length+urlImgBlack.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
+                                        <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{(parseInt(price) * (urlImgWhite.length+urlImgBlack.length)  + parseInt(packaging.split("|")[1]* (urlImgWhite.length+urlImgBlack.length)) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p> */}
                                         <div className='w-full text-center mt-5'>
                                             {isComplete ?
                                                 <a onClick={handleBuy} className='bg-amber-500 cursor-pointer flex px-5 justify-center py-1.5'>
@@ -351,7 +351,7 @@ const CustomForm = ({ price = 5000 }) => {
                                     </div>
                                 </div>
                     }
-                    <div className='w-full flex justify-between bg-slate-200 items-center'>
+                    <div className='w-full fixed bottom-0 flex justify-between bg-slate-200 items-center'>
                         <button className='flex justify-center items-center bg-amber-800 px-6 py-2' onClick={handleStepDown}>
                             <BiArrowBack className='text-xl text-white' />
                             <span className='text-white ml-2'>Kembali</span>

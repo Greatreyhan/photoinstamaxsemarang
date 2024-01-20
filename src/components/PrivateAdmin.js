@@ -8,7 +8,7 @@ const PrivateAdmin = () => {
   if (loading) {
     return <p>Wait</p>;
   }
-  return user ? user.uid == "5UmtlWxV1PRxnrw49ZObFa3STT23" ? <Outlet /> : <Navigate to="/" /> : <Navigate to="/login" />;
+  return user ? user.uid == "8oDPt7dMNVeYUUb4L9aHRu8c5uL2" ? <Outlet /> : <Navigate to="/" /> : <Navigate to="/login" />;
 };
 
 export default PrivateAdmin;

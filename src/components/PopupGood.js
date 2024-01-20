@@ -90,29 +90,29 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
                 <>
                     <div className='flex justify-center bg-slate-50 w-full h-full relative flex-wrap'>
 
-                        <div className='bg-slate-200 h-auto md:h-full flex-1'>
-                            <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
+                        <div className='bg-slate-200 w-full h-auto md:h-full flex-1'>
+                            <div className='bg-slate-50 mt-10 mx-0 md:mx-10 px-5 py-8'>
                                 <p className='text-slate-800 font-semibold'>Masukkan Gambar</p>
                                 <p className='text-slate-600 text-xs'>Upload file hanya dengan ekstensi .jpg, .jpeg, .png, atau .heic</p>
                                 <div className='mt-6'>
                                     <ImageUpload url={urlImg} setUrl={setUrlImg} setIsLoading={setIsLoading} setMsg={setMsg} setType={setTypeMsg} />
                                 </div>
                             </div>
-                            <div className='bg-slate-50 mt-2 mx-10 px-5 py-8 pb-16'>
+                            <div className='bg-slate-50 mt-2 mx-0 md:mx-10 px-5 py-8 pb-16'>
                                 <p className='text-slate-800 font-semibold'>Pilih Packaging yang Digunakan</p>
                                 <p className='text-slate-600 text-xs'>Setiap Packaging memiliki harga masing-masing</p>
                                 <div className='flex justify-around gap-5  mt-8'>
                                     <a onClick={() => setPackaging("none|0")} className={`rounded-lg ${packaging == "none|0" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
                                         <img className='w-full h-full object-cover rounded-lg' src={HeroProduct} />
-                                        <p className='text-xl bg-amber-800 text-center text-white font-semibold mt-4 py-2'>Rp 0<sub className='text-xs font-light'>/item</sub></p>
+                                        <p className='md:text-xl text-sm bg-amber-800 text-center text-white font-semibold mt-4 py-2'>Rp 0<sub className='text-xs font-light'>/item</sub></p>
                                     </a>
                                     <a onClick={() => setPackaging("map|2000")} className={`rounded-lg ${packaging == "map|2000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
                                         <img className='w-full h-full object-cover rounded-lg' src={MapWrap} />
-                                        <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
+                                        <p className='md:text-lg text-sm bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 2.000<sub className='text-xs font-light'>/item</sub></p>
                                     </a>
                                     <a onClick={() => setPackaging("box|3000")} className={`rounded-lg ${packaging == "box|3000" ? "border-4 border-blue-600" : ""} flex flex-col w-40 h-40 cursor-pointer shadow-lg`}>
                                         <img className='w-full h-full object-cover rounded-lg' src={BoxWrap} />
-                                        <p className='text-lg bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
+                                        <p className='md:text-lg text-sm bg-amber-800 text-center text-white font-semibold mt-4 py-2'>+ Rp 3.000<sub className='text-xs font-light'>/item</sub></p>
                                     </a>
                                 </div>
                             </div>

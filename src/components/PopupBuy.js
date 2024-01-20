@@ -371,7 +371,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                   </div>
                 </div>
           }
-          <div className='w-full flex justify-between bg-slate-200 items-center'>
+          <div className='w-full fixed bottom-0 flex justify-between bg-slate-200 items-center'>
             <button className='flex justify-center items-center bg-amber-800 px-6 py-2' onClick={handleStepDown}>
               <BiArrowBack className='text-xl text-white' />
               <span className='text-white ml-2'>Kembali</span>

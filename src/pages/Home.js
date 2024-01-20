@@ -137,7 +137,7 @@ const Home = () => {
               onMouseEnter={() => setPrice(!price)}
               onMouseLeave={() => setPrice(!price)}
             >
-              {!price ? "Rp 5.000" : "Order Now"}
+              Pesan Sekarang
             </Link>
           </div>
         </div>
