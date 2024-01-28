@@ -15,10 +15,6 @@ const CustomForm = ({ price = 5000 }) => {
     const [unameEcommerce, setUnameEcommerce] = useState("")
     const [handleEcommerce, setHandleEcommerce] = useState('Tokopedia')
     const [noPesanan, setNoPesanan] = useState('')
-    const [dataProv, setDataProv] = useState([])
-    const [dataCity, setDataCity] = useState([])
-    const [dataCourier, setDataCourier] = useState(['jne', 'pos', 'tiki'])
-    const [dataOption, setDataOption] = useState([])
     const [selectedProv, setSelectedProv] = useState(0)
     const [selectedCity, setSelectedCity] = useState(1)
     const [selectedCourier, setSelectedCourier] = useState('')
@@ -84,7 +80,7 @@ const CustomForm = ({ price = 5000 }) => {
         if (step == 2) {
             setToNext(true)
         }
-        if (step == 3 && unameEcommerce != "") {
+        if (step == 3 && unameEcommerce != "" && noPesanan != "") {
             setToNext(true)
         }
         if ((urlImgWhite != "" || urlImgBlack != "") && userName != "" && emailUser != "" && phoneUser != "") {
@@ -96,119 +92,7 @@ const CustomForm = ({ price = 5000 }) => {
         if (!popUp) {
             return (<Navigate to="/products" />)
         }
-    }, [popUp, packaging, selectedProv, selectedCity, selectedCourier, unameEcommerce, fullAddress, urlImgWhite, urlImgBlack, step, userName, emailUser, phoneUser])
-
-    useEffect(() => {
-        setIsLoading(true)
-        fetch('https://photoinstax.onrender.com/api/provinsi', {
-            method: 'GET',
-        })
-            .then((resp) => {
-                if (!resp.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return resp.json();
-            })
-            .then((data) => {
-                setDataProv(data.rajaongkir.results);
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-            });
-        fetch('https://photoinstax.onrender.com/api/kota/1', {
-            method: 'GET',
-        })
-            .then((resp) => {
-                if (!resp.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return resp.json();
-            })
-            .then((data) => {
-                setDataCity(data.rajaongkir.results);
-                setIsLoading(false)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-                setIsLoading(false)
-            })
-    }, []);
-
-    const handleProv = (e) => {
-        setIsLoading(true)
-        setSelectedProv(e.target.value)
-        fetch('https://photoinstax.onrender.com/api/kota/' + e.target.value, {
-            method: 'GET',
-        })
-            .then((resp) => {
-                if (!resp.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return resp.json();
-            })
-            .then((data) => {
-                setDataCity(data.rajaongkir.results);
-                setIsLoading(false)
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-                setIsLoading(false)
-            });
-    }
-
-    const handleCity = (e) => {
-        setSelectedCity(e.target.value)
-        if (e.target.value == originCity) {
-            setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'Ambil Sendiri'])
-            setInBound(true)
-        }
-        else {
-            setInBound(false)
-        }
-    }
-    const handleCourier = (e) => {
-        setIsLoading(true)
-        if (e.target.value == 'gojek' || e.target.value == 'Ambil Sendiri') {
-            setDataOption({
-                "code": "COD",
-                "name": "POS Indonesia (POS)",
-                "costs": [
-                    {
-                        "service": "COD",
-                        "description": "Pos Reguler",
-                        "cost": [
-                            {
-                                "value": 0,
-                                "etd": "1-2 HARI",
-                                "note": ""
-                            }
-                        ]
-                    }
-                ]
-            })
-            setIsLoading(false)
-        }
-        else {
-            setSelectedCourier(e.target.value)
-            fetch(`https://photoinstax.onrender.com/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
-                method: 'GET',
-            })
-                .then((resp) => {
-                    if (!resp.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return resp.json();
-                })
-                .then((data) => {
-                    setDataOption(data.rajaongkir.results[0]);
-                    setIsLoading(false)
-                })
-                .catch((error) => {
-                    console.error('Error fetching data:', error);
-                    setIsLoading(false)
-                });
-        }
-    }
+    }, [popUp, packaging, selectedProv, selectedCity, selectedCourier, unameEcommerce, noPesanan, fullAddress, urlImgWhite, urlImgBlack, step, userName, emailUser, phoneUser])
 
     const handleStepUp = (e) => {
         e.preventDefault()

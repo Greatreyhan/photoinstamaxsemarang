@@ -51,7 +51,7 @@ const TransactionCard = ({ list, id, status }) => {
     return (
         <div className='mx-5 flex flex-col bg-amber-800 px-8 py-4 rounded-lg mt-5 border-2 border-white border-opacity-20'>
             {popUp ? <div className='w-screen h-screen fixed bg-black bg-opacity-50 z-50 flex justify-center items-center top-0 left-0'>
-                <PopUpTransaction setPopUp={setPopUp} price={list.price} code={id} />
+                <PopUpTransaction setPopUp={setPopUp} total={list.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={id} />
             </div> : null}
 
             <div className='flex flex-wrap text-sm py-2 text-amber-50'>
@@ -73,7 +73,7 @@ const TransactionCard = ({ list, id, status }) => {
 
                 }
 
-                <p className='font-mono  md:mt-0 mt-2 md:ml-0 ml-2'>INV/2{id}/{list.resi ? list.resi : "" }</p>
+                <p className='font-mono  md:mt-0 mt-2 md:ml-0 ml-2'>INV/{id}/{list.resi ? list.resi : "" }</p>
             </div>
             {dataItem != [] ?
                 Array.isArray(list.produkID) ?

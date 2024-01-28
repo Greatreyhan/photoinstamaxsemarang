@@ -34,7 +34,7 @@ const Custom = () => {
         setGoodsKey(key)
       }
     });
-    fetch('https://photoinstax.onrender.com/api/provinsi', {
+    fetch(process.env.REACT_APP_BASE_URL+'/provinsi', {
       method: 'GET',
     })
       .then((resp) => {

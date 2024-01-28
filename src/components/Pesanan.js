@@ -37,7 +37,7 @@ const Pesanan = () => {
         setGoodsKey(key)
       }
     });
-    fetch('https://photoinstax.onrender.com/api/provinsi', {
+    fetch(process.env.REACT_APP_BASE_URL+'/provinsi', {
       method: 'GET',
     })
       .then((resp) => {
@@ -137,6 +137,7 @@ const Pesanan = () => {
         <tbody>
           {dataItems && keyItems && goods ?
             keyItems.map((key, i) => {
+              console.log(dataItems[key])
               return (
                 <tr className="text-gray-700" key={i}>
                   <td className="border p-2 dark:border-dark-5">
@@ -159,7 +160,7 @@ const Pesanan = () => {
                     {dataItems[key].resi ? dataItems[key].resi : "-"}
                   </td>
                   <td className="border p-2 dark:border-dark-5 text-sm w-52">
-                    {dataItems[key].provinsi == 0 ?  dataItems[key].pengiriman : dataItems[key].alamat + ", " + (dataItems[key].provinsi == 0 ? "" : dataItems[key].provinsi.split("|")[1]) + ", " + (dataItems[key].city == 1 ? "" : dataItems[key].city.split("|")[1])}
+                    {dataItems[key].provinsi == 0 ?  dataItems[key].pengiriman : dataItems[key].alamat + ", " + (dataItems[key].city == 1 ? "" : dataItems[key].city.split("|")[1]) + ", " + (dataItems[key].subdistrict == 1 ? "" : dataItems[key].subdistrict.split("|")[1]) + ", " + (dataItems[key].provinsi == 0 ? "" : dataItems[key].provinsi.split("|")[1]) }
                   </td>
                   <td className="border p-2 dark:border-dark-5 uppercase text-sm">
                     {dataItems[key].kurir} - {dataItems[key].pengiriman}

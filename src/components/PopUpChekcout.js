@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { AiOutlineClose } from "react-icons/ai"
+import axios from 'axios'
 import Loading from './Loading'
 import { useFirebase } from "../FirebaseContext";
 import { FIREBASE_DB } from '../config/firebaseinit';
@@ -10,18 +10,20 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [dataProv, setDataProv] = useState([])
   const [dataCity, setDataCity] = useState([])
-  const [dataCourier, setDataCourier] = useState(['jne', 'pos', 'tiki'])
+  const [dataSubdistrict, setDataSubdistrict] = useState([])
+  const [dataCourier, setDataCourier] = useState(['jne', 'jnt', 'pos', 'tiki'])
   const [dataOption, setDataOption] = useState([])
   const [selectedProv, setSelectedProv] = useState(0)
   const [selectedCity, setSelectedCity] = useState(1)
+  const [selectedSubdistrict, setSelectedSubdistrict] = useState(1)
   const [selectedCourier, setSelectedCourier] = useState('')
   const [selectedOption, setSelectedOption] = useState("")
   const [originCity, setOriginCity] = useState(399)
+  const [originSubdistrict, setOriginSubdistrict] = useState(5501)
   const [weight, setWeight] = useState(1000)
   const [fullAddress, setFullAddress] = useState("")
   const [qty, setQty] = useState(1)
   const [packaging, setPackaging] = useState("map")
-  const [urlImg, setUrlImg] = useState("")
   const [isComplete, setIsComplete] = useState(false)
   const [inBound, setInBound] = useState(false)
   const [bubbleWrap, setBubbleWrap] = useState(true)
@@ -59,6 +61,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
       produkID: goodsId,
       provinsi: selectedProv,
       city: selectedCity,
+      subdistrict: selectedSubdistrict,
       alamat: fullAddress,
       img: goodsId[0].img,
       kurir: selectedCourier,
@@ -68,7 +71,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
       bubble_wrap: bubbleWrap,
       weight: weightTotal,
       price: parseInt(price) + parseInt(selectedOption.split("|")[1], 10),
-      userID : user.uid,
+      userID: user.uid,
       buyStatus: 0,
     }
     const timeStamp = Math.floor(new Date().getTime() / 1000)
@@ -94,13 +97,13 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
     if (selectedProv != 0 && selectedCourier != '' && selectedOption != "" && fullAddress != "") {
       setIsComplete(true)
     }
-  }, [selectedProv, selectedCity, selectedCourier, selectedOption, fullAddress])
+  }, [selectedProv, selectedCity, selectedSubdistrict, selectedCourier, selectedOption, fullAddress])
 
   useEffect(() => {
     console.log(dataCart)
     setWeight(weightTotal)
     setIsLoading(true)
-    fetch('https://photoinstax.onrender.com/api/provinsi', {
+    fetch(process.env.REACT_APP_BASE_URL + '/provinsi', {
       method: 'GET',
     })
       .then((resp) => {
@@ -115,7 +118,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-    fetch('https://photoinstax.onrender.com/api/kota/1', {
+    fetch(process.env.REACT_APP_BASE_URL + '/kota/1', {
       method: 'GET',
     })
       .then((resp) => {
@@ -148,7 +151,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
   const handleProv = (e) => {
     setIsLoading(true)
     setSelectedProv(e.target.value)
-    fetch('https://photoinstax.onrender.com/api/kota/' + e.target.value, {
+    fetch(process.env.REACT_APP_BASE_URL + '/kota/' + e.target.value, {
       method: 'GET',
     })
       .then((resp) => {
@@ -168,15 +171,42 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
   }
 
   const handleCity = (e) => {
+    setIsLoading(true)
     setSelectedCity(e.target.value)
     if (e.target.value.match(/\d+/)[0] == originCity) {
-      setDataCourier(['jne', 'pos', 'tiki', 'gojek', 'ambil sendiri'])
+      setDataCourier(['jne', 'jnt', 'pos', 'tiki', 'gojek', 'ambil sendiri'])
       setInBound(true)
     }
     else {
       setInBound(false)
     }
+
+    // Get Data Kecamatan
+    fetch(process.env.REACT_APP_BASE_URL + '/kecamatan/' + e.target.value, {
+      method: 'GET',
+    })
+      .then((resp) => {
+        if (!resp.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return resp.json();
+      })
+      .then((data) => {
+        console.log(data)
+        setDataSubdistrict(data.rajaongkir.results);
+        setIsLoading(false)
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setIsLoading(false)
+      });
   }
+
+  const handleSubdistrict = (e) => {
+    console.log(e.target.value)
+    setSelectedSubdistrict(e.target.value)
+  }
+
   const handleCourier = (e) => {
     setSelectedCourier(e.target.value)
     setIsLoading(true)
@@ -202,30 +232,32 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
     }
     else {
       setSelectedCourier(e.target.value)
-      fetch(`https://photoinstax.onrender.com/api/ongkos/${originCity}/${selectedCity}/${weight}/${e.target.value}`, {
-        method: 'GET',
-      })
-        .then((resp) => {
-          if (!resp.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return resp.json();
-        })
-        .then((data) => {
+      const payload = {
+        origin: originSubdistrict,
+        originType: "subdistrict",
+        destination: selectedSubdistrict,
+        destinationType: "subdistrict",
+        weight: weight,
+        courier: e.target.value
+      }
+      axios.post(process.env.REACT_APP_BASE_URL + '/ongkos', payload)
+        .then((response) => {
+          const data = response.data;
           setDataOption(data.rajaongkir.results[0]);
-          setIsLoading(false)
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
-          setIsLoading(false)
+          setIsLoading(false);
         });
     }
   }
 
+
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopUp} produk={(parseInt(price) * parseInt(qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={((parseInt(price) * parseInt(qty)) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={(0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={ inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}  /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopUp} produk={(parseInt(price) * parseInt(qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={((parseInt(price) * parseInt(qty)) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={(0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
         <>
           <div className='flex bg-slate-50 w-full h-full relative flex-wrap'>
 
@@ -233,6 +265,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
               <div className='bg-slate-50 mt-10 mx-10 px-5 py-8'>
                 <div className='flex'>
                   <div className='flex-1 flex flex-col px-4'>
+                    {/* Pilih Provinsi */}
                     <label className='text-amber-950 mt-4 text-xs'>Pilih Provinsi</label>
                     <select className='border border-slate-400 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleProv} name="Provinsi">
                       <option value={0} >Pilih Provinsi</option>
@@ -240,6 +273,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
                         return (<option value={prov.province_id + "|" + prov.province} key={prov.province_id}>{prov.province}</option>)
                       }) : null}
                     </select>
+                    {/* Pilih Kota */}
                     <label className='text-amber-950 mt-4 text-xs'>Pilih Kota</label>
                     <select className='border border-slate-400 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleCity} name="Kota">
                       <option value={0} >Pilih Kota</option>
@@ -247,10 +281,15 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
                         return (<option value={city.city_id + "|" + city.city_name} key={city.city_id}>{city.type} {city.city_name}</option>)
                       }) : null}
                     </select>
-                    <div className='flex flex-col'>
-                      <label className='text-amber-950 mt-4 text-xs'>Alamat Lengkap</label>
-                      <input className='border border-slate-500 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={fullAddress} onChange={(e) => setFullAddress(e.currentTarget.value)} required />
-                    </div>
+                    {/* Pilih Kecamatan */}
+                    <label className='text-slate-800 mt-4 text-xs'>Pilih Kecamatan</label>
+                    <select className='border boder-amber-800 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' onChange={handleSubdistrict} name="Kecamatan">
+                      <option value={0} >Pilih Kecamatan</option>
+                      {dataSubdistrict ? dataSubdistrict.map(disctrict => {
+                        return (<option value={disctrict.subdistrict_id + "|" + disctrict.subdistrict_name} key={disctrict.subdistrict_id}>{disctrict.type} {disctrict.subdistrict_name}</option>)
+                      }) : null}
+                    </select>
+
                   </div>
                   <div className='flex-1 flex flex-col px-4'>
                     <label className='text-amber-950 mt-4 text-xs'>Pilih Kurir</label>
@@ -267,7 +306,11 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
                         return (<option className='' value={option.service + '|' + parseInt(option.cost[0].value)} key={i}><span className='text-xs'>{option.service}</span> | <span>{parseInt(option.cost[0].value) == 0 ? "CHAT ADMIN" : new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(parseInt(option.cost[0].value))}</span> | <span>{option.cost[0].etd} Hari</span></option>)
                       }) : null}
                     </select>
-                    <div className='flex flex-col mt-8'>
+                    <div className='flex flex-col'>
+                      <label className='text-amber-950 mt-4 text-xs'>Alamat Lengkap</label>
+                      <input className='border border-slate-500 border-opacity-50 px-1 py-1.5 text-md mt-1 text-amber-950' type="text" value={fullAddress} onChange={(e) => setFullAddress(e.currentTarget.value)} required />
+                    </div>
+                    <div className='flex flex-col mt-4'>
                       <div className='flex items-center mt-4'>
                         {inBound ?
                           <input type="checkbox" onChange={e => setBubbleWrap(e.currentTarget.value)} value={bubbleWrap} />
