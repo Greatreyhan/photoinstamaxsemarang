@@ -9,7 +9,8 @@ import { onValue, ref } from 'firebase/database'
 
 
 const Dashboard = () => {
-  const [dataItems, setDataItems] = useState([])
+  const [dataProduk, setDataProduk] = useState([])
+  const [keyProduk, setKeyProduk] = useState([])
   const [dataUser, setDataUser] = useState([])
   const [dataTransaction, setDataTransaction] = useState([])
   const [totalUser, setTotalUser] = useState(0)
@@ -18,9 +19,10 @@ const Dashboard = () => {
   useEffect(() => {
     onValue(ref(FIREBASE_DB, "goods"), (snapshot) => {
       const data = snapshot.val();
-      if (data) {
+      if(data){
         const key = Object.keys(data)
-        setDataItems(data)
+        setKeyProduk(key)
+        setDataProduk(data)
       }
     })
     onValue(ref(FIREBASE_DB, "user"), (snapshot) => {
@@ -71,12 +73,18 @@ const Dashboard = () => {
         </div>
         <MdOutlineAttachMoney className='text-4xl font-bold' />
       </div>
-      {dataItems ?
-        dataItems.map((list, i) => {
-          return <TileProduct ImageSource={list.img} title={list.title} qty={list.qty} />
+      {Array.isArray(keyProduk) && dataProduk != {} ? keyProduk.map((key, i) => {
+          if(dataProduk[key].show){
+            if(dataProduk[key].show != 'hidden'){
+            return <TileProduct ImageSource={dataProduk[key].img} title={dataProduk[key].title} qty={dataProduk[key].qty} />
+            }
+          }
+          else{
+            return <TileProduct ImageSource={dataProduk[key].img} title={dataProduk[key].title} qty={dataProduk[key].qty} />
+          }
         })
         :
-        null}
+        <p>Loading...</p>}
     </div>
   )
 }

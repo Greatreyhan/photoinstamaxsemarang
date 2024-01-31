@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { FIREBASE_DB } from '../config/firebaseinit'
-import { remove, ref } from 'firebase/database'
+import { remove, ref, update } from 'firebase/database'
 import PopUpGoodsAdmin from "./PopUpGoodsAdmin";
 const GoodsAdmin = ({data, length, i}) => {
     const [popUp, setPopUp] = useState(false)
     const handleDelete = () =>{
-      remove(ref(FIREBASE_DB, "goods/" + (i)))
+      const newData={
+        ...data,
+        show : 'hidden'
+      }
+      update(ref(FIREBASE_DB, "goods/" + (i)), newData)
       .then(() => {
       })
       .catch((error) => {
