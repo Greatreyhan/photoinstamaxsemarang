@@ -21,11 +21,11 @@ const Products = () => {
       {Array.isArray(keyProduk) && dataProduk != {} ? keyProduk.map((key, id) => {
         if (dataProduk[key].show) {
           if (dataProduk[key].show != 'hidden') {
-            return (<Goods key={id} Title={dataProduk[key].title} Desc={dataProduk[key].desc} Price={dataProduk[key].price} ImageSource={dataProduk[key].img} Category={dataProduk[key].type} Weight={dataProduk[key].weight} ProdukID={id} />)
+            return (<Goods key={id} Title={dataProduk[key].title} Desc={dataProduk[key].desc} Price={dataProduk[key].price} ImageSource={dataProduk[key].img} Category={dataProduk[key].type} Weight={dataProduk[key].weight} ProdukID={key} />)
           }
         }
         else{
-          return (<Goods key={id} Title={dataProduk[key].title} Desc={dataProduk[key].desc} Price={dataProduk[key].price} ImageSource={dataProduk[key].img} Category={dataProduk[key].type} Weight={dataProduk[key].weight} ProdukID={id} />)
+          return (<Goods key={id} Title={dataProduk[key].title} Desc={dataProduk[key].desc} Price={dataProduk[key].price} ImageSource={dataProduk[key].img} Category={dataProduk[key].type} Weight={dataProduk[key].weight} ProdukID={key} />)
         }
       })
         : <p>Loading...</p>}

@@ -146,7 +146,7 @@ const Pesanan = () => {
                       : null
                     }
                     {popUpDetail ?
-                      <DetailTransaction countID={detailID} keyItem={keyItems} data={dataItems} name={Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title} setPopUpDetail={setPopUpDetail} />
+                      <DetailTransaction countID={detailID} keyItem={keyItems} data={dataItems} name={Array.isArray(dataItems[key].produkID) ? "Paket" : (goods[parseInt(dataItems[key].produkID)] ? goods[parseInt(dataItems[key].produkID)].title : "unavailable")} setPopUpDetail={setPopUpDetail} />
                       : null}
                     {i}
                   </td>
