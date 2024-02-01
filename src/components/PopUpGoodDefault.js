@@ -19,6 +19,7 @@ const PopupGoodDefault = ({ name, price, setPopUp, weight, ProdukID, ImageSource
 
     const handleCart = async () => {
         const data = {
+            name: name,
             produkID: ProdukID,
             img: ImageSource,
             qty: qty,

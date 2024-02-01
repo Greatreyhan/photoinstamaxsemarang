@@ -37,7 +37,7 @@ const Pesanan = () => {
         setGoodsKey(key)
       }
     });
-    fetch(process.env.REACT_APP_BASE_URL+'/provinsi', {
+    fetch(process.env.REACT_APP_BASE_URL + '/provinsi', {
       method: 'GET',
     })
       .then((resp) => {
@@ -59,7 +59,7 @@ const Pesanan = () => {
     console.log(e.currentTarget.id)
   }
 
-  const handleDetailProduk = (e) =>{
+  const handleDetailProduk = (e) => {
     e.preventDefault()
     // console.log(e.currentTarget.id)
     // setProduk(e.currentTarget.id)
@@ -141,13 +141,13 @@ const Pesanan = () => {
               return (
                 <tr className="text-gray-700" key={i}>
                   <td className="border p-2 dark:border-dark-5">
-                    {showProduk ? 
-                    <DetailProduk data={produk} setProduk={setShowProduk} />  
-                    : null
-                  }
-                  {popUpDetail ?
-                    <DetailTransaction countID={detailID} keyItem={keyItems} data={dataItems} name={Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title} setPopUpDetail={setPopUpDetail} />
-                    : null}
+                    {showProduk ?
+                      <DetailProduk data={produk} setProduk={setShowProduk} />
+                      : null
+                    }
+                    {popUpDetail ?
+                      <DetailTransaction countID={detailID} keyItem={keyItems} data={dataItems} name={Array.isArray(dataItems[key].produkID) ? "Paket" : goods[parseInt(dataItems[key].produkID)].title} setPopUpDetail={setPopUpDetail} />
+                      : null}
                     {i}
                   </td>
                   <td className="border p-2 text-sm dark:border-dark-5">
@@ -160,7 +160,7 @@ const Pesanan = () => {
                     {dataItems[key].resi ? dataItems[key].resi : "-"}
                   </td>
                   <td className="border p-2 dark:border-dark-5 text-sm w-52">
-                    {dataItems[key].provinsi == 0 ?  dataItems[key].pengiriman : dataItems[key].alamat + ", " + (dataItems[key].city == 1 ? "" : dataItems[key].city.split("|")[1]) + ", " + (dataItems[key].subdistrict == 1 ? "" : dataItems[key].subdistrict.split("|")[1]) + ", " + (dataItems[key].provinsi == 0 ? "" : dataItems[key].provinsi.split("|")[1]) }
+                    {dataItems[key].provinsi == 0 ? dataItems[key].pengiriman : dataItems[key].alamat + ", " + (dataItems[key].city == 1 ? "" : dataItems[key].city.split("|")[1]) + ", " + (dataItems[key].subdistrict == 1 ? "" : dataItems[key].subdistrict.split("|")[1]) + ", " + (dataItems[key].provinsi == 0 ? "" : dataItems[key].provinsi.split("|")[1])}
                   </td>
                   <td className="border p-2 dark:border-dark-5 uppercase text-sm">
                     {dataItems[key].kurir} - {dataItems[key].pengiriman}
@@ -172,27 +172,27 @@ const Pesanan = () => {
                     {dataItems[key].price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }).slice(0, -3)}
                   </td>
                   <td className="border p-2 dark:border-dark-5 text-center">
-                    {dataItems[key].packaging ? dataItems[key].packaging.split("|")[0]  : "-"}
+                    {dataItems[key].packaging ? dataItems[key].packaging.split("|")[0] : "-"}
                   </td>
                   <td className="border p-2 dark:border-dark-5">
                     <div className='flex items-center justify-center'>
-                    {Array.isArray(dataItems[key].produkID) ? 
-                    dataItems[key].produkID.map(itm=>{
-                      return(<a onClick={(e)=>{handleDetailProduk(e);setProduk(itm)}} id={itm} className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' href={"#"}><BiPackage/></a>)
-                    })
-                    :
-                      (Array.isArray(dataItems[key].img) ? dataItems[key].img.map(ss => {
-                        return (
-                          <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={ss}><FaFileImage /></a>
-                        )
-                      })
-                        : <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={dataItems[key].img}><FaFileImage /></a>)
-                    }
+                      {Array.isArray(dataItems[key].produkID) ?
+                        dataItems[key].produkID.map(itm => {
+                          return (<a onClick={(e) => { handleDetailProduk(e); setProduk(itm) }} id={itm} className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' href={"#"}><BiPackage /></a>)
+                        })
+                        :
+                        (Array.isArray(dataItems[key].img) ? dataItems[key].img.map(ss => {
+                          return (
+                            <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={ss}><FaFileImage /></a>
+                          )
+                        })
+                          : <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={dataItems[key].img}><FaFileImage /></a>)
+                      }
                     </div>
                   </td>
                   <td className="border p-2 dark:border-dark-5">
                     <div className='flex gap-1'>
-                      <a onClick={() =>{setPopUpDetail(!popUpDetail); setDetailID(i)} } id={key + "|" + dataItems[key].userID} className='bg-blue-200 w-6 h-6 text-sm text-blue-900 flex justify-center items-center rounded-full' href={"#"}><MdEdit /></a>
+                      <a onClick={() => { setPopUpDetail(!popUpDetail); setDetailID(i) }} id={key + "|" + dataItems[key].userID} className='bg-blue-200 w-6 h-6 text-sm text-blue-900 flex justify-center items-center rounded-full' href={"#"}><MdEdit /></a>
                       <a onClick={handleDelete} id={key + "|" + dataItems[key].userID} className='bg-rose-200 w-6 h-6 text-sm text-rose-900 flex justify-center items-center rounded-full' href={""}><MdDelete /></a>
                     </div>
                   </td>

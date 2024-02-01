@@ -23,6 +23,7 @@ const PopupGood = ({ name, price, setPopUp, weight, ProdukID }) => {
 
     const handleCart = async () => {
         const data = {
+            name: name,
             produkID: ProdukID,
             img: urlImg,
             qty: urlImg.length,

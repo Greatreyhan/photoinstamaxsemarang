@@ -10,34 +10,25 @@ const DetailProduk = ({ data, setProduk }) => {
     const [status, setStatus] = useState(0)
     const [goods, setGoods] = useState([])
     useEffect(() => {
+        console.log(data.name)
         onValue(ref(FIREBASE_DB, "goods/" + data.produkID), (snapshot) => {
             const d = snapshot.val();
             if (d) {
                 setGoods(d)
             }
         });
-        console.log(data)
     }, [])
-    const handleSave = () => {
-        // const updateData = { ...data[keyItem[countID]], resi: resi, buyStatus: parseInt(status) }
-        // set(ref(FIREBASE_DB, "transactions/" + keyItem[countID]), updateData)
-        //     .then(() => {
-        //         setPopUpDetail(false)
-        //     })
-        //     .catch((error) => {
-        //         console.log(error)
-        //     });
-    }
+
     return (
         <div className='w-screen h-screen fixed bg-black top-0 left-0 bg-opacity-50 flex justify-center items-center'>
 
             <div className="max-w-2xl overflow-hidden bg-white shadow sm:rounded-lg py-8">
                 <div className="px-4 py-2 sm:px-6">
                     <div className='w-full flex justify-end text-3xl'>
-                        <a className='inline' onClick={() => setProduk(false)}><IoIosClose /></a>
+                        <a className='inline cursor-pointer' onClick={() => setProduk(false)}><IoIosClose /></a>
                     </div>
                     <h3 className="text-lg font-medium leading-6 text-gray-900">
-                        {goods.title}
+                        {data.name}
                     </h3>
                 </div>
                 <div className="border-t border-gray-200">
