@@ -56,7 +56,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
       qty: urlImg.length,
       packaging: packaging,
       bubble_wrap: bubbleWrap,
-      price: parseInt(price) * urlImg.length + parseInt(cr[1], 10) + parseInt(packaging.split("|")[1] * (urlImg.length)),
+      price: parseInt(price) * urlImg.length + parseInt(cr[1], 10) + parseInt(packaging.split("|")[1] * (urlImg.length) + (bubbleWrap ? 2000 : 0)),
       userID: user.uid,
       buyStatus: 0,
     }
@@ -266,7 +266,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
       <Message msg={msg} type={typeMsg} setType={setTypeMsg} />
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={user.uid.slice(0, 5) + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={(parseInt(price) * (urlImg.length) + parseInt(packaging.split("|")[1]) + (bubbleWrap ? 2000 : 0) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={user.uid.slice(0, 5) + 'A' + codeID} packaging={parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={(bubbleWrap ? 2000 : 0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
         <div className='flex bg-slate-50 flex-col w-full h-full relative'>
           <div className='w-full bg-slate-50 shadow py-4 md:gap-x-6 gap-x-2 flex justify-center items-start md:items-center'>
             <div className='flex flex-col md:flex-row flex-1 border-l md:border-none text-center items-center justify-center'>
@@ -400,11 +400,13 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                     <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Pengiriman</span> <span className='uppercase'>{selectedCourier + "-" + selectedOption.split("|")[0]} </span></p>
                   </div>
                   <div className='bg-slate-50 flex flex-col mt-4 mx-auto md:w-5/12 w-11/12 px-5 py-8'>
-                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })},-</span></p>
-                    <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Packaging</span> <span>{parseInt(packaging.split("|")[1]).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Bubble Wrap</span> <span>{bubbleWrap ? 'Rp 2.000,00' : 'Rp 0'}</span></p>
+
                     <hr className='mt-3 opacity-80' />
-                    <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1])).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                    <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (urlImg.length) + parseInt(selectedOption.split("|")[1], 10) + parseInt(packaging.split("|")[1]) + (bubbleWrap ? 2000: 0)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
                     <div className='w-full text-center mt-5'>
                       {isComplete ?
                         <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center py-1.5'>

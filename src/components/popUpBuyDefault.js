@@ -51,7 +51,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
       qty: qty,
       packaging: "",
       bubble_wrap: bubbleWrap,
-      price: parseInt(price) * qty + parseInt(cr[1], 10),
+      price: parseInt(price) * qty + parseInt(cr[1], 10) + (bubbleWrap ? 2000 : 0),
       userID: user.uid,
       buyStatus: 0,
     }
@@ -267,7 +267,7 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={((parseInt(price) * (qty)) + parseInt(selectedOption.split("|")[1], 10) + (inBound ? 0 : 1000)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={parseInt(0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopBuy} produk={(parseInt(price) * (qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={((parseInt(price) * (qty)) + parseInt(selectedOption.split("|")[1], 10) + (bubbleWrap ? 2000 : 0)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={parseInt(0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={(bubbleWrap ? 2000 : 0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
         <div className='flex bg-slate-50 flex-col w-full h-full relative'>
           <div className='w-full bg-slate-50 shadow py-4 gap-x-6 flex justify-center items-center'>
             <div className='flex items-center justify-center'>
@@ -359,10 +359,11 @@ const PopupBuyDefault = ({ name, price, setPopBuy, ProdukID, ImageSource }) => {
                 <p className='text-amber-950 mt-1 flex justify-between'><span>Jenis Pengiriman</span> <span className='uppercase'>{selectedCourier + "-" + selectedOption.split("|")[0]} </span></p>
               </div>
               <div className='bg-slate-50 flex flex-col mt-4 mx-auto  md:w-5/12 w-11/12 px-5 py-8'>
-                <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Harga Produk</span> <span>{selectedOption != "" ? (parseInt(price) * (qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Bubble Wrap</span> <span>{bubbleWrap ? 'Rp 2.000,00' : 'Rp 0'}</span></p>
                 <hr className='mt-3 opacity-80' />
-                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (qty) + parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) * (qty) + parseInt(selectedOption.split("|")[1], 10) + (bubbleWrap ? 2000 : 0)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
                 <div className='w-full text-center mt-5'>
                   {isComplete ?
                     <a onClick={handleBuy} className='bg-amber-500 flex px-5 justify-center py-1.5'>

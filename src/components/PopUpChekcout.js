@@ -70,7 +70,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
       packaging: packaging,
       bubble_wrap: bubbleWrap,
       weight: weightTotal,
-      price: parseInt(price) + parseInt(selectedOption.split("|")[1], 10),
+      price: parseInt(price) + parseInt(selectedOption.split("|")[1], 10) + (bubbleWrap ? 2000 : 0),
       userID: user.uid,
       buyStatus: 0,
     }
@@ -257,7 +257,7 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
   return (
     <div className='w-full h-screen bg-black bg-opacity-30 fixed left-0 top-0 flex justify-center items-center flex-col z-50'>
       {isLoading ? <Loading /> : null}
-      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopUp} produk={(parseInt(price) * parseInt(qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={((parseInt(price) * parseInt(qty)) + (inBound ? 0 : 1000) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={(0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={inBound ? 0 : parseInt(1000).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
+      {isConfirmed ? <Confirmation setIsConfirmed={setIsConfirmed} setPopUp={setPopUp} produk={(parseInt(price) * parseInt(qty)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} total={((parseInt(price) * parseInt(qty)) + (bubbleWrap ? 2000 : 0) + (parseInt(selectedOption.split("|")[1], 10))).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} code={"CUSTM" + 'A' + codeID} packaging={(0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} bubble={(bubbleWrap ? 2000 : 0).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} ongkir={(parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} /> :
         <>
           <div className='flex bg-slate-50 w-full h-full relative flex-wrap'>
 
@@ -327,10 +327,11 @@ const PopUpChekcout = ({ list, price, weightTotal, setPopUp, dataCart }) => {
 
             <div className='bg-slate-200 h-full w-4/12 pr-10'>
               <div className='bg-slate-50 flex flex-col mt-10 mx-auto w-full px-5 py-8'>
-                <p className='text-amber-950 mt-1 flex justify-between'><span>Total Harga</span> <span>{selectedOption != "" ? (parseInt(price)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
-                <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Total Harga</span> <span>{selectedOption != "" ? (parseInt(price)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Ongkos Kirim</span> <span>{selectedOption != "" ? (parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Bubble Wrap</span> <span>{bubbleWrap ? 'Rp 2.000,00' : 'Rp 0'}</span></p>
                 <hr className='mt-3 opacity-60' />
-                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) + parseInt(selectedOption.split("|")[1], 10)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'},-</span></p>
+                <p className='text-amber-950 mt-1 flex justify-between'><span>Total</span> <span>{selectedOption != "" ? (parseInt(price) + parseInt(selectedOption.split("|")[1], 10) + (bubbleWrap ? 2000 : 0)).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }) : 'Rp 0'}</span></p>
                 <div className='w-full text-center mt-5'>
                   {isComplete ?
                     <a onClick={handleBuy} className='bg-amber-500 cursor-pointer flex px-5 justify-center mx-4 py-1.5'>
