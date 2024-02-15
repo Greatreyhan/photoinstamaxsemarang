@@ -158,7 +158,7 @@ const Custom = () => {
                           <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={ss}><FaFileImage /></a>
                         )
                       })
-                        : <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={dataItems[key].img}><FaFileImage /></a>}
+                        : null}
                     </div>
                   </td>
                   <td className="border p-2 dark:border-dark-5">
@@ -168,7 +168,7 @@ const Custom = () => {
                           <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={ss}><FaFileImage /></a>
                         )
                       })
-                        : <a className='bg-amber-200 w-6 h-6 text-sm text-amber-900 flex justify-center items-center rounded-full' target="_blank" href={dataItems[key].img}><FaFileImage /></a>}
+                        : null}
                     </div>
                   </td>
                   <td className="border p-2 dark:border-dark-5">

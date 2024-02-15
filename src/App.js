@@ -5,8 +5,28 @@ import { FirebaseProvider } from "./FirebaseContext";
 import Admin from "./pages/Admin";
 import CustomForm from "./components/CustomForm";
 const App = () => {
+
+  const SEO =   {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://photoinstaxsemarang.com/",
+    "name": "photoinstaxsemarang.com",
+    "alternateName": "photoinstaxsemarang.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://photoinstaxsemarang.com",
+      "query-input": "required name=q"
+    }
+  };
+
   return (
     <FirebaseProvider>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(SEO),
+        }}
+      />
       <Router>
         <Navigation />
         <Routes>
