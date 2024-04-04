@@ -380,7 +380,7 @@ const PopupBuy = ({ name, price, setPopBuy, ProdukID }) => {
                       <div className='flex flex-col mt-2'>
                         <div className='flex items-center mt-4'>
                           {inBound ?
-                            <input type="checkbox" onChange={e => setBubbleWrap(e.currentTarget.value)} value={bubbleWrap} />
+                            <input type="checkbox" onChange={e => setBubbleWrap(!bubbleWrap)} value={bubbleWrap} />
                             :
                             <input type="checkbox" value={() => setBubbleWrap(true)} checked />
                           }
